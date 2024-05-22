@@ -19,7 +19,7 @@
 
 
 
-<title>归档 | 嘉和望岗</title>
+<title>Java基础 | 嘉和望岗</title>
 
 
 
@@ -158,7 +158,7 @@
         </h2>
       </a>
       <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
-        
+        Java基础
       </div>
       <div class="flex-1"></div>
       <div class="flex items-center gap-3">
@@ -204,122 +204,181 @@
 </div>
 
   <main class="pt-14">
-    <section class="px-6 max-w-prose mx-auto gap-12 grid grid-cols-1">
-  <div class="flex flex-col h-48 items-center justify-center">
-    <h1 class="site-title text-4xl leading-relaxed">
-      嘉和望岗
-    </h1>
-    <p class="text-gray-500 mt-2">
-      只 争 朝 夕
-    </p>
-  </div>
-  
-  
-    
-    
-      <div class="relative pointer-events-none">
-        <span class="text-9xl opacity-10 absolute -left-11 -top-6 font-bold">2024</span>
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        Java基础
+      </h1>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2024-05-22</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>1 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>408 words</span>
+          </span>
+          
+        </section>
       </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <h3 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h3><p>​	面向对象更注重对象的存在和对象的描述而面向过程更注重于本过程实现了什么功能。面向对象有三大特征，封装，继承，多态。<br>​	封装，将对象的成员变量私有，开放相关的get和set方法让外部对象访问。还可以在相关方法里加上自己想加的业务需求。继承，继承父类的所有成员变量和成员方法，提高代码复用性，可以对需要重写的方法进行重写，为多态提供基础支持。多态，对于一个行为，不同的子类具有不同的表现形式。多态需要三个条件，继承父类，重写父类方法，父类引用指向子类对象，引用去调被重写的方法。</p>
+<h3 id="JDK、JRE和JVM的区别"><a href="#JDK、JRE和JVM的区别" class="headerlink" title="JDK、JRE和JVM的区别"></a>JDK、JRE和JVM的区别</h3><p>​	JDK是java开发工具，JRE是Java程序运行环境，JVM是java虚拟机。三者的关系是，JDK包含JRE和Javac、Java等工具，JRE包含JVM和一些类库文件。将编译好的class文件可以直接放在windows或Linux系统的Java虚拟机上运行。</p>
+<h3 id="和equals的区别"><a href="#和equals的区别" class="headerlink" title="&#x3D;&#x3D;和equals的区别"></a>&#x3D;&#x3D;和equals的区别</h3><p>​	&#x3D;&#x3D;判断的是引用地址是否一致，所以当判断两个String对象的时候，可能会出现字符一样，但是判断后不相等的情况，这时候需要用equals方法判断。没有重写的equals方法底层代码就是用=&#x3D;判断，String的是重写后的equals，会先判断引用是否相等，相等就返回true，不等会逐字符判断都相等也会返回相等。</p>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
     
-    <a style="--stagger:0" href="/2024/05/22/Java%E5%9F%BA%E7%A1%80/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          Java基础
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          5月 22
-          ·
-          1 min
-        </p>
-      </section>
-    </a>
-  
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/">八股文</a>
+        </span>
+      
     
-    
-    <a style="--stagger:1" href="/2024/05/07/%E5%B0%8F%E7%8B%AE%E6%B4%BE%E9%80%81%E7%AC%AC%E4%BA%8C%E7%AB%A0/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
+  </div>
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+    </div>
+    <div>
+      
+        <a href="/2024/05/07/%E5%B0%8F%E7%8B%AE%E6%B4%BE%E9%80%81%E7%AC%AC%E4%BA%8C%E7%AB%A0/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
           小狮派送项目第二章
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          5月 07
-          ·
-          1 min
-        </p>
-      </section>
-    </a>
-  
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
     
-    
-    <a style="--stagger:2" href="/2024/05/03/%E5%B0%8F%E7%8B%AE%E6%B4%BE%E9%80%81%E7%AC%AC%E4%B8%80%E7%AB%A0/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          小狮派送项目第一章
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          5月 03
-          ·
-          1 min
-        </p>
-      </section>
-    </a>
-  
-    
-    
-    <a style="--stagger:3" href="/2024/05/01/%E6%88%91%E4%BB%AC%E4%BF%A9/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          我们俩
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          5月 01
-          ·
-          1 min
-        </p>
-      </section>
-    </a>
-  
-    
-    
-    <a style="--stagger:4" href="/2024/04/30/%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8D%9A%E5%AE%A2/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          我的第一篇博客
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          4月 30
-          ·
-          1 min
-        </p>
-      </section>
-    </a>
-  
+
+  </div>
 </section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "default",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
 
   </main>
   <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
