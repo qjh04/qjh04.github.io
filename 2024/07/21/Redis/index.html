@@ -228,17 +228,17 @@
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2024-06-12</time>
+            <time>2024-07-21</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>3 min</span>
+            <span>7 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>903 words</span>
+            <span>2k words</span>
           </span>
           
         </section>
@@ -273,6 +273,81 @@
 
 
 
+<h2 id="实战篇"><a href="#实战篇" class="headerlink" title="实战篇"></a>实战篇</h2><h3 id="第一章-短信登录"><a href="#第一章-短信登录" class="headerlink" title="第一章 短信登录"></a>第一章 短信登录</h3><h4 id="1、基于-redis-短信登录"><a href="#1、基于-redis-短信登录" class="headerlink" title="1、基于 redis 短信登录"></a>1、基于 redis 短信登录</h4><p>问题描述：在拦截器中无法注入StringRedisTemplate<br>解决办法：在配置程序中，利用构造函数形式，传参进入拦截器。因为配置类代码被@configuration修饰，也被springboot管理，可以进行依赖注入。</p>
+<h3 id="第二章-商户查询缓存"><a href="#第二章-商户查询缓存" class="headerlink" title="第二章 商户查询缓存"></a>第二章 商户查询缓存</h3><p>缓存就是数据交换的缓冲区，存储数据的临时地方，读写速度高。</p>
+<h4 id="1、缓存穿透"><a href="#1、缓存穿透" class="headerlink" title="1、缓存穿透"></a>1、缓存穿透</h4><p>查询一个不存在的数据时，缓存里没有，数据库查不到，也不会写入缓存，导致每次请求都打到数据库。<br>解决方法：</p>
+<ul>
+<li>缓存空对象，在缓存中存储Null值空数据。</li>
+<li>利用布隆过滤器，布隆过滤器放在缓存之前在请求到来的时候先判断一下缓存中有没有，没有就拦截，有就放行，有一定的误判率。</li>
+</ul>
+<h4 id="2、缓存雪崩"><a href="#2、缓存雪崩" class="headerlink" title="2、缓存雪崩"></a>2、缓存雪崩</h4><p>同一时段内，大部分key同时失效或者Redis服务宕机，导致大量请求打到数据库。<br>解决方法：</p>
+<ul>
+<li>给不同的key的TTL添加随机值</li>
+<li>利用Redis集群提高服务的可靠性</li>
+<li>给缓存业务添加降级限流策略</li>
+<li>给业务参加多级缓存</li>
+</ul>
+<h4 id="3、缓存击穿"><a href="#3、缓存击穿" class="headerlink" title="3、缓存击穿"></a>3、缓存击穿</h4><p>热点key问题，被高并发访问并且缓存重建业务比较复杂的key突然失效，无数的请求会在瞬间给数据库带来压力。<br>解决方法：</p>
+<ul>
+<li>互斥锁：加锁，获得锁以后，才可以进行重建</li>
+<li>逻辑过期 ：取消TTL，加个字段表示逻辑过期时间。<br>实现过程：当一个线程发现逻辑过期了，会去抢锁，抢不到返回过期数据，抢到了会开启新线程重建业务，旧线程返回过期数据。</li>
+</ul>
+<h3 id="第三章-优惠券秒杀"><a href="#第三章-优惠券秒杀" class="headerlink" title="第三章 优惠券秒杀"></a>第三章 优惠券秒杀</h3><h4 id="1、全局唯一ID"><a href="#1、全局唯一ID" class="headerlink" title="1、全局唯一ID"></a>1、全局唯一ID</h4><p>全局ID生成器：在分布式环境下生成全局唯一ID的工具。<br>一般满足五个特点：唯一性、高可用、高性能、递增性、安全性。</p>
+<p>基于Redis的全局唯一ID生成策略：一共64位，1位符号位，31位时间戳，32位自增数</p>
+<h4 id="2、超卖问题"><a href="#2、超卖问题" class="headerlink" title="2、超卖问题"></a>2、超卖问题</h4><p>高并发场景下，发生优惠券超卖。</p>
+<p>解决方法：</p>
+<ul>
+<li>乐观锁：认为线程安全问题不一定会发生，因此不加锁，只是在更新数据时去判断有没有其他线程修改数据。如果没有修改数据则认为安全，自己更新数据。如果已经被修改，则认为出现了安全问题，可以抛异常或者重新执行。<br>版本号法：新加一个字段版本号，每次修改之前查出版本号，修改时看版本号是否和查的一样。<br>CAS法：compare and switch，把要修改的字段看做版本号</li>
+<li>悲观锁：认为线程安全问题一定会发生，因此在操作数据之前先获取锁，确保线程串行执行。例如synchronized、lock都属于悲观锁。</li>
+</ul>
+<h4 id="3、一人一单问题"><a href="#3、一人一单问题" class="headerlink" title="3、一人一单问题"></a>3、一人一单问题</h4><ul>
+<li>单体结构中：可以给操作数据的部分加锁，根据用户id确保每个用户一把锁，还需要引依赖加配置才能开启spring的事务。</li>
+<li>集群模式中：可以用分布式锁。</li>
+</ul>
+<h4 id="4、分布式锁"><a href="#4、分布式锁" class="headerlink" title="4、分布式锁"></a>4、分布式锁</h4><p>满足分布式系统下多进程可见并且互斥的锁，满足高可用、高性能、高并发、安全性。</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">mysql</th>
+<th align="center">redis</th>
+<th align="center">zookeeper</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">互斥</td>
+<td align="center">利用数据库本身的互斥锁机制</td>
+<td align="center">利用setnx互斥命令</td>
+<td align="center">利用节点的唯一性和有序性实现互斥</td>
+</tr>
+<tr>
+<td align="center">高可用</td>
+<td align="center">好</td>
+<td align="center">好</td>
+<td align="center">好</td>
+</tr>
+<tr>
+<td align="center">高性能</td>
+<td align="center">一般</td>
+<td align="center">好</td>
+<td align="center">一般</td>
+</tr>
+<tr>
+<td align="center">安全性</td>
+<td align="center">断开连接自动释放锁</td>
+<td align="center">利用锁超时时间到期释放</td>
+<td align="center">临时节点，断开连接自动释放</td>
+</tr>
+</tbody></table>
+<p>redis实现分布式锁：</p>
+<ul>
+<li><p>获取锁<br>互斥确保只能有一个进程获得锁：set lock thread nx ex 10<br>非阻塞式：获取失败返回false，反之返回true</p>
+</li>
+<li><p>释放锁</p>
+<p>手动释放锁：del lock<br>超时释放：获取锁时添加一个过期时间</p>
+</li>
+</ul>
+<p>lua脚本：<br>在一个脚本中编写多条redis命令，确保多条命令执行时的原子性</p>
 
   </article>
   <!-- tag -->
@@ -289,16 +364,11 @@
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
       
-        <a href="/2024/06/12/Java%E5%9F%BA%E7%A1%80/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
-          Java基础
-        </a>
-      
     </div>
     <div>
       
-        <a href="/2024/06/12/Redis%E9%AB%98%E7%BA%A7/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          Redis篇
+        <a href="/2024/07/18/%E6%88%91%E4%BB%AC%E4%BF%A9/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          我们俩
           <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
         </a>
       
