@@ -19,7 +19,7 @@
 
 
 
-<title>Redis篇 | 嘉和望岗</title>
+<title>学习计划 | 嘉和望岗</title>
 
 
 
@@ -158,7 +158,7 @@
         </h2>
       </a>
       <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
-        Redis篇
+        学习计划
       </div>
       <div class="flex-1"></div>
       <div class="flex items-center gap-3">
@@ -222,23 +222,23 @@
   <header class="overflow-hidden pt-6 pb-6 md:pt-12">
     <div class="pt-4 md:pt-6">
       <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
-        Redis篇
+        学习计划
       </h1>
       <div>
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2024-06-12</time>
+            <time>2024-07-24</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>3 min</span>
+            <span>1 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>1.1k words</span>
+            <span>54 words</span>
           </span>
           
         </section>
@@ -247,15 +247,13 @@
   </header>
   <!-- content -->
   <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
-    <h3 id="Redis使用场景"><a href="#Redis使用场景" class="headerlink" title="Redis使用场景"></a>Redis使用场景</h3><p>根据项目来说，一般有两个，缓存，分布式锁</p>
-<h3 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h3><p>查询一个不存在的数据时，缓存里没有，MySQL查询不到，也不会写入缓存，导致每次请求都查数据库。解决方法有两个，第一在缓存中存储Null值空数据，第二利用布隆过滤器。布隆过滤器放在缓存之前在请求到来的时候先判断一下缓存中有没有，没有就拦截，有就放行，有一定的误判率。</p>
-<h3 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h3><p>给某一个key设置了过期时间，当key过期的时候，恰好这个点对这个key有大量的请求并发过来，这些并发请求瞬间把数据库压垮。解决方法有两个，第一是互斥锁（分布式锁），如果一个线程查询缓存未成功会获取互斥锁去数据库查然后写入缓存，在这个过程中如果有线程查询缓存查不到也会抢锁但是抢不到。第二个是逻辑过期，在value中新增一个字段逻辑过期时间，当一个线程查询缓存发现逻辑时间过期会获取互斥锁然后返回旧数据在这时候新开一个线程查询数据库把数据写入缓存，如果再来一个线程发现逻辑时间过期获取锁失败返回旧值。互斥锁强一致性能差，逻辑过期高可用性能优不能保证数据一致。根据业务需求来使用。</p>
-<h3 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h3><p>指在同一时段大量缓存key同时失效或者Redis服务宕机，导致大量请求到达数据库，带来巨大压力。解决方法有四个，给不同的key的TTL添加随机值，利用Redis集群提高服务的可用性，给缓存业务添加降级限流策略（可作为系统的保底策略，适用于穿透、击穿、雪崩），给业务添加多级缓存。</p>
-<h3 id="双写一致性"><a href="#双写一致性" class="headerlink" title="双写一致性"></a>双写一致性</h3><p>当修改了数据库的数据也要更新缓存中的数据，缓存和数据库中的数据要保持一致。写操作要用到延迟双删或者异步或者读写锁。结合现实业务，分两种解决办法。第一种允许延时一致的业务采用异步通知，用mq中间件，更新数据后，通知缓存删除。第二种强一致性，采用redisson提供的读写锁，共享锁和排他锁。</p>
-<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>有两种方法，第一种RDB，Redis数据备份，简单来说就是把内存中的所有数据都记录到磁盘中，当Redis实例故障重启后，从磁盘中读取快照文件，恢复数据。第二种AOF，追加文件，Redis处理的每一条写命令都会记录在AOF文件中，可以看做是命令日志文件。因为是记录命令，所以AOF文件比RDB文件大的多，对同一个key操作只有最后一次有意义，所以可以配置。</p>
-<h3 id="数据过期策略"><a href="#数据过期策略" class="headerlink" title="数据过期策略"></a>数据过期策略</h3><p>两种策略惰性删除，过期删除。惰性删除，设置该key过期时间后，我们不去管他，当需要该key时，我们在检查其是否过期，如果过期，我们就删除，反之返回值。优点对cpu友好不用浪费时间检查所有key是否过期，缺点对内存不友好，如果一个key过期，也不用不释放会一直在内存中。定期删除，每隔一段时间，我们就对一些key进行检查，删除里面过期的key。优点可以通过限制频率和执行时长来减少操作对CPU的影响，也能有效释放内存，缺点难以确定操作执行的时长和频率。Redis是两种配合使用。</p>
-<h3 id="数据淘汰策略"><a href="#数据淘汰策略" class="headerlink" title="数据淘汰策略"></a>数据淘汰策略</h3><p>当Redis中的内存不够用时，此时在向Redis中添加新的key，那么Redis按一种规则将内存中的数据删除，这种删除数据的规则称为数据淘汰策略。Redis提供了八种淘汰策略。大部分业务场景用allkeys-lru。默认用noeviction，不删除任何数据当内存满了会报错</p>
-<h3 id="Redis分布式锁"><a href="#Redis分布式锁" class="headerlink" title="Redis分布式锁"></a>Redis分布式锁</h3><p>loading…</p>
+    <h4 id="语言："><a href="#语言：" class="headerlink" title="语言："></a>语言：</h4><p>Java基础、JUC、JVM</p>
+<h4 id="数据库："><a href="#数据库：" class="headerlink" title="数据库："></a>数据库：</h4><p>MySQL、Redis、ES、MongoDB</p>
+<h4 id="网络："><a href="#网络：" class="headerlink" title="网络："></a>网络：</h4><p>网络层、传输层、应用层</p>
+<h4 id="操作系统："><a href="#操作系统：" class="headerlink" title="操作系统："></a>操作系统：</h4><p>进程管理、存储管理</p>
+<h4 id="中间件："><a href="#中间件：" class="headerlink" title="中间件："></a>中间件：</h4><p>Nacos、Sentinel、MQ</p>
+<h4 id="工具："><a href="#工具：" class="headerlink" title="工具："></a>工具：</h4><p>Docker、Linux、Maven、Git</p>
+<h4 id="算法："><a href="#算法：" class="headerlink" title="算法："></a>算法：</h4><p>Leetcode Hot 100</p>
 
   </article>
   <!-- tag -->
@@ -263,7 +261,7 @@
     
       
         <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
-          <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/">八股文</a>
+          <a href="/tags/%E6%97%A5%E5%B8%B8/">日常</a>
         </span>
       
     
@@ -272,16 +270,11 @@
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
       
-        <a href="/2024/06/12/Java%E5%9F%BA%E7%A1%80/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
-          Java基础
-        </a>
-      
     </div>
     <div>
       
-        <a href="/2024/06/12/Spring/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          Spring篇
+        <a href="/2024/07/24/Redis/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          Redis
           <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
         </a>
       

@@ -19,7 +19,7 @@
 
 
 
-<title>Redis篇 | 嘉和望岗</title>
+<title>Redis | 嘉和望岗</title>
 
 
 
@@ -158,7 +158,7 @@
         </h2>
       </a>
       <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
-        Redis篇
+        Redis
       </div>
       <div class="flex-1"></div>
       <div class="flex items-center gap-3">
@@ -222,23 +222,23 @@
   <header class="overflow-hidden pt-6 pb-6 md:pt-12">
     <div class="pt-4 md:pt-6">
       <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
-        Redis篇
+        Redis
       </h1>
       <div>
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2024-07-21</time>
+            <time>2024-07-24</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>7 min</span>
+            <span>13 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>2k words</span>
+            <span>3.8k words</span>
           </span>
           
         </section>
@@ -348,6 +348,131 @@
 </li>
 </ul>
 <p>lua脚本：<br>在一个脚本中编写多条redis命令，确保多条命令执行时的原子性</p>
+<h2 id="高级篇"><a href="#高级篇" class="headerlink" title="高级篇"></a>高级篇</h2><h3 id="第一章-分布式缓存"><a href="#第一章-分布式缓存" class="headerlink" title="第一章 分布式缓存"></a>第一章 分布式缓存</h3><h4 id="1、Redis持久化"><a href="#1、Redis持久化" class="headerlink" title="1、Redis持久化"></a>1、Redis持久化</h4><h5 id="RDB持久化"><a href="#RDB持久化" class="headerlink" title="RDB持久化"></a>RDB持久化</h5><p>Redis数据备份文件，也被称作Redis数据快照。把内存中的数据写到磁盘，当Redis发生故障重启，从磁盘读取快照恢复数据。默认开启，在停机那一刻会自动触发，但是意外宕机不会。所以需要在配置文件中配置保存条件，Redis内部有触发RDB的机制,可以在redis.conf文件中找到,格式如下:</p>
+<ul>
+<li><p>900秒内,如果至少有1个key被修改,则执行bgsave,如果是save ”则表示禁用RDB</p>
+<p>save 900 1</p>
+<p>save 300 10</p>
+<p>save 60 10000</p>
+</li>
+<li><p>是否压缩 ,建议不开启,压缩也会消耗cpu,磁盘的话不值钱</p>
+<p>rdbcompression yes</p>
+</li>
+<li><p>RDB文件名称</p>
+<p>dbfilename dump.rdb</p>
+</li>
+<li><p>文件保存的路径目录</p>
+<p>dir .&#x2F;</p>
+</li>
+</ul>
+<p>底层原理：</p>
+<ul>
+<li><p>RDB方式bgsave的基本流程?</p>
+<p>fork主进程得到一个子进程,共享内存空间</p>
+<p> 子进程读取内存数据并写入新的RDB文件</p>
+<p>用新RDB文件替换旧的RDB文件。</p>
+</li>
+<li><p>RDB会在什么时候执行?save 60 1000代表什么含义?</p>
+<p>默认是服务停止时。</p>
+<p>代表60秒内至少执行1000次修改则触发RDB</p>
+</li>
+<li><p>RDB的缺点?</p>
+<p>RDB执行间隔时间长,两次RDB之间写入数据有丢失的风险</p>
+<p>fork子进程、压缩、写出RDB文件都比较耗时</p>
+</li>
+</ul>
+<h5 id="AOF持久化"><a href="#AOF持久化" class="headerlink" title="AOF持久化"></a>AOF持久化</h5><p>追加文件，Redis处理的每一个命令都会记录到AOF文件中，可以看作是命令日志文件。默认关闭，打开需要修改配置文件。</p>
+<ul>
+<li><p>是否开启AOF功能,默认是no</p>
+<p>appendonly yes</p>
+</li>
+<li><p>AOF文件的名称</p>
+<p>appendfilename “appendonly.aof”</p>
+</li>
+<li><p>AOF的命令记录的频率也可以通过redis.conf文件来配:</p>
+</li>
+<li><p>表示每执行一次写命令,立即记录到AOF文件</p>
+<p>appendfsync always    效率差但是安全</p>
+</li>
+<li><p>写命令执行完先放入AOF缓冲区,然后表示每隔1秒将缓冲区数据写到AOF文件,是默认方案</p>
+<p>appendfsync everysec  效率还行也还安全</p>
+</li>
+<li><p>写命令执行完先放入AOF缓冲区,由操作系统决定何时将缓冲区内容写回磁盘</p>
+<p>appendfsync no            效率高但是及不安全</p>
+</li>
+</ul>
+<p>因为是记录命令,AOF文件会比RDB文件大的多。而且AOF会记录对同一个key的多次写操作,但只有最后一次写操作才有意义。通过执行bgrewriteaof命令,可以让AOF文件执行重写功能,用最少的命令达到相同效果。</p>
+<ul>
+<li><p>AOF文件比上次文件 增长超过多少百分比则触发重写</p>
+<p>auto-aof-rewrite-percentage 100</p>
+</li>
+<li><p>AOF文件体积最小多大以上才触发重写</p>
+<p>auto-aof-rewrite-min-size 64mb</p>
+</li>
+</ul>
+<h3 id="第二章-Redis主从"><a href="#第二章-Redis主从" class="headerlink" title="第二章 Redis主从"></a>第二章 Redis主从</h3><p>单节点的Redis并发有上限，需要进一步提高Redis的并发能力，就要搭建主从集群，实现读写分离。</p>
+<p>如何搭建：在从节点上输入命令  slaveof ip port</p>
+<p>数据同步原理：</p>
+<p>master如何判断slave是不是第一次来同步数据?这里会用到两个很重要的概念:</p>
+<ul>
+<li>Replication ld:简称replid,是数据集的标记,id一致则说明是同一数据集。每一个master都有唯一的replid,<br>slave则会继承master节点的replid</li>
+<li>offset:偏移量,随着记录在repl_baklog中的数据增多而逐渐增大。slave完成同步时也会记录当前同步的offset。<br>如果slave的offset小于master的offset,说明slave数据落后于master,需要更新。</li>
+</ul>
+<p>因此slave做数据同步,必须向master声明自己的replication id和offset,master才可以判断到底需要同步哪些数据</p>
+<h4 id="1、两种同步方式："><a href="#1、两种同步方式：" class="headerlink" title="1、两种同步方式："></a>1、两种同步方式：</h4><ul>
+<li>全量同步：第一次同步或者宕机实在太久。先判断id和offset，可以同步，将所有数据通过RDB持久化到从节点，还要保存一个命令文件到从节点。以后的主节点每次更新都会发送到从节点 。</li>
+<li>增量同步：根据id确认关系，根据offset确认主节点需要发送哪些命令。</li>
+<li>保存命令的repl_baklog文件有上限，写满后会覆盖前面写的命令，从节点宕机时间太久，就可能无法得到被覆盖的命令，只能去内存找了。</li>
+</ul>
+<h4 id="2、优化主从集群"><a href="#2、优化主从集群" class="headerlink" title="2、优化主从集群"></a>2、优化主从集群</h4><ul>
+<li>在master中配置repl-diskless-sync yes启用无磁盘复制,避免全量同步时的磁盘IO。</li>
+<li>Redis单节点上的内存占用不要太大,减少RDB导致的过多磁盘IO。</li>
+<li>适当提高repl_baklog的大小,发现slave宕机时尽快实现故障恢复,尽可能避免全量同步。</li>
+<li>限制一个master上的slave节点数量,如果实在是太多slave,则可以采用主-从-从链式结构,减少master压力。</li>
+</ul>
+<h3 id="第三章-Redis哨兵"><a href="#第三章-Redis哨兵" class="headerlink" title="第三章 Redis哨兵"></a>第三章 Redis哨兵</h3><p>哨兵（sentinel）实现主从集群的自动故障恢复</p>
+<h4 id="1、作用："><a href="#1、作用：" class="headerlink" title="1、作用："></a>1、作用：</h4><ul>
+<li><p>监控:Sentinel 会不断检查您的master和slave是否按预期工作</p>
+</li>
+<li><p>自动故障恢复:如果master故障,Sentinel会将一个slave提升为master。当故障实例恢复后也以新的master为主</p>
+</li>
+<li><p>通知:Sentinel充当Redis客户端的服务发现来源,当集群发生故障转移时,会将最新信息推送给Redis的客户端</p>
+</li>
+</ul>
+<h4 id="2、服务状态监控："><a href="#2、服务状态监控：" class="headerlink" title="2、服务状态监控："></a>2、服务状态监控：</h4><p>Sentinel基于心跳机制监测服务状态,每隔1秒向集群的每个实例发送ping命令:</p>
+<ul>
+<li><p>主观下线:如果某sentinel节点发现某实例未在规定时间响应,则认为该实例主观下线。</p>
+</li>
+<li><p>客观下线:若超过指定数量(quorum)的sentinel都认为该实例主观下线,则该实例客观下线。quorum值最好超过Sentinel实例数量的一半。</p>
+</li>
+</ul>
+<h4 id="3、选举新的master："><a href="#3、选举新的master：" class="headerlink" title="3、选举新的master："></a>3、选举新的master：</h4><p>一旦发现master故障,sentinel需要在salve中选择一个作为新的master,选择依据是这样的:</p>
+<ul>
+<li>首先会判断slave节点与master节点断开时间长短,如果超过指定值(down-after-milliseconds*10)则会排除slave节点</li>
+<li>然后判断slave节点的slave-priority值,越小优先级越高,如果是0则永不参与选举</li>
+<li>如果slave-prority一样，则判断slave节点的offset值,越大说明数据越新,优先级越高</li>
+<li>最后是判断slave节点的运行id大小,越小优先级越高。</li>
+</ul>
+<h4 id="4、如何实现故障转移"><a href="#4、如何实现故障转移" class="headerlink" title="4、如何实现故障转移"></a>4、如何实现故障转移</h4><p>当选中了其中一个slave为新的master后(例如slave1),故障的转移的步骤如下:</p>
+<ul>
+<li><p>sentinel给备选的slave1节点发送slaveof no one命令,让该节点成为master</p>
+</li>
+<li><p>sentinel给所有其它slave发送slaveof ipadress port命令,让这些slave成为新master的从节点,开始从新的master上同步数据。</p>
+</li>
+<li><p>最后,sentinel将故障节点标记为slave,当故障节点恢复后会自动成为新的master的slave节点</p>
+</li>
+</ul>
+<h3 id="第四章-Redis分片集群"><a href="#第四章-Redis分片集群" class="headerlink" title="第四章 Redis分片集群"></a>第四章 Redis分片集群</h3><h4 id="1、散列插槽"><a href="#1、散列插槽" class="headerlink" title="1、散列插槽"></a>1、散列插槽</h4><p>分片集群会有0-16383共计16384个插槽分给若干个Redis实例用于负载均衡。分配方式如下：</p>
+<ul>
+<li><p>将16384个插槽分配到不同的实例</p>
+</li>
+<li><p>根据key的有效部分计算哈希值,对16384取余</p>
+</li>
+<li><p>余数作为插槽,寻找插槽所在实例即可</p>
+</li>
+</ul>
+<h4 id="2、集群伸缩"><a href="#2、集群伸缩" class="headerlink" title="2、集群伸缩"></a>2、集群伸缩</h4><p>参考命令</p>
+<h4 id="3、故障转移"><a href="#3、故障转移" class="headerlink" title="3、故障转移"></a>3、故障转移</h4><p>参考命令</p>
 
   </article>
   <!-- tag -->
@@ -363,6 +488,11 @@
   <!-- prev and next -->
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
+      
+        <a href="/2024/07/24/%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          学习计划
+        </a>
       
     </div>
     <div>
