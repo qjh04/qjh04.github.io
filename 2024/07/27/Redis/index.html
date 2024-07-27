@@ -228,17 +228,17 @@
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2024-07-24</time>
+            <time>2024-07-27</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>13 min</span>
+            <span>29 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>3.8k words</span>
+            <span>8.2k words</span>
           </span>
           
         </section>
@@ -473,6 +473,328 @@
 </ul>
 <h4 id="2、集群伸缩"><a href="#2、集群伸缩" class="headerlink" title="2、集群伸缩"></a>2、集群伸缩</h4><p>参考命令</p>
 <h4 id="3、故障转移"><a href="#3、故障转移" class="headerlink" title="3、故障转移"></a>3、故障转移</h4><p>参考命令</p>
+<h3 id="第五章-多级缓存"><a href="#第五章-多级缓存" class="headerlink" title="第五章 多级缓存"></a>第五章 多级缓存</h3><p>充分利用请求处理的每个环节，分别添加缓存，缓解Tomcat压力，提升服务性能。</p>
+<h4 id="1、JVM进程缓存"><a href="#1、JVM进程缓存" class="headerlink" title="1、JVM进程缓存"></a>1、JVM进程缓存</h4><p>基于Caffeine做JVM进程缓存</p>
+<h4 id="2、lua语法"><a href="#2、lua语法" class="headerlink" title="2、lua语法"></a>2、lua语法</h4><h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><p>nil：表示无效值，在条件表达式中相当于false</p>
+<ul>
+<li>boolean：只有true和false两种</li>
+<li>number：表示双精度的浮点数</li>
+<li>string：字符串由一对引号来表示</li>
+<li>function：由c或lua编写的函数</li>
+<li>table：接近java中的map，也可以表示数组</li>
+</ul>
+<p>type（）函数可以测试一个变量的类型</p>
+<h5 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h5><p>直接用local声明 不需要变量类型：local str &#x3D; ‘str’   local num &#x3D; 2<br>注意数组从1开始，字符拼接用..，不加lcoal表示全局变量</p>
+<h5 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h5><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">pairs</span>(t) <span class="keyword">do</span></span><br><span class="line">	函数体</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h5><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> 函数体（参数列表）</span></span><br><span class="line"><span class="function">	<span class="title">return</span> 结果</span></span><br><span class="line"><span class="function"><span class="title">end</span></span></span><br></pre></td></tr></table></figure>
+
+<h5 id="条件控制"><a href="#条件控制" class="headerlink" title="条件控制"></a>条件控制</h5><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(逻辑表达式) <span class="keyword">then</span></span><br><span class="line">	函数体</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	函数体</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3、多级缓存"><a href="#3、多级缓存" class="headerlink" title="3、多级缓存"></a>3、多级缓存</h4><p>略</p>
+<p>……</p>
+<h4 id="4、缓存同步"><a href="#4、缓存同步" class="headerlink" title="4、缓存同步"></a>4、缓存同步</h4><p>略……</p>
+<h3 id="第六章-Redis最佳实践"><a href="#第六章-Redis最佳实践" class="headerlink" title="第六章 Redis最佳实践"></a>第六章 Redis最佳实践</h3><h4 id="1、Redis键值设计"><a href="#1、Redis键值设计" class="headerlink" title="1、Redis键值设计"></a>1、Redis键值设计</h4><h5 id="Key的设计"><a href="#Key的设计" class="headerlink" title="Key的设计"></a>Key的设计</h5><ul>
+<li>遵循基本的格式：【业务名称】：【数据名】：id</li>
+<li>长度不超过44个字节</li>
+<li>不包含特殊字符</li>
+</ul>
+<h5 id="Value的设计"><a href="#Value的设计" class="headerlink" title="Value的设计"></a>Value的设计</h5><ul>
+<li>存储一个自定义对象可以用hash结构</li>
+<li>假如一个hash类型的key，其中有100万个fielld和对应的value，field是自增的，存在什么问题如何优化：数据量太大，已经超过ziplist可存储的最小值，内存占用高。可以将打哈希打撒成小哈希。</li>
+</ul>
+<h4 id="2、批处理优化"><a href="#2、批处理优化" class="headerlink" title="2、批处理优化"></a>2、批处理优化</h4><h5 id="pipeline"><a href="#pipeline" class="headerlink" title="pipeline"></a>pipeline</h5><ul>
+<li>利用原生m操作存储string类型的数据，利用pipeline传输复杂结构。</li>
+<li>不建议一次携带过多数据，pipeline命令之间不具备原子性</li>
+</ul>
+<h5 id="集群批处理"><a href="#集群批处理" class="headerlink" title="集群批处理"></a>集群批处理</h5><p>当Redis是一个集群的时候，批处理的命令的多个key必须落在一个插槽里，否则报错。</p>
+<h4 id="3、服务端优化"><a href="#3、服务端优化" class="headerlink" title="3、服务端优化"></a>3、服务端优化</h4><h5 id="持久化配置"><a href="#持久化配置" class="headerlink" title="持久化配置"></a>持久化配置</h5><ul>
+<li>用来做缓存的Redis实例没必要做实例化</li>
+<li>建议关闭RDB，使用AOF</li>
+<li>适当手动做RDB，实现数据备份</li>
+<li>设置合理的rewrite阈值,避免频繁的bgrewrite</li>
+<li>配置no-appendfsync-on-rewrite&#x3D;yes,禁止在rewrite期间做aof,避免因AOF引起的阻塞</li>
+</ul>
+<h6 id="部署有关建议"><a href="#部署有关建议" class="headerlink" title="部署有关建议:"></a>部署有关建议:</h6><ul>
+<li>Redis实例的物理机要预留足够内存,应对fork和rewrite</li>
+<li>单个Redis实例内存上限不要太大,例如4G或8G。可以加快fork的速度、减少主从同步、数据迁移压力</li>
+<li>不要与CPU密集型应用部署在一起不要与高硬盘负载应用一起部署。例如:数据库、消息队列</li>
+</ul>
+<h5 id="慢查询"><a href="#慢查询" class="headerlink" title="慢查询"></a>慢查询</h5><p>在Redis中执行命令的时间超过某个阈值，就会被认为是 慢查询</p>
+<h5 id="命令及安全配置"><a href="#命令及安全配置" class="headerlink" title="命令及安全配置"></a>命令及安全配置</h5><p>设置足够复杂的密码</p>
+<h5 id="内存配置"><a href="#内存配置" class="headerlink" title="内存配置"></a>内存配置</h5><p>内存划分：数据内存、进程内存、缓冲区内存</p>
+<ul>
+<li>数据内存：主要部分，存储键值信息，可能是bigkey的问题。</li>
+<li>进程内存 ：Redis主进程运行需要内存，如代码、常量池，可忽略。</li>
+<li>缓冲区内存：一般包括客户端缓冲区、AOF缓冲区、复制缓冲区等，可能是这部分导致。</li>
+</ul>
+<h4 id="4、集群的最佳实践"><a href="#4、集群的最佳实践" class="headerlink" title="4、集群的最佳实践"></a>4、集群的最佳实践</h4><ul>
+<li>完整性问题：默认配置中，如果一个插槽不能用了，整个集群都不服务了</li>
+<li>带宽问题：集群节点间会不断地png来确定集群中其他节点的状态，每次ping会携带大量信息，如果节点变多，携带的信息也会变多，所占的带宽也会变大。</li>
+<li>数据倾斜问题：</li>
+<li>客户端性能问题：</li>
+<li>命令的集群兼容性问题：</li>
+<li>lua和事务的问题：</li>
+</ul>
+<p>单体或者主从能满足的情况下，不推荐使用集群。</p>
+<h2 id="原理篇"><a href="#原理篇" class="headerlink" title="原理篇"></a>原理篇</h2><h3 id="第一章-Redis数据结构"><a href="#第一章-Redis数据结构" class="headerlink" title="第一章 Redis数据结构"></a>第一章 Redis数据结构</h3><h4 id="1、动态字符串SDS"><a href="#1、动态字符串SDS" class="headerlink" title="1、动态字符串SDS"></a>1、动态字符串SDS</h4><p>虽然Redis底层用C语言实现，但是C语言的字符类型存在许多问题，所以自定义了一种类型。SDS具备扩容功能，并且有记录字符长度和申请空间数量，所以不会读到‘\0’结束。</p>
+<p>组成 ：字符个数+分配长度（不带结束标识）+类型+字符串本身</p>
+<p>优势：获取字符串长度的时间为O（1），支持动态扩容，减少内存分配次数，二进制安全。</p>
+<h4 id="2、IntSet"><a href="#2、IntSet" class="headerlink" title="2、IntSet"></a>2、IntSet</h4><p>基于整数数组实现，并且具备长度可变、有序。</p>
+<p>组成：字符编码+元素个数+整数数组</p>
+<p>特点：Redis确保IntSet中的元素唯一、有序，具备类型升级节省空间，底层采用二分查找来查询</p>
+<h4 id="3、Dict"><a href="#3、Dict" class="headerlink" title="3、Dict"></a>3、Dict</h4><p>Dictionary缩写，键值的映射关系通过Dict实现。</p>
+<p>组成：哈希表（两个，一个存储数据，一个rehash用）+哈希节点+字典</p>
+<p>当我们向Dict中添加键值对时，Redis首先根据key计算出hash值，然后利用hash值与长度减一的值做与运算，得到的值就是节点存储索引值。哈希冲突时，同一个hash值的元素用头插法表示成链表。当集合元素过多时，哈希冲突也越来越多，链表过长，查询速度也会变慢，此时需要用到扩容机制。</p>
+<p>Dict在每次新增键值对时都会检查负载因子(LoadFactor&#x3D;used&#x2F;size),满足以下两种情况时会触发哈希表扩容:</p>
+<ul>
+<li>哈希表的LoadFactor&gt;&#x3D;1,并且服务器没有执行BGSAVE或者BGREWRITEAOF等后台进程;</li>
+<li>哈希表的LoadFactor&gt;5;</li>
+</ul>
+<p>除了扩容，当删除元素时，也会判断负载因子是不是小于0.1，小于了则会收缩。</p>
+<ul>
+<li><p>当LoadFactor大于5或者LoadFactor大于1并且没有子进程任务时,Dict扩容</p>
+</li>
+<li><p>当LoadFactor小于0.1时,Dict收缩</p>
+</li>
+<li><p>扩容大小为第一个大于等于used+1的2的n次</p>
+</li>
+<li><p>收缩大小为第一个大于等于used的2的n次</p>
+</li>
+<li><p>Dict采用渐进式rehash,每次访问Dict时执行一次rehash</p>
+</li>
+<li><p>rehash时ht[0]只减不增,新增操作只在ht[1]执行,其它操作在两个哈希表</p>
+</li>
+</ul>
+<h4 id="4、ZipList"><a href="#4、ZipList" class="headerlink" title="4、ZipList"></a>4、ZipList</h4><p>压缩链表，一种特殊的双端列表，可以从任意一段压入或弹出并且该操作的时间复杂度为O（1）</p>
+<p>组成 ：总字节数+尾结点偏移量+实体个数+若干实体+结束标识符</p>
+<p>实体组成 ：前节点长度字节数+Encoding编码属性+内容</p>
+<p>Encoding编码：</p>
+<ul>
+<li>00、01、10开头都表示字符串，00编码长度一个字节，01长度2个字节，10长度5个字节，相对应的内容就是2的编码长度次。</li>
+<li>11开头表示内容是整数，Encoding固定占用一个字节</li>
+</ul>
+<h5 id="ZipList连锁更新问题："><a href="#ZipList连锁更新问题：" class="headerlink" title="ZipList连锁更新问题："></a>ZipList连锁更新问题：</h5><p>ZipList的每个Entry都包含previous_entry_length来记录上一个节点的大小,长度是1个或5个字节:</p>
+<ul>
+<li>如果前一节点的长度小于254字节,则采用1个字节来保存</li>
+<li>这个长度值如果前一节点的长度大于等于254字节,则采用5个字节来保存这个长度值,第一个字节为Oxfe,后四个字节才是真实长度数据</li>
+</ul>
+<p>特殊情况下产生的连续多次空间扩展操作称之为连锁更新，新增删除都可能导致该问题的发生 。</p>
+<h5 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h5><ul>
+<li><p>压缩列表的可以看做一种连续内存空间的“双向链表”</p>
+</li>
+<li><p>列表的节点之间不是通过指针连接,而是记录上一节点和本</p>
+</li>
+<li><p>节点长度来寻址,内存占用较低</p>
+</li>
+<li><p>如果列表数据过多,导致链表过长,可能影响查询性能</p>
+</li>
+<li><p>增或删较大数据时有可能发生连续更新问题</p>
+</li>
+</ul>
+<h4 id="5、QuickList"><a href="#5、QuickList" class="headerlink" title="5、QuickList"></a>5、QuickList</h4><p>本质是一个双端链表，链表中的每个节点都是一个ZipList，控制ZipList大小同时不让其分散。</p>
+<h4 id="6、SkipList"><a href="#6、SkipList" class="headerlink" title="6、SkipList"></a>6、SkipList</h4><p>跳表本身也是链表，元素按照升序排列，节点允许包含多个指针，指针跨度不同。允许有32层，每层按倍数2增加。</p>
+<ul>
+<li><p>跳跃表是一个双向链表,每个节点都包含score和ele值</p>
+</li>
+<li><p>节点按照score值排序,score值一样则按照ele字典排序</p>
+</li>
+<li><p>每个节点都可以包含多层指针,层数是1到32之间的随机数</p>
+</li>
+<li><p>不同层指针到下一个节点的跨度不同,层级越高,跨度越大</p>
+</li>
+<li><p>增删改查效率与红黑树基本一致,实现却更简单</p>
+</li>
+</ul>
+<h4 id="7、RedisObject"><a href="#7、RedisObject" class="headerlink" title="7、RedisObject"></a>7、RedisObject</h4><p>Redis中的任意键值对都会被封装为RedisObject，也叫做Redis对象。</p>
+<p>组成：数据类型+编码+记录最近一次被访问时间+引用计数器+指向对象的指针</p>
+<table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th align="center">编码方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">String</td>
+<td align="center">raw、int、embstr</td>
+</tr>
+<tr>
+<td align="center">List</td>
+<td align="center">LinkedList和Ziplist(3.2以前)、QuickList(3.2以后)</td>
+</tr>
+<tr>
+<td align="center">Hash</td>
+<td align="center">intset、ht</td>
+</tr>
+<tr>
+<td align="center">Set</td>
+<td align="center">ziplist、ht、skiplist</td>
+</tr>
+<tr>
+<td align="center">ZSet</td>
+<td align="center">ziplist、ht+skiplist</td>
+</tr>
+</tbody></table>
+<h3 id="第二章-五种数据类型"><a href="#第二章-五种数据类型" class="headerlink" title="第二章 五种数据类型"></a>第二章 五种数据类型</h3><h4 id="1、String"><a href="#1、String" class="headerlink" title="1、String"></a>1、String</h4><ul>
+<li><p>其基本编码方式是RAW,基于简单动态字符串(SDS)实现,存储上限为512mb。</p>
+</li>
+<li><p>如果存储的SDS长度小于44字节,则会采用EMBSTR编码,此时object head与SDS是一段连续空间。申请内存时只需要调用一次内存分配函数,效率更高。</p>
+</li>
+<li><p>如果存储的字符串是整数值,并且大小在LONG_MAX范围内,则会采用INT编码:直接将数据保存在RedisObject的ptr指针位置(刚好8字节),不再需要SDS了。</p>
+</li>
+</ul>
+<h4 id="2、List"><a href="#2、List" class="headerlink" title="2、List"></a>2、List</h4><ul>
+<li><p>在3.2版本之前,Redis采用ZipList和LinkedList来实现List,当元素数量小于512并且元素大小小于64字节时采用ZipList编码,超过则采用LinkedList编码。</p>
+</li>
+<li><p>在3.2版本之后,Redis统一采用QuickList来实现List:</p>
+</li>
+</ul>
+<h4 id="3、Set"><a href="#3、Set" class="headerlink" title="3、Set"></a>3、Set</h4><ul>
+<li><p>为了查询效率和唯一性,set采用HT编码(Dict)。Dict中的key用来存储元素,value统一为null。</p>
+</li>
+<li><p>当存储的所有数据都是整数,并且元素数量不超过set-max-intset-entries时,Set会采用IntSet编码,以节省内存。</p>
+</li>
+</ul>
+<h4 id="4、ZSet"><a href="#4、ZSet" class="headerlink" title="4、ZSet"></a>4、ZSet</h4><ul>
+<li><p>SkipList:可以排序,并且可以同时存储score和ele值(member)</p>
+</li>
+<li><p>HT(Dict):可以键值存储,并且可以根据key找value</p>
+</li>
+</ul>
+<p>当元素数量不多时,HT和SkipList的优势不明显,而且更耗内存。因此zset还会采用ZipList结构来节省内存,不过需要同时满足两个条件:</p>
+<ul>
+<li><p>元素数量小于zset_max_ziplist_entries,默认值128</p>
+</li>
+<li><p>每个元素都小于zset_max_ziplist_value字节,默认值64</p>
+</li>
+</ul>
+<p>ziplist本身没有排序功能,而且没有键值对的概念,因此需要有zset通过编码实现:</p>
+<p>ZipList是连续内存,因此score和element是紧挨在一起的两个entry,element在前,score在后score越小越接近队首,score越大越接近队尾,按照score值升序排列</p>
+<h4 id="5、Hash"><a href="#5、Hash" class="headerlink" title="5、Hash"></a>5、Hash</h4><ul>
+<li><p>Hash结构默认采用ZipList编码,用以节省内存。ZipList中相邻的两个entry分别保存field和value</p>
+</li>
+<li><p>当数据量较大时,Hash结构会转为HT编码,也就是Dict,触发条件有两个:</p>
+<p>1 ZipList中的元素数量超过了hash-max-ziplist-entries(默认512)</p>
+<p>2 ZipList中的任意entry大小超过了hash-max-ziplist-value(默认64字节)</p>
+</li>
+</ul>
+<h3 id="第三章-Redis网络模型"><a href="#第三章-Redis网络模型" class="headerlink" title="第三章 Redis网络模型"></a>第三章 Redis网络模型</h3><p>主要是优化用户调用内核API和内核缓冲区向用户缓冲区发送数据两种行为所花费的时间</p>
+<h4 id="1、阻塞IO"><a href="#1、阻塞IO" class="headerlink" title="1、阻塞IO"></a>1、阻塞IO</h4><p>顾名思义，阻塞IO就是在用户调用内核API和内核缓冲区向用户缓冲区发送数据的时候等待，等到有数据为止。</p>
+<h4 id="2、非阻塞IO"><a href="#2、非阻塞IO" class="headerlink" title="2、非阻塞IO"></a>2、非阻塞IO</h4><p>会在两种情况下立即返回结果，不等待。</p>
+<h4 id="3、IO多路复用"><a href="#3、IO多路复用" class="headerlink" title="3、IO多路复用"></a>3、IO多路复用</h4><p>文件描述符(File Descriptor):简称FD,是一个从0开始递增的无符号整数,用来关联Linux中的一个文件。在Linux<br>中,一切皆文件,例如常规文件、视频、硬件设备等,当然也包括网络套接字(Socket)。</p>
+<p>IO多路复用:是利用单个线程来同时监听多个FD,并在某个FD可读、可写时得到通知,从而避免无效的等待,充分利用CPU资源。实现方式有三种：select、poll、epoll</p>
+<p>差异:</p>
+<ul>
+<li><p>select和poll只会通知用户进程有FD就绪,但不确定具体是哪个FD,需要用户进程逐个遍历FD来确认</p>
+</li>
+<li><p>epoll则会在通知用户进程FD就绪的同时,把已就绪的FD写入用户空间</p>
+</li>
+</ul>
+<h5 id="select"><a href="#select" class="headerlink" title="select"></a>select</h5><p>最早的实现方案，存在若干问题，需要用户态和内核态频繁转换，只能监听1024个FD。</p>
+<h5 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h5><p>和select差不多，增加了监听数量，理论无上限，但是消耗时间就等多了，性能下降。</p>
+<h5 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h5><ul>
+<li><p>基于epoll实例中的红黑树保存要监听的FD,理论上无上限,而且增删改查效率都非常高,性能不会随监听的FD数量增多而下降</p>
+</li>
+<li><p>每个FD只需要执行一次epoll_ctl添加到红黑树,以后每次epol_wait无需传递任何参数,无需重复拷贝FD到内核空间</p>
+</li>
+<li><p>内核会将就绪的FD直接拷贝到用户空间的指定位置,用户进程无需遍历所有FD就能知道就绪的FD是谁</p>
+</li>
+</ul>
+<h5 id="时间通知机制"><a href="#时间通知机制" class="headerlink" title="时间通知机制"></a>时间通知机制</h5><ul>
+<li><p>LevelTriggered:简称LT。当FD有数据可读时,会重复通知多次,直至数据处理完成。是Epoll的默认模式。</p>
+</li>
+<li><p>EdgeTriggered:简称ET。当FD有数据可读时,只会被通知一次,不管数据是否处理完成。</p>
+</li>
+</ul>
+<p>结论</p>
+<ul>
+<li><p>ET模式避免了LT模式可能出现的惊群现象</p>
+</li>
+<li><p>ET模式最好结合非阻塞I0读取FD数据,相比LT会复杂一些</p>
+</li>
+</ul>
+<h4 id="4、信号驱动IO"><a href="#4、信号驱动IO" class="headerlink" title="4、信号驱动IO"></a>4、信号驱动IO</h4><p>创建一个信号处理程序，有请求时向内核发送请求信号然后去干别的，内核准备好后会发给信息处理程序一个准备好的信号，再去从内核拷贝到用户。</p>
+<h4 id="5、异步IO"><a href="#5、异步IO" class="headerlink" title="5、异步IO"></a>5、异步IO</h4><p>只需告诉内核需要哪个FD，内核把所有过程完成后，再告诉用户。</p>
+<h4 id="6、Redis网络模型"><a href="#6、Redis网络模型" class="headerlink" title="6、Redis网络模型"></a>6、Redis网络模型</h4><h5 id="Redis到底是单线程还是多线程"><a href="#Redis到底是单线程还是多线程" class="headerlink" title="Redis到底是单线程还是多线程?"></a>Redis到底是单线程还是多线程?</h5><ul>
+<li><p>如果仅仅聊Redis的核心业务部分(命令处理),答案是单线程</p>
+</li>
+<li><p>如果是聊整个Redis,那么答案就是多线程</p>
+</li>
+</ul>
+<p>在Redis版本迭代过程中,在两个重要的时间节点上引入了多线程的支持:</p>
+<ul>
+<li><p>Redis v4.0:引入多线程异步处理一些耗时较长的任务,例如异步删除命令unlink</p>
+</li>
+<li><p>Redis v6.0:在核心网络模型中引入 多线程,进一步提高对于多核CPU的利用率</p>
+</li>
+</ul>
+<h5 id="为什么Redis要选择单线程"><a href="#为什么Redis要选择单线程" class="headerlink" title="为什么Redis要选择单线程?"></a>为什么Redis要选择单线程?</h5><ul>
+<li><p>抛开持久化不谈,Redis是纯内存操作,执行速度非常快,它的性能瓶颈是网络延迟而不是执行速度,因此多线程并不会带来巨大的性能提升。</p>
+</li>
+<li><p>多线程会导致过多的上下文切换,带来不必要的开销</p>
+</li>
+<li><p>引入多线程会面临线程安全问题,必然要引入线程锁这样的安全手段,实现复杂度增高,而且性能也会大打折扣</p>
+</li>
+</ul>
+<p>重点 没听懂……回来再说</p>
+<h3 id="第四章-Redis通信协议"><a href="#第四章-Redis通信协议" class="headerlink" title="第四章 Redis通信协议"></a>第四章 Redis通信协议</h3><h4 id="1、RESP协议"><a href="#1、RESP协议" class="headerlink" title="1、RESP协议"></a>1、RESP协议</h4><h5 id="数据类型-1"><a href="#数据类型-1" class="headerlink" title="数据类型"></a>数据类型</h5><ul>
+<li><p>单行字符串:首字节是‘+’,后面跟上单行字符串,以CRLF(“\r\n”)结尾。例如返回”OK”:”+OK\r\n”</p>
+</li>
+<li><p>错误(Errors):首字节是‘-’,与单行字符串格式一样,只是字符串是异常信息,例如:”-Error message\r\n”</p>
+</li>
+<li><p>数值:首字节是‘:’,后面跟上数字格式的字符串,以CRLF结尾。例如:”:10\r\n”</p>
+</li>
+<li><p>多行字符串:首字节是‘$’,表示二进制安全的字符串,最大支持512MB:</p>
+<ul>
+<li>如果大小为0,则代表空字符串:”$0\r\n\r\n”</li>
+<li>如果大小为-1,则代表不存在:”$-1\r\n”</li>
+</ul>
+</li>
+<li><p>数组:首字节是‘*’,后面跟上数组元素个数,再跟上元素,元素数据类型不限</p>
+</li>
+</ul>
+<p>一般请求都是数组，回复会是其他类型</p>
+<h3 id="第五章-Redis内存策略"><a href="#第五章-Redis内存策略" class="headerlink" title="第五章 Redis内存策略"></a>第五章 Redis内存策略</h3><h4 id="过期策略"><a href="#过期策略" class="headerlink" title="过期策略"></a>过期策略</h4><p>expire命令设置TTL过期时间</p>
+<p>Redis是如何知道一个key是否过期呢?</p>
+<ul>
+<li>利用两个Dict分别记录key-value对及key-ttl对</li>
+</ul>
+<p>是不是TTL到期就立即删除了呢?</p>
+<ul>
+<li>惰性删除<ul>
+<li>不立即删除，而是在访问一个key的时候，检查该key的存活时间，如果已经过期才删除</li>
+<li>如果很多key都过期，但是没有人访问，则会产生堆积问题</li>
+</ul>
+</li>
+<li>周期删除<ul>
+<li>周期性的抽样部分过期的key，然后执行删除<ul>
+<li>Redis会在初始化时设置一个定时任务serverCron(),按照server.hz的频率来执行过期key清理,模式为SLOW，默认执行频率为10，不超过25ms</li>
+<li>Redis的每个事件循环前会调用beforeSleep()函数,执行过期key清理,模式为FAST，频率不固定，但每次间隔不超过2ms，耗时不超过1ms</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="淘汰策略"><a href="#淘汰策略" class="headerlink" title="淘汰策略"></a>淘汰策略</h4><p>当Redis内存使用达到阈值时，Redis主动挑选部分Key删除以释放更多内存。Redis在执行任何命令之前都检查内存是否满足，不满足会拒绝。</p>
+<h5 id="八种淘汰策略"><a href="#八种淘汰策略" class="headerlink" title="八种淘汰策略"></a>八种淘汰策略</h5><ul>
+<li><p>noeviction:不淘汰任何key,但是内存满时不允许写入新数据,默认就是这种策略。</p>
+</li>
+<li><p>volatile-ttl:对设置了TTL的key,比较key的剩余TTL值,TTL越小越先被淘汰</p>
+</li>
+<li><p>allkeys-random:对全体key,随机进行淘汰。也就是直接从db-&gt;dict中随机挑选</p>
+</li>
+<li><p>volatile-random:对设置了TTL的key,随机进行淘汰。也就是从db-&gt;expires中随机挑选。</p>
+</li>
+<li><p>allkeys-lru: 对全体key,基于LRU算法进行淘汰</p>
+</li>
+<li><p>volatile-lru:对设置了TTL的key,基于LRU算法进行淘汰</p>
+</li>
+<li><p>allkeys-lfu: 对全体key,基于LFU算法进行淘汰</p>
+</li>
+<li><p>volatile-lfu:对设置了TTL的key,基于LFI算法进行淘汰</p>
+</li>
+</ul>
 
   </article>
   <!-- tag -->
@@ -489,16 +811,11 @@
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
       
-        <a href="/2024/07/24/%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
-          学习计划
-        </a>
-      
     </div>
     <div>
       
-        <a href="/2024/07/18/%E6%88%91%E4%BB%AC%E4%BF%A9/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          我们俩
+        <a href="/2024/07/24/%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          学习计划
           <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
         </a>
       
