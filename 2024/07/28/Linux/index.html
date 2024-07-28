@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <meta name="author" content="jiahe">
+
+
+  <meta name="subtitle" content="只 争 朝 夕">
+
+
+  <meta name="description" content="一个在github上搭建的个人博客">
+
+
+
+<title>Linux | 嘉和望岗</title>
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/nprogress/nprogress.css">
+
+
+
+<script src="/lib/jquery.min.js"></script>
+
+
+<script src="/lib/iconify-icon.min.js"></script>
+
+
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+  };
+</script>
+
+
+<script src="/lib/nprogress/nprogress.js"></script>
+
+<script>
+  $(document).ready(() => {
+    NProgress.configure({
+      showSpinner: false,
+    });
+    NProgress.start();
+    $("#nprogress .bar").css({
+      background: "#de7441",
+    });
+    $("#nprogress .peg").css({
+      "box-shadow": "0 0 2px #de7441, 0 0 4px #de7441",
+    });
+    $("#nprogress .spinner-icon").css({
+      "border-top-color": "#de7441",
+      "border-left-color": "#de7441",
+    });
+    setTimeout(function () {
+      NProgress.done();
+      $(".fade").removeClass("out");
+    }, 800);
+  });
+</script>
+
+<script>
+  (function () {
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+    if (setting === "dark" || (prefersDark && setting !== "light"))
+      document.documentElement.classList.toggle("dark", true);
+    let isDark = document.documentElement.classList.contains("dark");
+  })();
+
+  $(document).ready(function () {
+    // init icon
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = document.documentElement.classList.contains("dark");
+    $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+
+    function toggleGiscusTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const giscusFrame = document.querySelector("iframe.giscus-frame");
+      if (giscusFrame) {
+        giscusFrame.contentWindow.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: isDark ? "dark" : "light",
+              },
+            },
+          },
+          "https://giscus.app"
+        );
+      }
+    }
+
+
+    // toggle dark mode
+    function toggleDark() {
+      let isDark = document.documentElement.classList.contains("dark");
+      const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+      isDark = !isDark;
+      document.documentElement.classList.toggle("dark", isDark);
+      $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+      if (prefersDark === isDark) {
+        localStorage.setItem("hexo-color-scheme", "auto");
+      } else {
+        localStorage.setItem("hexo-color-scheme", isDark ? "dark" : "light");
+      }
+      toggleGiscusTheme();
+    }
+    $("#toggle-dark").click(toggleDark);
+
+    // listen dark mode change
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+        if (setting === "auto") {
+          document.documentElement.classList.toggle("dark", e.matches);
+          $("#theme-icon").attr(
+            "icon",
+            e.matches ? "ri:moon-line" : "ri:sun-line"
+          );
+          toggleGiscusTheme();
+        }
+      });
+  });
+</script>
+
+
+
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body class="font-sans bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 relative">
+  <header class="fixed w-full px-5 py-1 z-10 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5">
+  <div class="max-auto">
+    <nav class="flex items-center text-base">
+      <a href="/" class="group">
+        <h2 class="font-medium tracking-tighterp text-l p-2">
+          <img class="w-5 mr-2 inline-block transition-transform group-hover:rotate-[30deg]" id="logo" src="/images/logo.svg" alt="嘉和望岗" />
+          嘉和望岗
+        </h2>
+      </a>
+      <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
+        Linux
+      </div>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        
+          <a class="hidden sm:flex" href="/archives">Posts</a>
+        
+        
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Github" target="_blank" rel="noopener" href="https://github.com/qjh04">
+              <iconify-icon width="20" icon="ri:github-line"></iconify-icon>
+            </a>
+          
+        
+        <a class="w-5 h-5 hidden sm:flex" title="Github" href="rss2.xml">
+          <iconify-icon width="20" icon="ri:rss-line"></iconify-icon>
+        </a>
+        <a class="w-5 h-5" title="toggle theme" id="toggle-dark">
+          <iconify-icon width="20" icon="" id="theme-icon"></iconify-icon>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-3 ml-3 sm:hidden">
+        <span class="w-5 h-5" aria-hidden="true" role="img" id="open-menu">
+          <iconify-icon width="20" icon="carbon:menu" ></iconify-icon>
+        </span>
+        <span class="w-5 h-5 hidden" aria-hidden="true" role="img" id="close-menu">
+          <iconify-icon  width="20" icon="carbon:close" ></iconify-icon>
+        </span>
+      </div>
+    </nav>
+  </div>
+</header>
+<div id="menu-panel" class="h-0 overflow-hidden sm:hidden fixed left-0 right-0 top-12 bottom-0 z-10">
+  <div id="menu-content" class="relative z-20 bg-white/80 px-6 sm:px-8 py-2 backdrop-blur-xl -translate-y-full transition-transform duration-300">
+    <ul class="nav flex flex-col sm:flex-row text-sm font-medium">
+      
+        <li class="nav-portfolio sm:mx-2 border-b sm:border-0 border-black/5 last:border-0 hover:text-main">
+          <a href="/archives" class="flex h-12 sm:h-auto items-center">Posts</a>
+        </li>
+      
+    </ul>
+  </div>
+  <div class="mask bg-black/20 absolute inset-0"></div>
+</div>
+
+  <main class="pt-14">
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        Linux
+      </h1>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2024-07-28</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>12 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>3.4k words</span>
+          </span>
+          
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><h2 id="第一章-初识Linux"><a href="#第一章-初识Linux" class="headerlink" title="第一章 初识Linux"></a>第一章 初识Linux</h2><h3 id="第一节-操作系统概述"><a href="#第一节-操作系统概述" class="headerlink" title="第一节 操作系统概述"></a>第一节 操作系统概述</h3><p>用户和计算机硬件之间的桥梁，调度和管理硬件进行工作。</p>
+<h3 id="第二节-初识Linux"><a href="#第二节-初识Linux" class="headerlink" title="第二节 初识Linux"></a>第二节 初识Linux</h3><p>组成：</p>
+<ul>
+<li>Linux系统内核<ul>
+<li>提供最核心的功能，如cpu调度、内存调度等</li>
+</ul>
+</li>
+<li>系统级应用程序<ul>
+<li>可理解为出厂自带软件，供用户快速上手，如文件管理器、视频播放器等</li>
+</ul>
+</li>
+</ul>
+<h3 id="第三节-虚拟机"><a href="#第三节-虚拟机" class="headerlink" title="第三节 虚拟机"></a>第三节 虚拟机</h3><p>借助虚拟化技术，通过软件模拟计算机硬件，并给虚拟硬件安装操作系统。这样，就可以在电脑上安装一个虚拟操作系统。</p>
+<p>小知识：ncpa.cpl 命令可以打开网络适配器查看页面。</p>
+<h3 id="第四节-虚拟机快照"><a href="#第四节-虚拟机快照" class="headerlink" title="第四节 虚拟机快照"></a>第四节 虚拟机快照</h3><p>快照可以将当前虚拟机的状态保存下来，在以后可以通过快照恢复到前面所保存的状态。</p>
+<h2 id="第二章-Linux基础命令"><a href="#第二章-Linux基础命令" class="headerlink" title="第二章 Linux基础命令"></a>第二章 Linux基础命令</h2><h3 id="第一节-Linux的目录结构"><a href="#第一节-Linux的目录结构" class="headerlink" title="第一节 Linux的目录结构"></a>第一节 Linux的目录结构</h3><p>树形结构，没有盘符概念，只有一个根目录 &#x2F; ，所有文件都在它之下。</p>
+<h3 id="第二节-Linux命令入门"><a href="#第二节-Linux命令入门" class="headerlink" title="第二节 Linux命令入门"></a>第二节 Linux命令入门</h3><p>命令：即Linux程序，一个命令就是一个程序。</p>
+<p>命令行：即Linux终端，是一种命令提示符界面，以纯字符的形式操作系统，可以使用各种字符化命令对系统发出指令。</p>
+<p>通用格式： command [-potions] [parameter]</p>
+<h3 id="第三节-ls命令入门"><a href="#第三节-ls命令入门" class="headerlink" title="第三节 ls命令入门"></a>第三节 ls命令入门</h3><p>语法： ls [-a -l -h] [Linux路径]</p>
+<p>不加选项，会展示出当前目录下（默认home目录）的内容，以平铺格式显示。</p>
+<p>每一个用户在Linux系统的专属目录,默认在:&#x2F;home&#x2F;用户名</p>
+<p>Linux命令行在执行命令的时候,需要一个工作目录,打开命令行程序(终端)默认设置工作目录在用户的HOME目录</p>
+<h4 id="选项解释："><a href="#选项解释：" class="headerlink" title="选项解释："></a>选项解释：</h4><ul>
+<li>-a ：表示all，所有文件，可以看到隐藏文件夹</li>
+<li>-l ：从横向平铺变成竖向的列表</li>
+<li>-h ：方便阅读，会列出单位K、M、G</li>
+</ul>
+<h3 id="第四节-目录切换命令cd、pwd"><a href="#第四节-目录切换命令cd、pwd" class="headerlink" title="第四节 目录切换命令cd、pwd"></a>第四节 目录切换命令cd、pwd</h3><p>语法：cd [Linux路径]</p>
+<p>不写参数，切换到home目录。</p>
+<p>语法：pwd</p>
+<p>打印当前工作目录路径</p>
+<h3 id="第五节-相对路径、绝对路径和特殊路径"><a href="#第五节-相对路径、绝对路径和特殊路径" class="headerlink" title="第五节 相对路径、绝对路径和特殊路径"></a>第五节 相对路径、绝对路径和特殊路径</h3><ul>
+<li>绝对路径：以根目录为起点</li>
+<li>相对路径：以当前所在目录作为起点</li>
+<li>特殊路径符：. 表示当前目录 .. 表示上一级目录 ~表示home目录</li>
+</ul>
+<h3 id="第六节-创建目录命令-mkdir"><a href="#第六节-创建目录命令-mkdir" class="headerlink" title="第六节 创建目录命令 mkdir"></a>第六节 创建目录命令 mkdir</h3><p>语法：mkdir [-p] Linux路径</p>
+<p>选项-p表示可以自动创建不存在的父目录，即可以创建多层级目录</p>
+<h3 id="第七节-文件操作命令"><a href="#第七节-文件操作命令" class="headerlink" title="第七节 文件操作命令"></a>第七节 文件操作命令</h3><h4 id="1、touch创建文件"><a href="#1、touch创建文件" class="headerlink" title="1、touch创建文件"></a>1、touch创建文件</h4><p>语法：touch Linux路径</p>
+<h4 id="2、cat查看文件"><a href="#2、cat查看文件" class="headerlink" title="2、cat查看文件"></a>2、cat查看文件</h4><p>语法： cat Linux路径</p>
+<h4 id="3、more查看文件"><a href="#3、more查看文件" class="headerlink" title="3、more查看文件"></a>3、more查看文件</h4><p>语法： more Linux路径</p>
+<p>与cat不同，多行可以翻页，通过空格翻页，通过q退出</p>
+<h4 id="4、cp复制文件文件夹"><a href="#4、cp复制文件文件夹" class="headerlink" title="4、cp复制文件文件夹"></a>4、cp复制文件文件夹</h4><p>语法： cp [-r] 参数1 参数</p>
+<ul>
+<li>选项-r：当复制文件夹时使用，表示递归</li>
+<li>参数1：被复制的文件或文件夹</li>
+<li>参数2：要复制去的地方</li>
+</ul>
+<h4 id="5、mv移动文件文件夹"><a href="#5、mv移动文件文件夹" class="headerlink" title="5、mv移动文件文件夹"></a>5、mv移动文件文件夹</h4><p>语法： mv 参数1 参数2</p>
+<ul>
+<li>参数1：要移动的文件或文件夹</li>
+<li>参数2：要移动到的地方</li>
+</ul>
+<h4 id="6、rm删除文件文件夹"><a href="#6、rm删除文件文件夹" class="headerlink" title="6、rm删除文件文件夹"></a>6、rm删除文件文件夹</h4><p>语法： rm [-r -f] 参数1 参数2 参数、、、</p>
+<ul>
+<li>同cp命令一样，-r表示删除文件夹</li>
+<li>-f表示强制删除</li>
+<li>参数表示要删除的文件或文件夹路径</li>
+<li>支持通配符*，表示任何内容</li>
+</ul>
+<h3 id="第八节-查找命令"><a href="#第八节-查找命令" class="headerlink" title="第八节 查找命令"></a>第八节 查找命令</h3><h4 id="1、which"><a href="#1、which" class="headerlink" title="1、which"></a>1、which</h4><p>语法： which 要查找的命令名</p>
+<p>前面所学的命令，本质上都是一个二进制程序，可以通过switch命令，查看使用的一系列命令程序文件</p>
+<h4 id="2、find"><a href="#2、find" class="headerlink" title="2、find"></a>2、find</h4><p>语法： find 起始路径 -name 被查找文件名</p>
+<p>通过find命令去搜索指定的文件，也可以使用通配符*，</p>
+<p>按文件大小查找文件</p>
+<p>语法： find 起始路径 -size +|-n[kmg]</p>
+<ul>
+<li><p>+、-表示大于和小于</p>
+</li>
+<li><p>n表示大小数字</p>
+</li>
+<li><p>kMG表示大小单位,k(小写字母)表示kb,M表示MB,G表示GB</p>
+</li>
+</ul>
+<h3 id="第九节-grep、wc和管道符"><a href="#第九节-grep、wc和管道符" class="headerlink" title="第九节 grep、wc和管道符"></a>第九节 grep、wc和管道符</h3><h4 id="1、grep"><a href="#1、grep" class="headerlink" title="1、grep"></a>1、grep</h4><p>可以通过grep命令,从文件中通过关键字过滤文件行。</p>
+<p>语法:  grep [-n] 关键字 文件路径</p>
+<ul>
+<li>选项-n,可选,表示在结果中显示匹配的行的行号。</li>
+<li>参数,关键字,必填,表示过滤的关键字,带有空格或其它特殊符号,建议使用”将关键字包围起来</li>
+<li>参数,文件路径,必填,表示要过滤内容的文件路径,可作为内容输入端口</li>
+</ul>
+<h4 id="2、wc"><a href="#2、wc" class="headerlink" title="2、wc"></a>2、wc</h4><p>可以通过wc命令统计文件的行数、单词数量等</p>
+<p>语法： WC [-c -m -1 -w] 文件路径</p>
+<ul>
+<li><p>选项,-C,统计bytes数量</p>
+</li>
+<li><p>选项,-m,统计字符数量</p>
+</li>
+<li><p>选项,-l,统计行数</p>
+</li>
+<li><p>选项,-w,统计单词数量</p>
+</li>
+<li><p>参数,文件路径,被统计的文件,可作为内容输入端口</p>
+</li>
+</ul>
+<h4 id="3、管道符"><a href="#3、管道符" class="headerlink" title="3、管道符  |"></a>3、管道符  |</h4><p>将左边的结果  作为  右边的输入</p>
+<h3 id="第十节-echo、tail和重定符"><a href="#第十节-echo、tail和重定符" class="headerlink" title="第十节 echo、tail和重定符"></a>第十节 echo、tail和重定符</h3><h4 id="1、echo"><a href="#1、echo" class="headerlink" title="1、echo"></a>1、echo</h4><p>可以用echo命令在命令行界面输出想输出的内容</p>
+<p>语法： echo 字符串</p>
+<p>如果字符串里有特殊符号，需要双引号引起来</p>
+<p>反引号 ‘ ’ ：可以被看做转义字符，引号里的字符可以被看做是命令执行</p>
+<h4 id="2、重定向符"><a href="#2、重定向符" class="headerlink" title="2、重定向符"></a>2、重定向符</h4><ul>
+<li>“&gt;” ：将左侧的结果覆盖写入到右边的文件中</li>
+<li>“&gt;&gt;”：将左侧的结果追加写入到右边的文件中</li>
+</ul>
+<h4 id="3、tail命令"><a href="#3、tail命令" class="headerlink" title="3、tail命令"></a>3、tail命令</h4><p>使用tail命令,可以查看文件尾部内容,跟踪文件的最新更改,语法如下:</p>
+<p>tail [-f -num] Linux路径</p>
+<ul>
+<li><p>参数,Linux路径,表示被跟踪的文件路径</p>
+</li>
+<li><p>选项,-f,表示持续跟踪</p>
+</li>
+<li><p>选项,-num,表示,查看尾部多少行,不填默认10行</p>
+</li>
+</ul>
+<h3 id="第十一节-vi、vim编辑器"><a href="#第十一节-vi、vim编辑器" class="headerlink" title="第十一节 vi、vim编辑器"></a>第十一节 vi、vim编辑器</h3><ul>
+<li>命令模式：所有按键被视为命令，以命令驱动执行不同的功能，不能自由进行文本编辑</li>
+<li>输入模式：所谓的编辑模式，可以对文本进行编辑</li>
+<li>底线命令模式：以：开始，通常用于保存或退出</li>
+</ul>
+<h2 id="第三章-Linux用户和权限"><a href="#第三章-Linux用户和权限" class="headerlink" title="第三章 Linux用户和权限"></a>第三章 Linux用户和权限</h2><h3 id="第一节认识root用户"><a href="#第一节认识root用户" class="headerlink" title="第一节认识root用户"></a>第一节认识root用户</h3><p>超级管理员，拥有操作系统最大操作权限</p>
+<h4 id="切换用户"><a href="#切换用户" class="headerlink" title="切换用户"></a>切换用户</h4><p>语法： su [-]  [用户名]</p>
+<p>用于账户切换的系统命令，-：表示切换的同时加载环境变量，不填用户名默认切换到root，exit退出</p>
+<h4 id="sudo命令"><a href="#sudo命令" class="headerlink" title="sudo命令"></a>sudo命令</h4><p>sudo 其他命令</p>
+<p>为普通命令授权，临时以root身份执行，需要为普通用户配置sudo认证才可以使用 </p>
+<h3 id="第二节用户和用户组"><a href="#第二节用户和用户组" class="headerlink" title="第二节用户和用户组"></a>第二节用户和用户组</h3><p>Linux可以配置多个用户，多个用户组，一个用户可以进多个用户组。可以针对用户进行权限管控，也可以对用户组进行管控</p>
+<h4 id="用户组管理"><a href="#用户组管理" class="headerlink" title="用户组管理"></a>用户组管理</h4><ul>
+<li>创建用户组：groupadd 用户组名</li>
+<li>删除用户组：groupdel 用户组名</li>
+</ul>
+<h4 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h4><ul>
+<li>创建用户：useradd [-g -d] 用户名<ul>
+<li>选项 :- g指定用户的组,不指定-g,会创建同名组并自动加入,指定-g需要组已经存在,如已存在名组,必须使用-g</li>
+<li>选项 :- d指定用户HOME路径,不指定,HOME目录默认在:&#x2F;home&#x2F;用户名</li>
+</ul>
+</li>
+<li>删除用户：userdel [-r] 用户名<ul>
+<li>选项：-r表示删除用户的home目录</li>
+</ul>
+</li>
+<li>查看用户所属组：id[用户名]<ul>
+<li>选项用户名不加  则查看当前用户的所属组</li>
+</ul>
+</li>
+<li>修改用户所属组：usermod -aG 用户组 用户名<ul>
+<li>将指定用户加入用户组</li>
+</ul>
+</li>
+<li>查看所有用户或用户组：getnet passwd &#x2F; group</li>
+</ul>
+<h3 id="第三节-查看权限控制"><a href="#第三节-查看权限控制" class="headerlink" title="第三节 查看权限控制"></a>第三节 查看权限控制</h3><p>r：可读	w：可写	x：可执行</p>
+<h4 id="修改权限信息"><a href="#修改权限信息" class="headerlink" title="修改权限信息"></a>修改权限信息</h4><p>语法：chmod [-R] 权限 文件或文件夹</p>
+<p>选项-R表示对文件夹内部的所有文件应用同样的权限，权限可以用二进制表示rwx</p>
+<h4 id="修改用户用户组权限"><a href="#修改用户用户组权限" class="headerlink" title="修改用户用户组权限"></a>修改用户用户组权限</h4><p>语法：chown [-R] [用户] [:] [用户组] 文件文件夹</p>
+<p>此命令只适用于root用户，将文件文件夹修改为某用户用户组，-R同上</p>
+<h2 id="第四章-Linux实用操作"><a href="#第四章-Linux实用操作" class="headerlink" title="第四章 Linux实用操作"></a>第四章 Linux实用操作</h2><h3 id="第一节-实用小技巧"><a href="#第一节-实用小技巧" class="headerlink" title="第一节 实用小技巧"></a>第一节 实用小技巧</h3><table>
+<thead>
+<tr>
+<th align="center">功能</th>
+<th align="center">快捷键</th>
+<th align="center">功能</th>
+<th align="center">快捷键</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">强制停止</td>
+<td align="center">ctrl+c</td>
+<td align="center">退出账户登录</td>
+<td align="center">ctrl + d</td>
+</tr>
+<tr>
+<td align="center">历史命令搜索</td>
+<td align="center">history</td>
+<td align="center">历史命令匹配</td>
+<td align="center">ctrl+r</td>
+</tr>
+<tr>
+<td align="center">跳到命令开头</td>
+<td align="center">ctrl+a</td>
+<td align="center">跳到命令结尾</td>
+<td align="center">ctrl+e</td>
+</tr>
+<tr>
+<td align="center">向左挑一个单词</td>
+<td align="center">ctrl+左键</td>
+<td align="center">向右挑一个单词</td>
+<td align="center">ctrl+右键</td>
+</tr>
+<tr>
+<td align="center">清屏</td>
+<td align="center">ctrl+l</td>
+<td align="center">清屏</td>
+<td align="center">clear</td>
+</tr>
+</tbody></table>
+<h3 id="第二节-安装软件"><a href="#第二节-安装软件" class="headerlink" title="第二节 安装软件"></a>第二节 安装软件</h3><h4 id="yum命令"><a href="#yum命令" class="headerlink" title="yum命令"></a>yum命令</h4><p>RPM包软件管理器,用于自动化安装配置Linux软件,并可以自动解决依赖问题。</p>
+<p>语法:yum [-y] [install | remove | search] 软件名称</p>
+<ul>
+<li><p>选项 :- y,自动确认,无需手动确认安装或卸载过程</p>
+</li>
+<li><p>install:安装</p>
+</li>
+<li><p>remove:卸载</p>
+</li>
+<li><p>search:搜索</p>
+</li>
+</ul>
+<p>yum命令需要root权限哦,可以su切换到root,或使用sudo提权，yum命令需要联网</p>
+<h4 id="systemctl命令"><a href="#systemctl命令" class="headerlink" title="systemctl命令"></a>systemctl命令</h4><p>Linux系统很多软件(内置或第三方)均支持使用systemctl命令控制:启动、停止、开机自启</p>
+<p>能够被systemctl管理的软件,一般也称之为:服务</p>
+<p>语法:  systemctl start | stop| status | enable| disable 服务名</p>
+<ul>
+<li>start 启动</li>
+<li>stop关闭</li>
+<li>status查看状态</li>
+<li>enable开启开机自启</li>
+<li>disable 关闭开机自启</li>
+</ul>
+<h3 id="第三节-软连接"><a href="#第三节-软连接" class="headerlink" title="第三节 软连接"></a>第三节 软连接</h3><p>类似windows中的快捷方式</p>
+<p>语法：ls -s 参数1 参数2</p>
+<ul>
+<li><p>-s选项,创建软连接</p>
+</li>
+<li><p>参数1:被链接的文件或文件夹</p>
+</li>
+<li><p>参数2:要链接去的目的地</p>
+</li>
+</ul>
+<h3 id="第四节-日期和时区"><a href="#第四节-日期和时区" class="headerlink" title="第四节 日期和时区"></a>第四节 日期和时区</h3><p>通过date命令可以在命令行中查看系统的时间</p>
+<p>语法:date [-d] [+格式化字符串]</p>
+<ul>
+<li>-d按照给定的字符串显示日期,一般用于日期计算，+号后边可以加day、month、year</li>
+<li>格式化字符串:通过特定的字符串标记,来控制显示的日期格式<br>%Y 年<br>%y 年份后两位数字(00.99)<br>%M 月份(01.12)<br>%d 日 (01.31)<br>%H 小时(00.23)<br>%M 分钟(00.59)<br>%s 秒(00.60)<br>%s 自 1970-01-01 00:0000 UTC 到现在的秒数</li>
+</ul>
+<p>修改时区</p>
+<ul>
+<li>rm -f &#x2F;etc&#x2F;localtime</li>
+<li>sudo ln -s &#x2F;usr&#x2F;share&#x2F;zoneinfo&#x2F;Asia&#x2F;Shanghai &#x2F;etc&#x2F;localtime</li>
+</ul>
+<p>也可以用ntp程序自动校准</p>
+<h3 id="第五节-ip地址和主机名"><a href="#第五节-ip地址和主机名" class="headerlink" title="第五节 ip地址和主机名"></a>第五节 ip地址和主机名</h3><p>命令：ifconfig 和 hostname</p>
+<h3 id="第六节-网络传输"><a href="#第六节-网络传输" class="headerlink" title="第六节 网络传输"></a>第六节 网络传输</h3><h4 id="ping"><a href="#ping" class="headerlink" title="ping"></a>ping</h4><p>可以通过ping命令,检查指定的网络服务器是否是可联通状态</p>
+<p>语法:ping [-c num] ip或主机名</p>
+<ul>
+<li><p>选项 :- c,检查的次数,不使用-c选项,将无限次数持续检查</p>
+</li>
+<li><p>参数:ip或主机名,被检查的服务器的ip地址或主机名地址</p>
+</li>
+</ul>
+<h4 id="wget"><a href="#wget" class="headerlink" title="wget"></a>wget</h4><p>wget是非交互式的文件下载器,可以在命令行内下载网络文件</p>
+<p>语法:wget [-b] ur1</p>
+<ul>
+<li><p>选项 :- b,可选,后台下载,会将日志写入到当前工作目录的wget-log文件</p>
+</li>
+<li><p>参数:url,下载链接</p>
+</li>
+</ul>
+<h4 id="curl"><a href="#curl" class="headerlink" title="curl"></a>curl</h4><p>curl可以发送http网络请求,可用于:下载文件、获取信息等</p>
+<p>语法:curl [-0] ur1</p>
+<ul>
+<li><p>选项 :- 0,用于下载文件,当url是下载链接时,可以使用此选项保存文件</p>
+</li>
+<li><p>参数:url,要发起请求的网络地址</p>
+</li>
+</ul>
+<h4 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h4><p>可以通过Linux命令去查看端口的占用情况，使用nmap命令,安装nmap:yum-y install nmap</p>
+<p>语法:nmap 被查看的IP地址</p>
+<h4 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h4><p>查看端口占用情况</p>
+<p>语法:netstat -anp | grep 端口号,安装netstat:yum-y install net-tools</p>
+<h3 id="第七节-进程管理"><a href="#第七节-进程管理" class="headerlink" title="第七节 进程管理"></a>第七节 进程管理</h3><h4 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h4><p>查看进程信息</p>
+<p>语法： ps [-e -f]，一般来说两个选项都需要用，会展示出详细信息</p>
+<h4 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h4><p>关闭进程</p>
+<p>语法： kill  [-9] 进程ID，选项-9表示强制关闭</p>
+<h3 id="第八节-主机状态"><a href="#第八节-主机状态" class="headerlink" title="第八节 主机状态"></a>第八节 主机状态</h3><h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><p>查看cpu、内存占用状态</p>
+<h4 id="df-h"><a href="#df-h" class="headerlink" title="df [-h]"></a>df [-h]</h4><p>查看磁盘使用情况，-h会显示单位</p>
+<h4 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h4><p>可以使用iostat查看CPU、磁盘的相关信息</p>
+<p>语法:iostat [-x] [num1] [num2]</p>
+<ul>
+<li><p>选项 :- x,显示更多信息</p>
+</li>
+<li><p>num1:数字,刷新间隔,num2:数字,刷新几次</p>
+</li>
+</ul>
+<h4 id="sar"><a href="#sar" class="headerlink" title="sar"></a>sar</h4><p>可以使用sar命令查看网络的相关统计(sar命令非常复杂,这里仅简单用于统计网络)</p>
+<p>语法:sar -n DEV num1 num2</p>
+<ul>
+<li><p>选项 :- n,查看网络,DEV表示查看网络接口</p>
+</li>
+<li><p>num1:刷新间隔(不填就查看一次结束),num2:查看次数(不填无限次数)</p>
+</li>
+</ul>
+<h3 id="第九节-环境变量"><a href="#第九节-环境变量" class="headerlink" title="第九节 环境变量"></a>第九节 环境变量</h3><p>记录一些关键性信息，辅助系统运行，是一种键值对型结构，env命令可查看环境变量</p>
+<p>取到环境变量语法：  echo $PWD</p>
+<p>设置环境变量语法： export key&#x3D;value，如果设置永久生效需要修改配置文件</p>
+<h3 id="第十节-压缩和解压"><a href="#第十节-压缩和解压" class="headerlink" title="第十节 压缩和解压"></a>第十节 压缩和解压</h3><p>两种文件格式：.tar 简单封装，体积不会有太大变化，.gz 极大减少压缩后的体积</p>
+<h4 id="tar命令常用组合"><a href="#tar命令常用组合" class="headerlink" title="tar命令常用组合"></a>tar命令常用组合</h4><p>压缩：</p>
+<ul>
+<li>tar -cvf test.tar t1.txt t2.txt         选项解释：压缩 显示 创建的文件</li>
+<li>tar -zcvf test.tar.gz t1.txt t2.txt   选项解释：gzip格式 压缩 显示 创建的文件</li>
+</ul>
+<p>解压：</p>
+<ul>
+<li>tar -xvf test.tar 选项解释：解压 显示 要解压的文件</li>
+<li>tar -xvf test.tar -C Linux文件路径 选项解释：解压 显示 要解压的文件  加一个目标路径</li>
+<li>tar -zxvf test.tar.gz 选项解释：gzip格式 解压 显示 要解压的文件</li>
+</ul>
+<h4 id="zip压缩格式"><a href="#zip压缩格式" class="headerlink" title="zip压缩格式"></a>zip压缩格式</h4><p>压缩：</p>
+<ul>
+<li>命令： zip [-r]  参数1  参数2  参数3 ……</li>
+<li>有文件夹时，加上 -r</li>
+</ul>
+<p>解压：</p>
+<ul>
+<li>命令： unzip [-d] 参数</li>
+<li>-d 表示要解压到的地方，后边接路径</li>
+</ul>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
+    
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/">八股文</a>
+        </span>
+      
+    
+  </div>
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+        <a href="/2024/07/28/Docker/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          Docker
+        </a>
+      
+    </div>
+    <div>
+      
+        <a href="/2024/07/27/Redis/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          Redis
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
+    
+
+  </div>
+</section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "default",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
+
+  </main>
+  <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
+  <!-- busuanzi -->
+  
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- Busuanzi Analytics -->
+<div class="flex items-center gap-2">
+  <span>Visitors</span>
+  <span id="busuanzi_value_site_uv"></span>
+  <span>Page Views</span>
+  <span id="busuanzi_value_site_pv"></span>
+</div>
+<!-- End Busuanzi Analytics -->
+
+
+  <!-- copyright -->
+  <div class="flex items-center gap-2">
+    <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: inherit;">CC BY-NC-SA 4.0</a>
+    <span>© 2022</span>
+    <iconify-icon width="18" icon="emojione-monotone:maple-leaf" ></iconify-icon>
+    <a href="https://github.com/xbmlz" target="_blank" rel="noopener noreferrer">xbmlz</a>
+  </div>
+  <!-- powered by -->
+  <div class="flex items-center gap-2">
+    <span>Powered by</span>
+    <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+    <span>&</span>
+    <a href="https://github.com/xbmlz/hexo-theme-maple" target="_blank" rel="noopener noreferrer">Maple</a>
+  </div>
+
+</footer>
+
+  <div class="back-to-top box-border fixed right-6 z-1024 -bottom-20 rounded py-1 px-1 bg-slate-900 opacity-60 text-white cursor-pointer text-center dark:bg-slate-600">
+    <span class="flex justify-center items-center text-sm">
+      <iconify-icon width="18" icon="ion:arrow-up-c" id="go-top"></iconify-icon>
+      <span id="scrollpercent"><span>0</span> %</span>
+    </span>
+  </div>
+  
+<script src="/js/main.js"></script>
+
+
+  <script>
+    $(document).ready(function () {
+      const mapleCount = "10";
+      const speed = "0.5";
+      const mapleEl = document.getElementById("maple");
+      const maples = Array.from({ length: mapleCount }).map(() => {
+        const maple = document.createElement("div");
+        const scale = Math.random() * 0.5 + 0.5;
+        const offset = Math.random() * 2 - 1;
+        const x = Math.random() * mapleEl.clientWidth;
+        const y = -Math.random() * mapleEl.clientHeight;
+        const duration = 10 / speed;
+        const delay = -duration;
+        maple.className = "maple";
+        maple.style.width = `${24 * scale}px`;
+        maple.style.height = `${24 * scale}px`;
+        maple.style.left = `${x}px`;
+        maple.style.top = `${y}px`;
+        maple.style.setProperty("--maple-fall-offset", offset);
+        maple.style.setProperty("--maple-fall-height", `${Math.abs(y) + mapleEl.clientHeight}px`);
+        maple.style.animation = `fall ${duration}s linear infinite`;
+        maple.style.animationDelay = `${delay}s`;
+        mapleEl.appendChild(maple)
+        return maple
+      })
+    });
+  </script>
+  
+
+
+  <div class="fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden" id="maple"></div>
+</body>
+
+</html>
