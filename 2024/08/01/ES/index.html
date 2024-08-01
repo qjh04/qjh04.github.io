@@ -228,17 +228,17 @@
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2024-07-31</time>
+            <time>2024-08-01</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>12 min</span>
+            <span>19 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>2.7k words</span>
+            <span>4.6k words</span>
           </span>
                   
         </section>
@@ -247,8 +247,7 @@
   </header>
   <!-- content -->
   <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
-    <p>[toc]</p>
-<h1 id="ES"><a href="#ES" class="headerlink" title="ES"></a>ES</h1><p>分布式搜索</p>
+    <h1 id="ES"><a href="#ES" class="headerlink" title="ES"></a>ES</h1><p>分布式搜索</p>
 <h2 id="第一章-初识ES"><a href="#第一章-初识ES" class="headerlink" title="第一章 初识ES"></a>第一章 初识ES</h2><h3 id="第一节-倒排索引"><a href="#第一节-倒排索引" class="headerlink" title="第一节 倒排索引"></a>第一节 倒排索引</h3><ul>
 <li>文档（document）：每一条数据就是一个文档</li>
 <li>词条（term）：文档按照语义分成的词语</li>
@@ -335,16 +334,10 @@
 <li><p>确保依赖版本和es客户端版本一致</p>
 </li>
 <li><p>初始化RestHighLevelClient</p>
-<ol>
-<li><pre><code class="java">RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(
-    HttpHost.create(&quot;http://192.168.150.101:9200&quot;)
-));
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">### 第二节 操作索引库</span><br><span class="line"></span><br><span class="line">#### 创建</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">void createHotelIndex() throws I0Exception &#123;</span><br><span class="line">    // 1.创建Request对象</span><br><span class="line">    CreateIndexRequest request = new CreateIndexRequest(&quot;hotel&quot;);</span><br><span class="line">	// 2.准备请求的参数:DSL语句</span><br><span class="line">	request.source(MAPPING_TEMPLATE, XContentType.JSON);</span><br><span class="line">	// 3.发送请求</span><br><span class="line">	client.indices().create(request, RequestOptions.DEFAULT);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">RestHighLevelClient</span> <span class="variable">client</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RestHighLevelClient</span>(RestClient.builder(</span><br><span class="line">    HttpHost.create(<span class="string">&quot;http://192.168.150.101:9200&quot;</span>)</span><br><span class="line">));</span><br></pre></td></tr></table></figure></li>
 </ol>
-</li>
-</ol>
+<h3 id="第二节-操作索引库-1"><a href="#第二节-操作索引库-1" class="headerlink" title="第二节 操作索引库"></a>第二节 操作索引库</h3><h4 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">createHotelIndex</span><span class="params">()</span> <span class="keyword">throws</span> I0Exception &#123;</span><br><span class="line">    <span class="comment">// 1.创建Request对象</span></span><br><span class="line">    <span class="type">CreateIndexRequest</span> <span class="variable">request</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CreateIndexRequest</span>(<span class="string">&quot;hotel&quot;</span>);</span><br><span class="line">	<span class="comment">// 2.准备请求的参数:DSL语句</span></span><br><span class="line">	request.source(MAPPING_TEMPLATE, XContentType.JSON);</span><br><span class="line">	<span class="comment">// 3.发送请求</span></span><br><span class="line">	client.indices().create(request, RequestOptions.DEFAULT);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h4 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">testDeleteHotelIndex</span><span class="params">()</span> <span class="keyword">throws</span> I0Exception &#123;</span><br><span class="line">    <span class="comment">//1.创建Request对象</span></span><br><span class="line">    <span class="type">DeleteIndexRequest</span> <span class="variable">request</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DeleteIndexRequest</span>(<span class="string">&quot;hotel&quot;</span>);</span><br><span class="line">    <span class="comment">// 2.发起请求</span></span><br><span class="line">    client.indices().delete(request, Request0ptions.DEFAULT);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="判断是否存在"><a href="#判断是否存在" class="headerlink" title="判断是否存在"></a>判断是否存在</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">testExistsHotelIndex</span><span class="params">()</span> <span class="keyword">throws</span> I0Exception &#123;</span><br><span class="line">    <span class="comment">//1.创建Request对象</span></span><br><span class="line">    <span class="type">GetIndexRequest</span> <span class="variable">request</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">GetIndexRequest</span>(<span class="string">&quot;hotel&quot;</span>);</span><br><span class="line">    <span class="comment">// 2.发起请求</span></span><br><span class="line">    <span class="type">boolean</span> <span class="variable">exists</span> <span class="operator">=</span> client.indices().exists(request, Request0ptions.DEFAULT);</span><br><span class="line">    <span class="comment">// 3.输出</span></span><br><span class="line">    System.out.println(exists);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -465,6 +458,130 @@
 </ul>
 <p>实现步骤：</p>
 <p>定义请求 -&gt; 设置参数 -&gt; 发送请求 -&gt; 解析响应</p>
+<h2 id="第六章-数据聚合"><a href="#第六章-数据聚合" class="headerlink" title="第六章 数据聚合"></a>第六章 数据聚合</h2><p>实现对数据的统计、分析和运算</p>
+<h3 id="第一节-数据聚合的分类"><a href="#第一节-数据聚合的分类" class="headerlink" title="第一节 数据聚合的分类"></a>第一节 数据聚合的分类</h3><ul>
+<li>桶(Bucket)聚合:用来对文档做分组<ul>
+<li>TermAggregation:按照文档字段值分组</li>
+<li>Date Histogram:按照日期阶梯分组,例如一周为一组,或者一月为一组</li>
+</ul>
+</li>
+<li>度量(Metric)聚合:用以计算一些值,比如:最大值、最小值、平均值等<ul>
+<li>Avg:求平均值</li>
+<li>Max:求最大值</li>
+<li>Min:求最小值</li>
+<li>Stats:同时求max、min、avg、sum等</li>
+</ul>
+</li>
+<li>管道(pipeline)聚合:其它聚合的结果为基础做聚合</li>
+</ul>
+<p>用做聚合的字段类型不能分词</p>
+<h3 id="第二节DSL实现聚合"><a href="#第二节DSL实现聚合" class="headerlink" title="第二节DSL实现聚合"></a>第二节DSL实现聚合</h3><h4 id="Bucket聚合"><a href="#Bucket聚合" class="headerlink" title="Bucket聚合"></a>Bucket聚合</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">GET /hotel/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span><span class="number">0</span><span class="punctuation">,</span><span class="comment">//设置size为0,结果中不包含文档,只包含聚合结果</span></span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="comment">// 定义聚合</span></span><br><span class="line">        <span class="attr">&quot;brandAgg&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="comment">//给聚合起个名字</span></span><br><span class="line">            <span class="attr">&quot;terms&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="comment">//聚合的类型,按照品牌值聚合,所以选择term</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span><span class="string">&quot;brand&quot;</span><span class="punctuation">,</span><span class="comment">//参与聚合的字段</span></span><br><span class="line">                <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span><span class="number">20</span><span class="comment">//希望获取的聚合结果数量，默认为10</span></span><br><span class="line">                <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                	<span class="attr">&quot;_count&quot;</span><span class="punctuation">:</span> <span class="string">&quot;asc&quot;</span><span class="comment">// 修改配置</span></span><br><span class="line">            	<span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>默认结果按文档数量降序排列，修改配置可以得到不一样的效果。默认情况下，Bucket会对所有文档聚合操作，加query语句就可以限定范围。</p>
+<h4 id="Metrics聚合"><a href="#Metrics聚合" class="headerlink" title="Metrics聚合"></a>Metrics聚合</h4><p>实现计算聚合，需要放在桶聚合里边，对每一类进行聚合，所以要在aggs中嵌套一个aggs。</p>
+<h4 id="RestClient实现聚合"><a href="#RestClient实现聚合" class="headerlink" title="RestClient实现聚合"></a>RestClient实现聚合</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">request.source().size(<span class="number">0</span>) ;</span><br><span class="line">request.source().aggregation (</span><br><span class="line">    AggregationBuilders</span><br><span class="line">    .terms (<span class="string">&quot;brand_agg&quot;</span>)<span class="comment">// 指定类型和名称</span></span><br><span class="line">    .field (<span class="string">&quot;brand&quot;</span>)<span class="comment">// 指定字段</span></span><br><span class="line">    .size(<span class="number">20</span>)<span class="comment">// 分页</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h2 id="第七章-自动补全"><a href="#第七章-自动补全" class="headerlink" title="第七章 自动补全"></a>第七章 自动补全</h2><h3 id="第一节-拼音分词器"><a href="#第一节-拼音分词器" class="headerlink" title="第一节 拼音分词器"></a>第一节 拼音分词器</h3><p><a target="_blank" rel="noopener" href="https://github.com/medcl/elasticsearch-analysis-pinyin">https://github.com/medcl/elasticsearch-analysis-pinyin</a></p>
+<p>安装方式与IK分词器一样,分三步:</p>
+<ol>
+<li><p>解压</p>
+</li>
+<li><p>上传到虚拟机中,elasticsearch的plugin目录</p>
+</li>
+<li><p>重启elasticseasch</p>
+</li>
+<li><p>测试</p>
+</li>
+</ol>
+<p>es中的分词器分为三部分：</p>
+<ul>
+<li><p>character filters: 在tokenizer之前对文本进行处理。例如删除字符、替换字符</p>
+</li>
+<li><p>tokenizer: 将文本按照一定的规则切割成词条(term)。例如keyword,就是不分词;还有ik_smart</p>
+</li>
+<li><p>tokenizer filter: 将tokenizer输出的词条做进一步处理。例如大小写转换、同义词处理、拼音处理等</p>
+</li>
+</ul>
+<p>自定义分词器：</p>
+<p>在创建索引库时，配置settings，语法为：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">PUT /test</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;settings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;analysis&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;analyzer&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="comment">//自定义分词器</span></span><br><span class="line">                <span class="attr">&quot;my_analyzer&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span> <span class="comment">// 分词器名称</span></span><br><span class="line">                    <span class="attr">&quot;tokenizer&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ik_max_word&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;filter&quot;</span><span class="punctuation">:</span> <span class="string">&quot;py&quot;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;filter&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="comment">// Xtokenizer filter</span></span><br><span class="line">                <span class="attr">&quot;py&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="comment">// 过滤器名称</span></span><br><span class="line">                    <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;pinyin&quot;</span><span class="punctuation">,</span><span class="comment">//过滤器类型,这里是pinyin</span></span><br><span class="line">                    <span class="attr">&quot;keep_full_pinyin&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span><span class="comment">// 以下是各种配置 官网可查</span></span><br><span class="line">                    <span class="attr">&quot;keep_joined_full_pinyin&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;keep_original&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;limit_first_letter_length&quot;</span><span class="punctuation">:</span> <span class="number">16</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;remove_duplicated_term&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;none_chinese_pinyin_tokenize&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="attr">&quot;mappings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    	<span class="attr">&quot;properties&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    		<span class="attr">&quot;字段名&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">    			<span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;text&quot;</span><span class="punctuation">,</span></span><br><span class="line">    			<span class="attr">&quot;analyzer&quot;</span><span class="punctuation">:</span> <span class="string">&quot;my_analyzer&quot;</span></span><br><span class="line">    			<span class="attr">&quot;search_analyzer&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ik_smart&quot;</span><span class="comment">// 在搜索时用ik分词器</span></span><br><span class="line">			<span class="punctuation">&#125;</span></span><br><span class="line">		<span class="punctuation">&#125;</span></span><br><span class="line">	<span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：拼音分词器适合在创建倒排索引的时候使用，不适合搜索的时候使用，可以在mapping配置中设置</p>
+<h3 id="第二节-completion-suggester查询"><a href="#第二节-completion-suggester查询" class="headerlink" title="第二节 completion suggester查询"></a>第二节 completion suggester查询</h3><p>elasticsearch提供了Completion Suggester查询来实现自动补全功能。这个查询会匹配以用户输入内容开头的词条并返回。为了提高补全查询的效率,对于文档中字段的类型有一些约束:</p>
+<ul>
+<li><p>参与补全查询的字段必须是completion类型。</p>
+</li>
+<li><p>字段的内容一般是用来补全的多个词条形成的数组。</p>
+</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建索引库</span></span><br><span class="line">PUT test</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;mappings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;properties&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;completion&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例数据</span></span><br><span class="line">POST test/_doc</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;Sony&quot;</span><span class="punctuation">,</span> <span class="string">&quot;WH-1000XM3&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line">POST test/_doc</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;SK-II&quot;</span><span class="punctuation">,</span> <span class="string">&quot;PITERA&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line">POST test/_doc</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;Nintendo&quot;</span><span class="punctuation">,</span> <span class="string">&quot;switch&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自动补全查询语法</span></span><br><span class="line">GET /test/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;suggest&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;title_suggest&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;text&quot;</span><span class="punctuation">:</span><span class="string">&quot;s&quot;</span><span class="punctuation">,</span><span class="comment">// 关键字</span></span><br><span class="line">            <span class="attr">&quot;completion&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span><span class="string">&quot;title&quot;</span><span class="punctuation">,</span><span class="comment">//补全查询的字段</span></span><br><span class="line">                <span class="attr">&quot;skip_duplicates&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span><span class="comment">//跳过重复的</span></span><br><span class="line">                <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span><span class="number">10</span><span class="comment">//获取前10条结果</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第三节-RestClient使用"><a href="#第三节-RestClient使用" class="headerlink" title="第三节 RestClient使用"></a>第三节 RestClient使用</h3><p>主要是source接口的使用，按照提示写就行</p>
+<h2 id="第八章-数据同步"><a href="#第八章-数据同步" class="headerlink" title="第八章 数据同步"></a>第八章 数据同步</h2><h3 id="数据同步思路分析"><a href="#数据同步思路分析" class="headerlink" title="数据同步思路分析"></a>数据同步思路分析</h3><p>elasticsearch中的酒店数据来自于mysql数据库,因此mysql数据发生改变时,elasticsearch也必须跟着改变,这个就是elasticsearch与mysql之间的数据同步。</p>
+<p>解决方法：</p>
+<ul>
+<li>同步调用：实现简单，业务耦合，效率低</li>
+<li>异步调用：稍微复杂，基于MQ，依赖MQ的可靠性</li>
+<li>监听binlog：MySQL压力大，引入中间件canal困难</li>
+</ul>
+<h2 id="第九章-ES集群"><a href="#第九章-ES集群" class="headerlink" title="第九章 ES集群"></a>第九章 ES集群</h2><h3 id="第一节-搭建ES集群"><a href="#第一节-搭建ES集群" class="headerlink" title="第一节 搭建ES集群"></a>第一节 搭建ES集群</h3><p>单机ES存在的问题：海量数据存储问题、单点故障问题</p>
+<ul>
+<li>海量数据存储问题：将索引库逻辑分片，存储到多个节点</li>
+<li>单点故障问题：备份到不同节点</li>
+</ul>
+<p>可以用cerebro（github）管理集群，kibana创建索引库时设置分片信息</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">PUT /itcast</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;settings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;number_of_shards&quot;</span><span class="punctuation">:</span> <span class="number">3</span><span class="punctuation">,</span><span class="comment">// 分片数量</span></span><br><span class="line">        <span class="attr">&quot;number_of_replicas&quot;</span><span class="punctuation">:</span> <span class="number">1</span> <span class="comment">//副本数量</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;mappings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;properties&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="comment">// mapping映射定义.</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第二节-ES集群中的职责与脑裂"><a href="#第二节-ES集群中的职责与脑裂" class="headerlink" title="第二节 ES集群中的职责与脑裂"></a>第二节 ES集群中的职责与脑裂</h3><table>
+<thead>
+<tr>
+<th align="center">节点类型</th>
+<th align="center">配置参数</th>
+<th align="center">默认值</th>
+<th align="center">节点职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">master eligibal</td>
+<td align="center">node.master</td>
+<td align="center">true</td>
+<td align="center">备选主节点：主节点可以管理和记录集群状态，决定分片在哪个节点，处理创建和删除索引库的请求</td>
+</tr>
+<tr>
+<td align="center">data</td>
+<td align="center">node.data</td>
+<td align="center">true</td>
+<td align="center">数据节点：存储数据、聚合、搜索、CRUD</td>
+</tr>
+<tr>
+<td align="center">ingest</td>
+<td align="center">node.ingest</td>
+<td align="center">true</td>
+<td align="center">数据存储之前的预处理</td>
+</tr>
+<tr>
+<td align="center">coordinating</td>
+<td align="center">上面三个为false</td>
+<td align="center">无</td>
+<td align="center">路由请求到其他节点，合并其他节点的处理节点返回给用户</td>
+</tr>
+</tbody></table>
+<p>脑裂问题：默认情况下,每个节点都是master eligible节点,因此一旦master节点宕机,其它候选节点会选举一个成为主节点。当主节点与其他节点网络故障时,可能发生脑裂问题。</p>
+<p>为了避免脑裂,需要要求选票超过(eligible节点数量+1)&#x2F;2才能当选为主,因此eligible节点数量最好是奇数。对应配置项是discovery.zen.minimum_master_nodes,在es7.0以后,已经成为默认配置,因此一般不会发生脑裂问题。</p>
+<h3 id="第三节-ES分布式新增查询原理"><a href="#第三节-ES分布式新增查询原理" class="headerlink" title="第三节 ES分布式新增查询原理"></a>第三节 ES分布式新增查询原理</h3><p>新增原理：新增文档应当保证存储在不同的节点上，保证数据均衡。es会通过一个hash算法模除节点个数得到一个数值表示该文档所以节点位置，默认hash文档id，因此索引库一旦建立，不允许新增节点，否则会导致hash结果不一致。</p>
+<p>新增文档 -&gt; hash运算 -&gt; 路由到节点并保存 -&gt; 复制到从节点 -&gt; 告诉协调节点 -&gt; 协调节点返回成功值</p>
+<p>查询原理：</p>
+<ul>
+<li><p>scatter phase：分散阶段，协调节点会把请求分发到每一个分片</p>
+</li>
+<li><p>gather phase：聚集阶段，协调节点汇总data node的搜索结果，并处理为最终结果集返回给用户</p>
+</li>
+</ul>
+<h3 id="第四节-故障转移"><a href="#第四节-故障转移" class="headerlink" title="第四节 故障转移"></a>第四节 故障转移</h3><p>集群的master节点会监控集群中的节点状态,如果发现有节点宕机,会立即将宕机节点的分片数据迁移到其它节点,确保数据安全,这个叫做故障转移。</p>
 
   </article>
   <!-- tag -->
