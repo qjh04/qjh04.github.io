@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <meta name="author" content="jiahe">
+
+
+  <meta name="subtitle" content="只 争 朝 夕">
+
+
+  <meta name="description" content="一个在github上搭建的个人博客">
+
+
+
+<title>MybatisPlus | 嘉和望岗</title>
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/nprogress/nprogress.css">
+
+
+
+<script src="/lib/jquery.min.js"></script>
+
+
+<script src="/lib/iconify-icon.min.js"></script>
+
+
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+  };
+</script>
+
+
+<script src="/lib/nprogress/nprogress.js"></script>
+
+<script>
+  $(document).ready(() => {
+    NProgress.configure({
+      showSpinner: false,
+    });
+    NProgress.start();
+    $("#nprogress .bar").css({
+      background: "#de7441",
+    });
+    $("#nprogress .peg").css({
+      "box-shadow": "0 0 2px #de7441, 0 0 4px #de7441",
+    });
+    $("#nprogress .spinner-icon").css({
+      "border-top-color": "#de7441",
+      "border-left-color": "#de7441",
+    });
+    setTimeout(function () {
+      NProgress.done();
+      $(".fade").removeClass("out");
+    }, 800);
+  });
+</script>
+
+<script>
+  (function () {
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+    if (setting === "dark" || (prefersDark && setting !== "light"))
+      document.documentElement.classList.toggle("dark", true);
+    let isDark = document.documentElement.classList.contains("dark");
+  })();
+
+  $(document).ready(function () {
+    // init icon
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = document.documentElement.classList.contains("dark");
+    $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+
+    function toggleGiscusTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const giscusFrame = document.querySelector("iframe.giscus-frame");
+      if (giscusFrame) {
+        giscusFrame.contentWindow.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: isDark ? "dark" : "light",
+              },
+            },
+          },
+          "https://giscus.app"
+        );
+      }
+    }
+
+
+    // toggle dark mode
+    function toggleDark() {
+      let isDark = document.documentElement.classList.contains("dark");
+      const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+      isDark = !isDark;
+      document.documentElement.classList.toggle("dark", isDark);
+      $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+      if (prefersDark === isDark) {
+        localStorage.setItem("hexo-color-scheme", "auto");
+      } else {
+        localStorage.setItem("hexo-color-scheme", isDark ? "dark" : "light");
+      }
+      toggleGiscusTheme();
+    }
+    $("#toggle-dark").click(toggleDark);
+
+    // listen dark mode change
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+        if (setting === "auto") {
+          document.documentElement.classList.toggle("dark", e.matches);
+          $("#theme-icon").attr(
+            "icon",
+            e.matches ? "ri:moon-line" : "ri:sun-line"
+          );
+          toggleGiscusTheme();
+        }
+      });
+  });
+</script>
+
+
+
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body class="font-sans bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 relative">
+  <header class="fixed w-full px-5 py-1 z-10 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5">
+  <div class="max-auto">
+    <nav class="flex items-center text-base">
+      <a href="/" class="group">
+        <h2 class="font-medium tracking-tighterp text-l p-2">
+          <img class="w-5 mr-2 inline-block transition-transform group-hover:rotate-[30deg]" id="logo" src="/images/logo.svg" alt="嘉和望岗" />
+          嘉和望岗
+        </h2>
+      </a>
+      <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
+        MybatisPlus
+      </div>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        
+          <a class="hidden sm:flex" href="/archives">Posts</a>
+        
+        
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Github" target="_blank" rel="noopener" href="https://github.com/qjh04">
+              <iconify-icon width="20" icon="ri:github-line"></iconify-icon>
+            </a>
+          
+        
+        <a class="w-5 h-5 hidden sm:flex" title="Github" href="rss2.xml">
+          <iconify-icon width="20" icon="ri:rss-line"></iconify-icon>
+        </a>
+        <a class="w-5 h-5" title="toggle theme" id="toggle-dark">
+          <iconify-icon width="20" icon="" id="theme-icon"></iconify-icon>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-3 ml-3 sm:hidden">
+        <span class="w-5 h-5" aria-hidden="true" role="img" id="open-menu">
+          <iconify-icon width="20" icon="carbon:menu" ></iconify-icon>
+        </span>
+        <span class="w-5 h-5 hidden" aria-hidden="true" role="img" id="close-menu">
+          <iconify-icon  width="20" icon="carbon:close" ></iconify-icon>
+        </span>
+      </div>
+    </nav>
+  </div>
+</header>
+<div id="menu-panel" class="h-0 overflow-hidden sm:hidden fixed left-0 right-0 top-12 bottom-0 z-10">
+  <div id="menu-content" class="relative z-20 bg-white/80 px-6 sm:px-8 py-2 backdrop-blur-xl -translate-y-full transition-transform duration-300">
+    <ul class="nav flex flex-col sm:flex-row text-sm font-medium">
+      
+        <li class="nav-portfolio sm:mx-2 border-b sm:border-0 border-black/5 last:border-0 hover:text-main">
+          <a href="/archives" class="flex h-12 sm:h-auto items-center">Posts</a>
+        </li>
+      
+    </ul>
+  </div>
+  <div class="mask bg-black/20 absolute inset-0"></div>
+</div>
+
+  <main class="pt-14">
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        MybatisPlus
+      </h1>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2024-08-02</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>7 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>2k words</span>
+          </span>
+                  
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <h1 id="MybatisPlus"><a href="#MybatisPlus" class="headerlink" title="MybatisPlus"></a>MybatisPlus</h1><h2 id="第一章-入门认识"><a href="#第一章-入门认识" class="headerlink" title="第一章 入门认识"></a>第一章 入门认识</h2><h3 id="第一节-搭建步骤"><a href="#第一节-搭建步骤" class="headerlink" title="第一节 搭建步骤"></a>第一节 搭建步骤</h3><ol>
+<li>引入依赖mybatis-plus-boot-starter</li>
+<li>自定义Mapper继承BaseMapper类，泛型为需要操作表的实体类</li>
+<li>测试</li>
+</ol>
+<h3 id="第二节-常见注解"><a href="#第二节-常见注解" class="headerlink" title="第二节 常见注解"></a>第二节 常见注解</h3><p>MybatisPlus扫描实体类，并基于反射获取实体类的信息作为数据库信息</p>
+<ul>
+<li>MybatisPlus会把PO实体的类名驼峰转下划线作为表名</li>
+<li>MybatisPlus会把PO实体的所有变量名驼峰转下划线作为表的字段名，并根据变量类型推断字段类型</li>
+<li>MybatisPlus会把名为id的字段作为主键</li>
+</ul>
+<h4 id="TableName"><a href="#TableName" class="headerlink" title="@TableName"></a>@TableName</h4><ul>
+<li>描述：表名注解，标识实体类对应的表</li>
+<li>使用位置：实体类</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>属性</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>必须指定</strong></th>
+<th><strong>默认值</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>value</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>表名</td>
+</tr>
+<tr>
+<td>schema</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>schema</td>
+</tr>
+<tr>
+<td>keepGlobalPrefix</td>
+<td>boolean</td>
+<td>否</td>
+<td>false</td>
+<td>是否保持使用全局的 tablePrefix 的值（当全局 tablePrefix 生效时）</td>
+</tr>
+<tr>
+<td>resultMap</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>xml 中 resultMap 的 id（用于满足特定类型的实体类对象绑定）</td>
+</tr>
+<tr>
+<td>autoResultMap</td>
+<td>boolean</td>
+<td>否</td>
+<td>false</td>
+<td>是否自动构建 resultMap 并使用（如果设置 resultMap 则不会进行 resultMap 的自动构建与注入）</td>
+</tr>
+<tr>
+<td>excludeProperty</td>
+<td>String[]</td>
+<td>否</td>
+<td>{}</td>
+<td>需要排除的属性名 @since 3.3.1</td>
+</tr>
+</tbody></table>
+<h4 id="TableId"><a href="#TableId" class="headerlink" title="@TableId"></a>@TableId</h4><ul>
+<li>描述：主键注解，标识实体类中的主键字段</li>
+<li>使用位置：实体类的主键字段</li>
+</ul>
+<p><code>TableId</code>注解支持两个属性：</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>属性</strong></th>
+<th align="left"><strong>类型</strong></th>
+<th align="left"><strong>必须指定</strong></th>
+<th align="left"><strong>默认值</strong></th>
+<th align="left"><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">value</td>
+<td align="left">String</td>
+<td align="left">否</td>
+<td align="left">“”</td>
+<td align="left">表名</td>
+</tr>
+<tr>
+<td align="left">type</td>
+<td align="left">Enum</td>
+<td align="left">否</td>
+<td align="left">IdType.NONE</td>
+<td align="left">指定主键类型</td>
+</tr>
+</tbody></table>
+<p><code>IdType</code>支持的类型有：</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>值</strong></th>
+<th align="left"><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">AUTO</td>
+<td align="left">数据库 ID 自增</td>
+</tr>
+<tr>
+<td align="left">NONE</td>
+<td align="left">无状态，该类型为未设置主键类型（注解里等于跟随全局，全局里约等于 INPUT）</td>
+</tr>
+<tr>
+<td align="left">INPUT</td>
+<td align="left">insert 前自行 set 主键值</td>
+</tr>
+<tr>
+<td align="left">ASSIGN_ID</td>
+<td align="left">分配 ID(主键类型为 Number(Long 和 Integer)或 String)(since 3.3.0),使用接口IdentifierGenerator的方法nextId(默认实现类为DefaultIdentifierGenerator雪花算法)</td>
+</tr>
+<tr>
+<td align="left">ASSIGN_UUID</td>
+<td align="left">分配 UUID,主键类型为 String(since 3.3.0),使用接口IdentifierGenerator的方法nextUUID(默认 default 方法)</td>
+</tr>
+<tr>
+<td align="left">ID_WORKER</td>
+<td align="left">分布式全局唯一 ID 长整型类型(please use ASSIGN_ID)</td>
+</tr>
+<tr>
+<td align="left">UUID</td>
+<td align="left">32 位 UUID 字符串(please use ASSIGN_UUID)</td>
+</tr>
+<tr>
+<td align="left">ID_WORKER_STR</td>
+<td align="left">分布式全局唯一 ID 字符串类型(please use ASSIGN_ID)</td>
+</tr>
+</tbody></table>
+<h4 id="TableField"><a href="#TableField" class="headerlink" title="@TableField"></a>@TableField</h4><p>普通字段注解</p>
+<p>一般情况下我们并不需要给字段添加<code>@TableField</code>注解，一些特殊情况除外：</p>
+<ul>
+<li>成员变量名与数据库字段名不一致</li>
+<li>成员变量是以<code>isXXX</code>命名，按照<code>JavaBean</code>的规范，<code>MybatisPlus</code>识别字段时会把<code>is</code>去除，这就导致与数据库不符。</li>
+<li>成员变量名与数据库一致，但是与数据库的关键字冲突。使用<code>@TableField</code>注解给字段名添加转义字符：&#96;&#96;</li>
+</ul>
+<p>支持的其它属性如下：</p>
+<table>
+<thead>
+<tr>
+<th><strong>属性</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>必填</strong></th>
+<th><strong>默认值</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>value</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>数据库字段名</td>
+</tr>
+<tr>
+<td>exist</td>
+<td>boolean</td>
+<td>否</td>
+<td>true</td>
+<td>是否为数据库表字段</td>
+</tr>
+<tr>
+<td>condition</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>字段 where 实体查询比较条件，有值设置则按设置的值为准，没有则为默认全局的，<a target="_blank" rel="noopener" href="https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java">参考(opens new window)</a></td>
+</tr>
+<tr>
+<td>update</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>字段 update set 部分注入，例如：当在version字段上注解update&#x3D;”%s+1” 表示更新时会 set version&#x3D;version+1 （该属性优先级高于 el 属性）</td>
+</tr>
+<tr>
+<td>insertStrategy</td>
+<td>Enum</td>
+<td>否</td>
+<td>FieldStrategy.DEFAULT</td>
+<td>举例：<code>NOT_NULL insert into table_a(&lt;if test=&quot;columnProperty != null&quot;&gt;column&lt;/if&gt;) values (&lt;if test=&quot;columnProperty != null&quot;&gt;#&#123;columnProperty&#125;&lt;/if&gt;)</code></td>
+</tr>
+<tr>
+<td>updateStrategy</td>
+<td>Enum</td>
+<td>否</td>
+<td>FieldStrategy.DEFAULT</td>
+<td>举例：<code>IGNORED update table_a set column=#&#123;columnProperty&#125;</code></td>
+</tr>
+<tr>
+<td>whereStrategy</td>
+<td>Enum</td>
+<td>否</td>
+<td>FieldStrategy.DEFAULT</td>
+<td>举例：<code>NOT_EMPTY where &lt;if test=&quot;columnProperty != null and columnProperty!=&#39;&#39;&quot;&gt;column=#&#123;columnProperty&#125;&lt;/if&gt;</code></td>
+</tr>
+<tr>
+<td>fill</td>
+<td>Enum</td>
+<td>否</td>
+<td>FieldFill.DEFAULT</td>
+<td>字段自动填充策略</td>
+</tr>
+<tr>
+<td>select</td>
+<td>boolean</td>
+<td>否</td>
+<td>true</td>
+<td>是否进行 select 查询</td>
+</tr>
+<tr>
+<td>keepGlobalFormat</td>
+<td>boolean</td>
+<td>否</td>
+<td>false</td>
+<td>是否保持使用全局的 format 进行处理</td>
+</tr>
+<tr>
+<td>jdbcType</td>
+<td>JdbcType</td>
+<td>否</td>
+<td>JdbcType.UNDEFINED</td>
+<td>JDBC 类型 (该默认值不代表会按照该值生效)</td>
+</tr>
+<tr>
+<td>typeHandler</td>
+<td>TypeHander</td>
+<td>否</td>
+<td></td>
+<td>类型处理器 (该默认值不代表会按照该值生效)</td>
+</tr>
+<tr>
+<td>numericScale</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>指定小数点后保留的位数</td>
+</tr>
+</tbody></table>
+<h3 id="第三节-常见配置"><a href="#第三节-常见配置" class="headerlink" title="第三节 常见配置"></a>第三节 常见配置</h3><p>大多数的配置都有默认值，因此我们都无需配置。但还有一些是没有默认值的，例如:</p>
+<ul>
+<li>实体类的别名扫描包</li>
+<li>全局id类型</li>
+</ul>
+<p>需要注意的是，MyBatisPlus也支持手写SQL的，而mapper文件的读取地址可以自己配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mybatis-plus:</span></span><br><span class="line">	<span class="attr">type-aliases-package:</span> <span class="string">com.mp.domain.po</span> <span class="comment">#别名扫描包</span></span><br><span class="line">	<span class="string">mapper-locations:&quot;classpath</span> <span class="string">*:</span> <span class="string">/mapper/</span> <span class="string">**</span> <span class="string">/</span> <span class="string">*.</span> <span class="string">xml&quot;#</span> <span class="string">Mapper.xml文件地址,默认值</span></span><br><span class="line">	<span class="attr">configuration:</span></span><br><span class="line">		<span class="attr">map-underscore-to-camel-case:</span> <span class="literal">true</span> <span class="comment"># 是否开启下划线和驼峰的映射</span></span><br><span class="line">		<span class="attr">cache-enabled:</span> <span class="literal">false</span> <span class="comment"># 是否开启二级缓存</span></span><br><span class="line">	<span class="attr">global-config:</span></span><br><span class="line">		<span class="attr">db-config:</span></span><br><span class="line">			<span class="attr">id-type:</span> <span class="string">assign_id</span> <span class="comment"># id为雪花算法生成</span></span><br><span class="line">			<span class="attr">update-strategy:</span> <span class="string">not_null</span> <span class="comment"># 更新策略:只更新非空字段</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="第二章-核心功能"><a href="#第二章-核心功能" class="headerlink" title="第二章 核心功能"></a>第二章 核心功能</h2><h3 id="第一节-条件构造器"><a href="#第一节-条件构造器" class="headerlink" title="第一节 条件构造器"></a>第一节 条件构造器</h3><h4 id="QueryWrapper"><a href="#QueryWrapper" class="headerlink" title="QueryWrapper"></a>QueryWrapper</h4><p>无论是修改、删除、查询，都可以使用QueryWrapper来构建查询条件。</p>
+<h4 id="UpdateWrapper"><a href="#UpdateWrapper" class="headerlink" title="UpdateWrapper"></a>UpdateWrapper</h4><p>基于BaseMapper中的update方法更新时只能直接赋值，对于一些复杂的需求就难以实现。</p>
+<h4 id="LambdaQueryWrapper"><a href="#LambdaQueryWrapper" class="headerlink" title="LambdaQueryWrapper"></a>LambdaQueryWrapper</h4><p>无论是QueryWrapper还是UpdateWrapper在构造条件的时候都需要写死字段名称，会出现字符串魔法值。这在编程规范中显然是不推荐的。其中一种办法是基于变量的<code>gettter</code>方法结合反射技术。因此我们只要将条件对应的字段的<code>getter</code>方法传递给MybatisPlus，它就能计算出对应的变量名了。而传递方法可以使用JDK8中的<code>方法引用</code>和<code>Lambda</code>表达式。 因此MybatisPlus又提供了一套基于Lambda的Wrapper，包含两个：</p>
+<ul>
+<li>LambdaQueryWrapper</li>
+<li>LambdaUpdateWrapper</li>
+</ul>
+<p>分别对应QueryWrapper和UpdateWrapper</p>
+<h3 id="第二节-自定义SQL"><a href="#第二节-自定义SQL" class="headerlink" title="第二节 自定义SQL"></a>第二节 自定义SQL</h3><p>可以用Wrapper构建复杂where条件，其它的自己写，步骤如下</p>
+<ul>
+<li>基于wrapper构建where条件，将wrapper往下层传递</li>
+<li>mapper层接收参数用param注解声明wrapper参数为ew</li>
+<li>在手写sql后面加上一个 ${ew.customSqlSegment}</li>
+</ul>
+<h3 id="第三节-IService接口"><a href="#第三节-IService接口" class="headerlink" title="第三节 IService接口"></a>第三节 IService接口</h3><p>自定义service继承IService，泛型同样为要操作的实体类。自定义serviceImpl继承ServiceImpl实现service，需要传两个泛型，一个为下一层mapper类一个为要操作的实体类。</p>
+<h2 id="第三章-拓展功能"><a href="#第三章-拓展功能" class="headerlink" title="第三章 拓展功能"></a>第三章 拓展功能</h2><h3 id="第一节-代码生成器"><a href="#第一节-代码生成器" class="headerlink" title="第一节 代码生成器"></a>第一节 代码生成器</h3><ol>
+<li>安装插件MybatisPlus</li>
+<li>在菜单栏选择other配置数据库</li>
+</ol>
+<h3 id="第二节-静态工具"><a href="#第二节-静态工具" class="headerlink" title="第二节 静态工具"></a>第二节 静态工具</h3><p>Db静态工具，MybatisPlus最新工具，可以避免service循环依赖注入，用法基本相同。</p>
+<h3 id="第三节-逻辑删除"><a href="#第三节-逻辑删除" class="headerlink" title="第三节 逻辑删除"></a>第三节 逻辑删除</h3><ul>
+<li>设置一个逻辑删除字段</li>
+<li>删除时把字段设为1</li>
+<li>查询所有删除字段为0的数据</li>
+</ul>
+<p>MybatisPlus已经提供相关解决方案，不用改变方法调用方式，而在底层帮我们自动修改CRUD语句，我们要做的就是配置即可。</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mybatis-plus:</span></span><br><span class="line">	<span class="attr">global-config:</span></span><br><span class="line">		<span class="attr">db-config:</span></span><br><span class="line">			<span class="attr">logic-delete-field:</span> <span class="string">flag</span> <span class="comment"># 全局逻辑删除的实体字段名,字段类型可以是boolean、integer</span></span><br><span class="line">			<span class="attr">logic-delete-value:</span> <span class="number">1</span> <span class="comment"># 逻辑已删除值(默认为 1)</span></span><br><span class="line">			<span class="string">logic-not-delete-value:0</span> <span class="comment"># 逻辑未删除值(默认为 0)</span></span><br></pre></td></tr></table></figure>
+
+<p>逻辑删除会导致数据库表中垃圾数据越来越多，数据率越来越多，查询效率越来越低。不推荐逻辑删除，可以用数据迁移到其他表。</p>
+<h3 id="第四节-枚举处理器"><a href="#第四节-枚举处理器" class="headerlink" title="第四节 枚举处理器"></a>第四节 枚举处理器</h3><ol>
+<li>给枚举里的那个要插入数据库里的值加注解@EnumValue</li>
+<li>在yml文件中配置全局处理器</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mybatis-plus:</span></span><br><span class="line">  <span class="attr">configuration:</span></span><br><span class="line">	<span class="attr">default-enum-type-handler:</span> <span class="string">com.baomidou.mybatisplus.core.</span> <span class="string">handlers.</span> <span class="string">MybatisEnumTypeHandler</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第五节-JSON处理器"><a href="#第五节-JSON处理器" class="headerlink" title="第五节 JSON处理器"></a>第五节 JSON处理器</h3><p>在需要JSON的字段上加一个注解@TableField（typeHandler &#x3D; JacksonTypeHandler.class）</p>
+<p>在类的@TableName中加一个配置autoResultMap &#x3D; true</p>
+<h2 id="第四章-插件功能"><a href="#第四章-插件功能" class="headerlink" title="第四章 插件功能"></a>第四章 插件功能</h2><h3 id="第一节-分页插件"><a href="#第一节-分页插件" class="headerlink" title="第一节 分页插件"></a>第一节 分页插件</h3><p>现在配置类中将分页插件添加到核心插件，就可以去使用了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MybatisConfig</span> &#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> MybatisPlusInterceptor <span class="title function_">mybatisPlusInterceptor</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 1.初始化核心插件</span></span><br><span class="line">        <span class="type">MybatisPlusIntekceptor</span> <span class="variable">interceptor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MybatisPlusInterceptor</span>();</span><br><span class="line">        <span class="comment">// 2.添加分页插件</span></span><br><span class="line">        <span class="type">PaginationInnerInterceptor</span> <span class="variable">pageInterceptor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PaginationInnerInterceptor</span>(DbType.MYSQL);</span><br><span class="line">        pageInterceptor.setMaxLimit(<span class="number">1000L</span>);<span class="comment">// 设置分页上限</span></span><br><span class="line">        interceptor.addInnerInterceptor (pageInterceptor);</span><br><span class="line">        <span class="keyword">return</span> interceptor;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二节-通用分页实体"><a href="#第二节-通用分页实体" class="headerlink" title="第二节 通用分页实体"></a>第二节 通用分页实体</h3><ul>
+<li>前端请求的参数需要有当前页，多少条，是否排序，排序字段等</li>
+<li>响应体需要有总条数，总页数，当前页的内容等</li>
+</ul>
+<p>构建对象和解析对象逻辑相同，可以抽成工具类放在上面两个类中</p>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
+    
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a>
+        </span>
+      
+    
+  </div>
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+    </div>
+    <div>
+      
+        <a href="/2024/08/01/ES/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          ElasticSeach
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
+    
+
+  </div>
+</section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "default",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
+
+  </main>
+  <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
+  <!-- busuanzi -->
+  
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- Busuanzi Analytics -->
+<div class="flex items-center gap-2">
+  <span>Visitors</span>
+  <span id="busuanzi_value_site_uv"></span>
+  <span>Page Views</span>
+  <span id="busuanzi_value_site_pv"></span>
+</div>
+<!-- End Busuanzi Analytics -->
+
+
+  <!-- copyright -->
+  <div class="flex items-center gap-2">
+    <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: inherit;">CC BY-NC-SA 4.0</a>
+    <span>© 2022</span>
+    <iconify-icon width="18" icon="emojione-monotone:maple-leaf" ></iconify-icon>
+    <a href="https://github.com/xbmlz" target="_blank" rel="noopener noreferrer">xbmlz</a>
+  </div>
+  <!-- powered by -->
+  <div class="flex items-center gap-2">
+    <span>Powered by</span>
+    <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+    <span>&</span>
+    <a href="https://github.com/xbmlz/hexo-theme-maple" target="_blank" rel="noopener noreferrer">Maple</a>
+  </div>
+
+</footer>
+
+  <div class="back-to-top box-border fixed right-6 z-1024 -bottom-20 rounded py-1 px-1 bg-slate-900 opacity-60 text-white cursor-pointer text-center dark:bg-slate-600">
+    <span class="flex justify-center items-center text-sm">
+      <iconify-icon width="18" icon="ion:arrow-up-c" id="go-top"></iconify-icon>
+      <span id="scrollpercent"><span>0</span> %</span>
+    </span>
+  </div>
+  
+<script src="/js/main.js"></script>
+
+
+  <script>
+    $(document).ready(function () {
+      const mapleCount = "10";
+      const speed = "0.5";
+      const mapleEl = document.getElementById("maple");
+      const maples = Array.from({ length: mapleCount }).map(() => {
+        const maple = document.createElement("div");
+        const scale = Math.random() * 0.5 + 0.5;
+        const offset = Math.random() * 2 - 1;
+        const x = Math.random() * mapleEl.clientWidth;
+        const y = -Math.random() * mapleEl.clientHeight;
+        const duration = 10 / speed;
+        const delay = -duration;
+        maple.className = "maple";
+        maple.style.width = `${24 * scale}px`;
+        maple.style.height = `${24 * scale}px`;
+        maple.style.left = `${x}px`;
+        maple.style.top = `${y}px`;
+        maple.style.setProperty("--maple-fall-offset", offset);
+        maple.style.setProperty("--maple-fall-height", `${Math.abs(y) + mapleEl.clientHeight}px`);
+        maple.style.animation = `fall ${duration}s linear infinite`;
+        maple.style.animationDelay = `${delay}s`;
+        mapleEl.appendChild(maple)
+        return maple
+      })
+    });
+  </script>
+  
+
+
+  <div class="fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden" id="maple"></div>
+</body>
+
+</html>
