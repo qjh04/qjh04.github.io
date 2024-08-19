@@ -19,7 +19,7 @@
 
 
 
-<title>Java基础 | 嘉和望岗</title>
+<title>Maven | 嘉和望岗</title>
 
 
 
@@ -158,7 +158,7 @@
         </h2>
       </a>
       <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
-        Java基础
+        Maven
       </div>
       <div class="flex-1"></div>
       <div class="flex items-center gap-3">
@@ -222,23 +222,23 @@
   <header class="overflow-hidden pt-6 pb-6 md:pt-12">
     <div class="pt-4 md:pt-6">
       <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
-        Java基础
+        Maven
       </h1>
       <div>
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2024-06-12</time>
+            <time>2024-08-19</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>6 min</span>
+            <span>4 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>1.8k words</span>
+            <span>1.2k words</span>
           </span>
                   
         </section>
@@ -247,20 +247,89 @@
   </header>
   <!-- content -->
   <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
-    <h3 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h3><p>面向对象更注重对象的存在和对象的描述而面向过程更注重于本过程实现了什么功能。面向对象有三大特征，封装，继承，多态。<br>​封装，将对象的成员变量私有，开放相关的get和set方法让外部对象访问。还可以在相关方法里加上自己想加的业务需求。继承，继承父类的所有成员变量和成员方法，提高代码复用性，可以对需要重写的方法进行重写，为多态提供基础支持。多态，对于一个行为，不同的子类具有不同的表现形式。多态需要三个条件，继承父类，重写父类方法，父类引用指向子类对象，引用去调被重写的方法。</p>
-<h3 id="JDK、JRE和JVM的区别"><a href="#JDK、JRE和JVM的区别" class="headerlink" title="JDK、JRE和JVM的区别"></a>JDK、JRE和JVM的区别</h3><p>JDK是java开发工具，JRE是Java程序运行环境，JVM是java虚拟机。三者的关系是，JDK包含JRE和Javac、Java等工具，JRE包含JVM和一些类库文件。将编译好的class文件可以直接放在windows或Linux系统的Java虚拟机上运行。</p>
-<h3 id="和equals的区别"><a href="#和equals的区别" class="headerlink" title="&#x3D;&#x3D;和equals的区别"></a>&#x3D;&#x3D;和equals的区别</h3><p>&#x3D;&#x3D;判断的是引用地址是否一致，所以当判断两个String对象的时候，可能会出现字符一样，但是判断后不相等的情况，这时候需要用equals方法判断。没有重写的equals方法底层代码就是用=&#x3D;判断，String的是重写后的equals，会先判断引用是否相等，相等就返回true，不等会逐字符判断都相等也会返回相等。</p>
-<h3 id="final有什么作用？"><a href="#final有什么作用？" class="headerlink" title="final有什么作用？"></a>final有什么作用？</h3><p>可以修饰类、方法、变量。当修饰类时，此类不可以被继承。修饰方法时，方法不能被重写，但可以重载。修饰成员变量，成员变量可以在静态代码快赋值。修饰局部变量可以不赋值，但是后边赋值以后不能改变。修饰基本数据类型值不可以更改，修饰引用数据类型，不可以再指向另一个对象但是引用的值可以改变。</p>
-<h3 id="为什么局部内部类和匿名内部类只能访问局部final变量？"><a href="#为什么局部内部类和匿名内部类只能访问局部final变量？" class="headerlink" title="为什么局部内部类和匿名内部类只能访问局部final变量？"></a>为什么局部内部类和匿名内部类只能访问局部final变量？</h3><p>内部类和外部类级别一致，内部类不会因为定义在外部类方法里，方法执行完毕而销毁。因此，内部类在调用外部类的成员变量而外部类执行完毕销毁，就会产生问题。为了解决这个问题将外部类copy一份到内部类，又会出现数据不一致的问题，所以只能将要局部f变量用final修饰。</p>
-<h3 id="重载和重写的区别"><a href="#重载和重写的区别" class="headerlink" title="重载和重写的区别"></a>重载和重写的区别</h3><p>重载发生在同一个类里，方法名必须相同，参数名、类型、个数、顺序可以不同，方法返回值、访问修饰符可以不同，如果只有类型修饰符不同会编译出错。<br>重写发生在一个子类继承父类的时候，子类重写父类拥有的方法。方法名、参数列表必须相同，返回值范围小于等于父类，抛出的异常小于等于父类，访问类型大于等于父类，private不允许重写。</p>
-<h3 id="接口和抽象类的区别"><a href="#接口和抽象类的区别" class="headerlink" title="接口和抽象类的区别"></a>接口和抽象类的区别</h3><p>接口可以实现多个，抽象类只能继承一个。接口只能有public abstract()方法，抽象类可以有其他成员方法。接口只能有public static final类型的成员变量，抽象类可以有其他类型的成员变量。接口是对类的约束，抽象类是为了代码复用。接口定义了类的行为的有无不关心具体，抽象类更关注类的行为的实现。</p>
-<h3 id="List和Set的区别"><a href="#List和Set的区别" class="headerlink" title="List和Set的区别"></a>List和Set的区别</h3><p>List按进入顺序排序，可重复可以有多个Null对象，可以按iterator逐一遍历，也可以用get index方法。<br>Set无顺序，不能有重复，只允许有一个Null对象，推荐用iterator遍历。</p>
-<h3 id="hashCode和equals"><a href="#hashCode和equals" class="headerlink" title="hashCode和equals"></a>hashCode和equals</h3><p>hashCode获取对象的哈希值，本质上是int型数值，是确定该对象存储在哈希表上的索引位置。它的特点是能根据键快速找到对应的值。如果两个对象相等，hashCode一定相等，equals也返回true，如果两个对象hashCode相等，他们不一定相等。所以重写equals方法后还要重写hashCode方法。</p>
-<h3 id="ArrayList和LinkedList区别"><a href="#ArrayList和LinkedList区别" class="headerlink" title="ArrayList和LinkedList区别"></a>ArrayList和LinkedList区别</h3><p> ArrayList基于动态数组，底层连续存储，随机访问。因为数组长度固定，当数组存到一定数量需要扩容。扩容时可能用到头插法，头插法效率极低 因为要从后面一个一个拷贝往后移，而尾插法效率极高甚至比LinkedList还要好。<br>LinkedList基于链表，底层分散存储，适合增删改业务。不适合查询，因为要逐一遍历，遍历时用iterator不要用for循环，因为for循环每次用get方法取要遍历一次链表消耗极大，另外也不要使用indexOf方法，找不到目标值会遍历整个链表。</p>
-<h3 id="HashMap与Hashtable有什么区别"><a href="#HashMap与Hashtable有什么区别" class="headerlink" title="HashMap与Hashtable有什么区别"></a>HashMap与Hashtable有什么区别</h3><p>HashMap没有用synchronized修饰，线程非安全，Hashtable线程安全。HashMap允许Key和Value存储 Null值，Hashtable不允许。<br>底层实现原理，利用数组和链表。jdk8开始，当链表长度超过8，数组长度超过64，链表转为红黑树，元素以内部类Node节点存在。计算Key的hash值，二次hash对数组长度取余，得到对应数组下标，如果没有产生哈希冲突，直接将节点存入数组，如果产生哈希冲突，先进行equals比对，相同更新，不同添加到链表里，链表长度超过8并且数组超过64转换为红黑树，长度低于6红黑树在转回链表。如果Key为Null，存入0。<br>数组扩容问题，由于底层用数组实现，不能动态扩容，所以当长度不够用时，会重新new一个出来，再将原来的数组copy到新数组。</p>
-<h3 id="如何实现一个IOC容器"><a href="#如何实现一个IOC容器" class="headerlink" title="如何实现一个IOC容器"></a>如何实现一个IOC容器</h3><p>配置文件配置包扫描路径，定义一些注解，分别表示访问控制层、业务服务层、数据持久层、依赖注入注解、获取配置文件注解等。递归包扫描获取.class文件，添加到一个Set容器中。遍历这个Set容器，确定需要交给IOC管理的类，定义一个安全的Map容器管理这些类。遍历这个IOC容器对需要注入的类进行依赖注入。</p>
-<h3 id="什么是字节码"><a href="#什么是字节码" class="headerlink" title="什么是字节码"></a>什么是字节码</h3><p>在机器和程序之间有一个接口，java虚拟机。编译程序只需要生成虚拟机能够理解的代码，然后解释程序将虚拟机代码转换为特定系统能够识别的机器码执行。供虚拟机理解的代码成为字节码。它只面向java虚拟机。</p>
-<h3 id="字节码的作用是什么"><a href="#字节码的作用是什么" class="headerlink" title="字节码的作用是什么"></a>字节码的作用是什么</h3><p>解决传统解释型语言执行效率低的问题，同时保留了解释型语言可移植性高的优点。所以java程序运行效率高，因为字节码只面向虚拟机，也解决了面对特定系统需要重新编译的问题。</p>
+    <h1 id="Maven"><a href="#Maven" class="headerlink" title="Maven"></a>Maven</h1><h2 id="第一章-简介"><a href="#第一章-简介" class="headerlink" title="第一章 简介"></a>第一章 简介</h2><p>Maven本质是一个项目管理工具，将项目开发和管理过程抽象成一个项目对象模型（POM）。主要用于项目构建，依赖管理，统一开发结构。</p>
+<h3 id="仓库"><a href="#仓库" class="headerlink" title="仓库"></a>仓库</h3><p>用于存储资源，里面包含各种各样的jar包。</p>
+<ul>
+<li>本地仓库：自己电脑上的存储资源的地方</li>
+<li>远程仓库：非本机，为本地仓库提供资源<ul>
+<li>中央仓库：Maven团队维护，所有jar包全部开源</li>
+<li>私服：部门&#x2F;公司范围内的存储资源的仓库从中央仓库获取。保存具有版权的资源，包含购买或者自主研发的jar包</li>
+</ul>
+</li>
+</ul>
+<h3 id="坐标"><a href="#坐标" class="headerlink" title="坐标"></a>坐标</h3><p>Maven中描述资源在仓库中的位置														</p>
+<p>Maven坐标主要组成</p>
+<ul>
+<li>groupld:定义当前Maven项目隶属组织名称(通常是域名反写,例如:org.mybatis)</li>
+<li>artifactld:定义当前Maven项目名称(通常是模块名称,例如CRM、SMS)</li>
+<li>version:定义当前项目版本号</li>
+</ul>
+<h2 id="第二章-依赖配置"><a href="#第二章-依赖配置" class="headerlink" title="第二章 依赖配置"></a>第二章 依赖配置</h2><h3 id="依赖传递性"><a href="#依赖传递性" class="headerlink" title="依赖传递性"></a>依赖传递性</h3><ul>
+<li>直接传递：在当前项目中通过依赖配置建立的依赖关系</li>
+<li>间接传递：依赖的资源的资源依赖其他配置，当前项目间接依赖其他资源</li>
+</ul>
+<h3 id="依赖传递冲突问题"><a href="#依赖传递冲突问题" class="headerlink" title="依赖传递冲突问题"></a>依赖传递冲突问题</h3><ul>
+<li>路径优先：层级越深，优先级越低</li>
+<li>声明优先：配置靠前的覆盖配置靠后的，但是在同一pom文件中，后面的覆盖前面的</li>
+</ul>
+<h3 id="可选依赖"><a href="#可选依赖" class="headerlink" title="可选依赖"></a>可选依赖</h3><p>依赖不透明给下一层，加一个标签：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="排除依赖"><a href="#排除依赖" class="headerlink" title="排除依赖"></a>排除依赖</h3><p>主动断开依赖的资源，在需要排除的资源的坐标下面加一系列标签</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">exclusions</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">		坐标</span><br><span class="line">	<span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="依赖范围"><a href="#依赖范围" class="headerlink" title="依赖范围"></a>依赖范围</h3><p>依赖的jar默认情况可以在任何地方使用，可以通过scope标签设定其作用范围</p>
+<ul>
+<li>主程序范围有效(main文件夹范围内)</li>
+<li>测试程序范围有效(test文件夹范围内)</li>
+<li>是否参与打包(package指令范围内)</li>
+</ul>
+<h2 id="第三章-生命周期与插件"><a href="#第三章-生命周期与插件" class="headerlink" title="第三章 生命周期与插件"></a>第三章 生命周期与插件</h2><h3 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h3><p>项目一次构建过程经过了几次事件</p>
+<p>分为三套：</p>
+<ul>
+<li>clean：清理工作</li>
+<li>default：核心工作，例如编译，测试，打包，部署等<ul>
+<li>一般包括compile、test、package、install，按顺序执行</li>
+</ul>
+</li>
+<li>site：产生报告，发布站点</li>
+</ul>
+<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><ul>
+<li>插件与生命周期内的阶段绑定,在执行到对应生命周期时执行对应的插件功能</li>
+<li>默认maven在各个生命周期上绑定有预设的功能</li>
+<li>通过插件可以自定义其他功能</li>
+</ul>
+<h2 id="第四章-分模块开发与设计"><a href="#第四章-分模块开发与设计" class="headerlink" title="第四章 分模块开发与设计"></a>第四章 分模块开发与设计</h2><h3 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h3><p>作用:聚合用于快速构建maven工程,一次性构建多个项目&#x2F;模块。</p>
+<ul>
+<li><p>制作方式:<br>创建一个空模块,打包类型定义为pom</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">packaging</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义当前模块进行构建操作时关联的其他模块名称</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">modules</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>../ssm controller<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>../ssm service<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>../ssm dao<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>../ssm pojo<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">modules</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>注意事项:参与聚合操作的模块最终执行顺序与模块间的依赖关系有关,与配置顺序无关</p>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>作用：通过继承可以实现在子工程中沿用父工程中的配置，maven中的继承与java中的继承相似,在子工程中配置继承关系</p>
+<p>制作方式：<br>在子工程中声明其父工程坐标与对应的位置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 定义该工程的父工程 -- &gt;</span></span><br><span class="line"><span class="comment">&lt;parent&gt;</span></span><br><span class="line"><span class="comment">    &lt;groupId&gt;com.itheima&lt;/groupId&gt;</span></span><br><span class="line"><span class="comment">    &lt;artifactId&gt;ssm&lt;/artifactId&gt;</span></span><br><span class="line"><span class="comment">    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;</span></span><br><span class="line"><span class="comment">    &lt;!-- 填写父工程的pom文件 -- &gt;</span></span><br><span class="line"><span class="comment">    &lt;relativePath&gt; .. /ssm/pom.xml&lt;/relativePath&gt;</span></span><br><span class="line"><span class="comment">&lt;/parent&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><p>属性类别：自定义属性</p>
+<p>作用：等同于定义变量,方便统一维护<br>定义格式：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 定义自定义属性 -- &gt;</span></span><br><span class="line"><span class="comment">&lt;properties&gt;</span></span><br><span class="line"><span class="comment">    &lt;spring.version&gt;5.1.9.RELEASE&lt;/spring.version&gt;</span></span><br><span class="line"><span class="comment">    &lt;junit.version&gt;4.12&lt;/junit.version&gt;</span></span><br><span class="line"><span class="comment">&lt;/properties&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>调用格式:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="版本管理"><a href="#版本管理" class="headerlink" title="版本管理"></a>版本管理</h3><p>工程版本</p>
+<ul>
+<li>SNAPSHOT(快照版本)<ul>
+<li>项目开发过程中,为方便团队成员合作,解决模块间相互依赖和时时更新的问题,开发者对每个模块进行构建的时候,输出的临时性版本叫快照版本(测试阶段版本)快照版本会随着开发的进展不断更新</li>
+</ul>
+</li>
+<li>RELEASE(发布版本)<ul>
+<li>项目开发到进入阶段里程碑后,向团队外部发布较为稳定的版本,这种版本所对应的构件文件是稳定的,即便进行功能的后续开发,也不会改变当前发布版本内容,这种版本称为发布版本</li>
+</ul>
+</li>
+</ul>
 
   </article>
   <!-- tag -->
@@ -268,7 +337,7 @@
     
       
         <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
-          <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/">八股文</a>
+          <a href="/tags/%E5%B7%A5%E5%85%B7/">工具</a>
         </span>
       
     
@@ -277,16 +346,11 @@
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
       
-        <a href="/2024/07/18/%E6%88%91%E4%BB%AC%E4%BF%A9/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
-          我们俩
-        </a>
-      
     </div>
     <div>
       
-        <a href="/2024/06/12/Spring/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          Spring
+        <a href="/2024/08/18/JAVA%20%E5%9F%BA%E7%A1%80/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          JAVA 基础
           <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
         </a>
       
