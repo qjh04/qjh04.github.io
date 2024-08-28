@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <meta name="author" content="jiahe">
+
+
+  <meta name="subtitle" content="只 争 朝 夕">
+
+
+  <meta name="description" content="一个在github上搭建的个人博客">
+
+
+
+<title>MySQL | 嘉和望岗</title>
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/nprogress/nprogress.css">
+
+
+
+<script src="/lib/jquery.min.js"></script>
+
+
+<script src="/lib/iconify-icon.min.js"></script>
+
+
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+  };
+</script>
+
+
+<script src="/lib/nprogress/nprogress.js"></script>
+
+<script>
+  $(document).ready(() => {
+    NProgress.configure({
+      showSpinner: false,
+    });
+    NProgress.start();
+    $("#nprogress .bar").css({
+      background: "#de7441",
+    });
+    $("#nprogress .peg").css({
+      "box-shadow": "0 0 2px #de7441, 0 0 4px #de7441",
+    });
+    $("#nprogress .spinner-icon").css({
+      "border-top-color": "#de7441",
+      "border-left-color": "#de7441",
+    });
+    setTimeout(function () {
+      NProgress.done();
+      $(".fade").removeClass("out");
+    }, 800);
+  });
+</script>
+
+<script>
+  (function () {
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+    if (setting === "dark" || (prefersDark && setting !== "light"))
+      document.documentElement.classList.toggle("dark", true);
+    let isDark = document.documentElement.classList.contains("dark");
+  })();
+
+  $(document).ready(function () {
+    // init icon
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = document.documentElement.classList.contains("dark");
+    $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+
+    function toggleGiscusTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const giscusFrame = document.querySelector("iframe.giscus-frame");
+      if (giscusFrame) {
+        giscusFrame.contentWindow.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: isDark ? "dark" : "light",
+              },
+            },
+          },
+          "https://giscus.app"
+        );
+      }
+    }
+
+
+    // toggle dark mode
+    function toggleDark() {
+      let isDark = document.documentElement.classList.contains("dark");
+      const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+      isDark = !isDark;
+      document.documentElement.classList.toggle("dark", isDark);
+      $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+      if (prefersDark === isDark) {
+        localStorage.setItem("hexo-color-scheme", "auto");
+      } else {
+        localStorage.setItem("hexo-color-scheme", isDark ? "dark" : "light");
+      }
+      toggleGiscusTheme();
+    }
+    $("#toggle-dark").click(toggleDark);
+
+    // listen dark mode change
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+        if (setting === "auto") {
+          document.documentElement.classList.toggle("dark", e.matches);
+          $("#theme-icon").attr(
+            "icon",
+            e.matches ? "ri:moon-line" : "ri:sun-line"
+          );
+          toggleGiscusTheme();
+        }
+      });
+  });
+</script>
+
+
+
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body class="font-sans bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 relative">
+  <header class="fixed w-full px-5 py-1 z-10 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5">
+  <div class="max-auto">
+    <nav class="flex items-center text-base">
+      <a href="/" class="group">
+        <h2 class="font-medium tracking-tighterp text-l p-2">
+          <img class="w-5 mr-2 inline-block transition-transform group-hover:rotate-[30deg]" id="logo" src="/images/logo.svg" alt="嘉和望岗" />
+          嘉和望岗
+        </h2>
+      </a>
+      <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
+        MySQL
+      </div>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        
+          <a class="hidden sm:flex" href="/archives">Posts</a>
+        
+        
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Github" target="_blank" rel="noopener" href="https://github.com/qjh04">
+              <iconify-icon width="20" icon="ri:github-line"></iconify-icon>
+            </a>
+          
+        
+        <a class="w-5 h-5 hidden sm:flex" title="Github" href="rss2.xml">
+          <iconify-icon width="20" icon="ri:rss-line"></iconify-icon>
+        </a>
+        <a class="w-5 h-5" title="toggle theme" id="toggle-dark">
+          <iconify-icon width="20" icon="" id="theme-icon"></iconify-icon>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-3 ml-3 sm:hidden">
+        <span class="w-5 h-5" aria-hidden="true" role="img" id="open-menu">
+          <iconify-icon width="20" icon="carbon:menu" ></iconify-icon>
+        </span>
+        <span class="w-5 h-5 hidden" aria-hidden="true" role="img" id="close-menu">
+          <iconify-icon  width="20" icon="carbon:close" ></iconify-icon>
+        </span>
+      </div>
+    </nav>
+  </div>
+</header>
+<div id="menu-panel" class="h-0 overflow-hidden sm:hidden fixed left-0 right-0 top-12 bottom-0 z-10">
+  <div id="menu-content" class="relative z-20 bg-white/80 px-6 sm:px-8 py-2 backdrop-blur-xl -translate-y-full transition-transform duration-300">
+    <ul class="nav flex flex-col sm:flex-row text-sm font-medium">
+      
+        <li class="nav-portfolio sm:mx-2 border-b sm:border-0 border-black/5 last:border-0 hover:text-main">
+          <a href="/archives" class="flex h-12 sm:h-auto items-center">Posts</a>
+        </li>
+      
+    </ul>
+  </div>
+  <div class="mask bg-black/20 absolute inset-0"></div>
+</div>
+
+  <main class="pt-14">
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        MySQL
+      </h1>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2024-08-27</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>24 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>6.5k words</span>
+          </span>
+                  
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <h1 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h1><h2 id="数据库基础"><a href="#数据库基础" class="headerlink" title="数据库基础"></a>数据库基础</h2><h3 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h3><ul>
+<li>数据库（DB）：存储数据的仓库</li>
+<li>数据库管理软件（DBMS）：管理数据库的软件（Oracle、MySQL、SQL server）</li>
+</ul>
+<h3 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h3><h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><ul>
+<li>不区分大小写</li>
+<li>; 结尾表示一句</li>
+</ul>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><p>数</p>
+<ul>
+<li>tiny&#x2F;small&#x2F;medium&#x2F; int：1、2、3、4字节</li>
+<li>float&#x2F;double(4,1)：总长度为4，1位小数</li>
+</ul>
+<p>字符串</p>
+<ul>
+<li>char(10)：定长</li>
+<li>varchar(10)：变长（最长为10）</li>
+</ul>
+<p>日期时间</p>
+<ul>
+<li>date：2002-09-29</li>
+<li>time：18:20:12</li>
+<li>datetime：2002-09-29 18:20:12</li>
+</ul>
+<h4 id="DDL（definition）"><a href="#DDL（definition）" class="headerlink" title="DDL（definition）"></a>DDL（definition）</h4><p>数据库操作</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> DATABASES;</span><br><span class="line"><span class="keyword">CREATE</span> DATABASE myfirst;</span><br><span class="line"><span class="keyword">DROP</span> DATABASE test;				#删除数据库</span><br><span class="line">USE myfirst;   					#使用数据库             </span><br><span class="line"><span class="keyword">SELECT</span> DATABASE();				#展现当前使用的数据库</span><br></pre></td></tr></table></figure>
+
+<p>表操作</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> TABLES;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> myfirstTable(</span><br><span class="line">	id <span class="type">int</span> comment &quot;编号&quot;;</span><br><span class="line">	age <span class="type">int</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">DESC</span> myfirstTable;                  #展示表结构</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> mymyfirstTable;			#删除表</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> mymyfirstTable RENAME <span class="keyword">TO</span> mysecondTable;			#改表名</span><br></pre></td></tr></table></figure>
+
+<p>字段操作</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> mymyfirstTable <span class="keyword">ADD</span> nickname <span class="type">varchar</span>(<span class="number">20</span>);			#添加字段</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> mymyfirstTable MODIFY nickname <span class="type">varchar</span>(<span class="number">10</span>);			#修改数据类型</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> mymyfirstTable CHANGE nickname name <span class="type">varchar</span>(<span class="number">20</span>);	#修改字段名和数据类型</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> mymyfirstTable <span class="keyword">DROP</span> name;							#删除字段</span><br></pre></td></tr></table></figure>
+
+<h4 id="DML（manipulation）"><a href="#DML（manipulation）" class="headerlink" title="DML（manipulation）"></a>DML（manipulation）</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> mymyfirstTable(id,age) <span class="keyword">VALUES</span> (<span class="number">1</span>,<span class="number">1</span>),(<span class="number">2</span>,<span class="number">1</span>);			#添加数据</span><br><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> mymyfirstTable <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="number">1</span>;							#删除数据</span><br><span class="line"><span class="keyword">UPDATE</span> mymyfirstTable <span class="keyword">SET</span> age<span class="operator">=</span><span class="number">2</span> <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="number">2</span>;						#修改数据</span><br><span class="line"><span class="keyword">TRUNCATE</span> mymyfirstTable;										#删除表并重新创建（清空数据）</span><br></pre></td></tr></table></figure>
+
+<h4 id="DQL（query）"><a href="#DQL（query）" class="headerlink" title="DQL（query）"></a>DQL（query）</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> 字段列表</span><br><span class="line"><span class="keyword">FROM</span> 表名</span><br><span class="line"><span class="keyword">WHERE</span> 条件列表（<span class="operator">&gt;=</span>, <span class="operator">&lt;=</span>, <span class="operator">=</span>, <span class="operator">!</span>, <span class="keyword">between</span> ... <span class="keyword">and</span> ..., <span class="keyword">in</span> ..., <span class="keyword">like</span>, <span class="keyword">and</span>, <span class="keyword">or</span>）</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> 字段列表（通常配合聚合函数avg，sum，count，max等等）</span><br><span class="line"><span class="keyword">HAVING</span> 分组后的条件列表</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> 排序字段列表（<span class="keyword">DESC</span>降序，<span class="keyword">ASC</span>升序）</span><br><span class="line">LIMIT 分页参数（起始索引，行数）</span><br></pre></td></tr></table></figure>
+
+<p>涉及到字符串相关，通常用like来操作<br>group by的select后面通常只有groupby的字段和聚合函数，案例：统计男女分别有多少人<br>先where，再groupby，再having</p>
+<h4 id="DCL（control）"><a href="#DCL（control）" class="headerlink" title="DCL（control）"></a>DCL（control）</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">&#x27;cuixiu&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;123456&#x27;</span>;</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">USER</span> <span class="string">&#x27;cuixiu&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span>;</span><br><span class="line"><span class="keyword">GRANT</span>  权限列表 <span class="keyword">on</span> 数据库名.表名 <span class="keyword">TO</span> <span class="string">&#x27;cuixiu&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span>;				#授予权限</span><br><span class="line"><span class="keyword">REVOKE</span> 权限列表 <span class="keyword">on</span> 数据库名.表名 <span class="keyword">FROM</span> <span class="string">&#x27;cuixiu&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span>;			#撤销权限</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><h4 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h4><ul>
+<li>concat</li>
+<li>upper</li>
+<li>lower</li>
+<li>lpad（左填充）</li>
+<li>rpad（右填充）</li>
+<li>tram（去除前后空格）</li>
+<li>substring</li>
+</ul>
+<h4 id="日期函数"><a href="#日期函数" class="headerlink" title="日期函数"></a>日期函数</h4><ul>
+<li>now</li>
+<li>curdate</li>
+<li>curtime</li>
+<li>year(now())</li>
+<li>month(now())</li>
+<li>day(now())</li>
+<li>date_add(now(),INTERVAL 70 DAY) ：相加</li>
+<li>datediff(now(),now()) ：返回时间间隔的天数</li>
+</ul>
+<h4 id="数字函数"><a href="#数字函数" class="headerlink" title="数字函数"></a>数字函数</h4><ul>
+<li>ceil ：天花板</li>
+<li>floor ：地板</li>
+<li>round(0.12,1) ：四舍五入，保留一位小数</li>
+<li>rand：返回0~1的随机数</li>
+<li>mod(x,y)</li>
+</ul>
+<h4 id="流程函数"><a href="#流程函数" class="headerlink" title="流程函数"></a>流程函数</h4><ul>
+<li>if(value,t,f) ：如果value是true，返回t；否则返回f</li>
+<li>ifnull(value,t) ：如果value不为空，返回value；否则返回t</li>
+<li>case when value then res1 else res2 ：如果value为true，返回res1</li>
+<li>case expr when value then res1 else res2 ：如果expr&#x3D;value，返回res1</li>
+</ul>
+<h3 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h3><p>建表时，字段名 字段类型 约束</p>
+<ul>
+<li><p>非空约束</p>
+</li>
+<li><p>唯一约束</p>
+</li>
+<li><p>默认约束default</p>
+</li>
+<li><p>条件约束check</p>
+</li>
+<li><p>主键约束</p>
+</li>
+<li><p>外键约束</p>
+<ul>
+<li>外键删除更新行为<ul>
+<li>no action（不允许删除更新）</li>
+<li>district（不允许删除更新）</li>
+<li>cascade（级联删除更新）</li>
+<li>set null（设置子表的对应行的字段为null）</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> myfirsttable <span class="keyword">add</span> <span class="keyword">constraint</span> person_dept_id <span class="keyword">foreign</span> key (dept_id) <span class="keyword">references</span> dept(id) <span class="keyword">on</span> <span class="keyword">update</span> descade <span class="keyword">on</span> <span class="keyword">delete</span> descade;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="多表查询"><a href="#多表查询" class="headerlink" title="多表查询"></a>多表查询</h3><h4 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h4><ul>
+<li>on来表示join的条件</li>
+<li>inner join ：求交集</li>
+<li>left outer join ：保留左边的全部和交集</li>
+<li>right outer join ：保留右边的全部和交集</li>
+<li>自连接：自己和自己join，必须要写两个不同的别名</li>
+</ul>
+<h4 id="联合查询"><a href="#联合查询" class="headerlink" title="联合查询"></a>联合查询</h4><p>求并集（左右两边必须是相同的列数和数据类型）</p>
+<ul>
+<li>union：去除重复</li>
+<li>union all：不去除重复</li>
+</ul>
+<h4 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h4><ul>
+<li>标量子查询：通常用&#x3D;、&gt;、&lt;等</li>
+<li>列子查询：通常用in、&gt; all、&gt; any、&gt; some等<ul>
+<li>age &gt; all(列子查询)</li>
+</ul>
+</li>
+<li>行子查询：通常用&#x3D;<ul>
+<li>(a,b,c) &#x3D; 行子查询</li>
+</ul>
+</li>
+<li>表子查询</li>
+</ul>
+<h2 id="数据库进阶"><a href="#数据库进阶" class="headerlink" title="数据库进阶"></a>数据库进阶</h2><h3 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h3><p>存储引擎就是存储数据、建立索引、更新&#x2F;查询数据等技术的实现方式 。存储引擎是基于表的，而不是基于库的，所以存储引擎也可被称为表类型。建表是指定存储索引。</p>
+<p>查询当前数据库支持的存储引擎 ： show ENGINES;</p>
+<h4 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h4><p>介绍</p>
+<ul>
+<li>InnoDB是一种兼顾高可靠性和高性能的通用存储引擎，在 MySQL 5.5 之后，InnoDB是默认的MySQL 存储引擎。</li>
+</ul>
+<p>特点</p>
+<ul>
+<li>DML操作遵循ACID模型，支持事务；</li>
+<li>行级锁，提高并发访问性能；</li>
+<li>支持外键FOREIGN KEY约束，保证数据的完整性和正确性；</li>
+</ul>
+<p>文件</p>
+<p>xxx.ibd：xxx代表的是表名，innoDB引擎的每张表都会对应这样一个表空间文件，存储该表的表结构（frm-早期的 、sdi-新版的）、数据和索引。</p>
+<p>逻辑存储结构</p>
+<ul>
+<li>表空间 : InnoDB存储引擎逻辑结构的最高层，ibd文件其实就是表空间文件，在表空间中可以包含多个Segment段。</li>
+<li>段 : 表空间是由各个段组成的， 常见的段有数据段、索引段、回滚段等。InnoDB中对于段的管理，都是引擎自身完成，不需要人为对其控制，一个段中包含多个区。</li>
+<li>区 : 区是表空间的单元结构，每个区的大小为1M。 默认情况下， InnoDB存储引擎页大小为16K， 即一个区中一共有64个连续的页。</li>
+<li>页 : 页是组成区的最小单元，页也是InnoDB 存储引擎磁盘管理的最小单元，每个页的大小默认为 16KB。为了保证页的连续性，InnoDB 存储引擎每次从磁盘申请 4-5 个区。</li>
+<li>行 : InnoDB 存储引擎是面向行的，也就是说数据是按行进行存放的，在每一行中除了定义表时所指定的字段以外，还包含两个隐藏字段(后面会详细介绍)。</li>
+</ul>
+<h4 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h4><p>介绍</p>
+<ul>
+<li>MyISAM是MySQL早期的默认存储引擎。</li>
+</ul>
+<p>特点</p>
+<ul>
+<li>不支持事务，不支持外键</li>
+<li>支持表锁，不支持行锁</li>
+<li>访问速度快</li>
+</ul>
+<p>文件</p>
+<ul>
+<li>xxx.sdi：存储表结构信息</li>
+<li>xxx.MYD: 存储数据</li>
+<li>xxx.MYI: 存储索引</li>
+</ul>
+<h4 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h4><p>介绍</p>
+<ul>
+<li>Memory引擎的表数据时存储在内存中的，由于受到硬件问题、或断电问题的影响，只能将这些表作为临时表或缓存使用。</li>
+</ul>
+<p>特点</p>
+<ul>
+<li>内存存放</li>
+<li>hash索引（默认）</li>
+</ul>
+<p>文件</p>
+<ul>
+<li>xxx.sdi：存储表结构信息</li>
+</ul>
+<h4 id="存储引擎的选择"><a href="#存储引擎的选择" class="headerlink" title="存储引擎的选择"></a>存储引擎的选择</h4><p>在选择存储引擎时，应该根据应用系统的特点选择合适的存储引擎。对于复杂的应用系统，还可以根据实际情况选择多种存储引擎进行组合。</p>
+<ul>
+<li>InnoDB: 是Mysql的默认存储引擎，支持事务、外键。如果应用对事务的完整性有比较高的要求，在并发条件下要求数据的一致性，数据操作除了插入和查询之外，还包含很多的更新、删除操作，那么InnoDB存储引擎是比较合适的选择。</li>
+<li>MyISAM ： 如果应用是以读操作和插入操作为主，只有很少的更新和删除操作，并且对事务的完整性、并发性要求不是很高，那么选择这个存储引擎是非常合适的。</li>
+<li>MEMORY：将所有数据保存在内存中，访问速度快，通常用于临时表及缓存。MEMORY的缺陷就是对表的大小有限制，太大的表无法缓存在内存中，而且无法保障数据的安全性。</li>
+</ul>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><h4 id="索引的概述"><a href="#索引的概述" class="headerlink" title="索引的概述"></a>索引的概述</h4><p>索引（index）是帮助MySQL高效获取数据的数据结构(有序)。在数据之外，数据库系统还维护着满足特定查找算法的数据结构，这些数据结构以某种方式引用（指向）数据， 这样就可以在这些数据结构上实现高级查找算法，这种数据结构就是索引。</p>
+<p>优缺点</p>
+<table>
+<thead>
+<tr>
+<th>优势</th>
+<th>劣势</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>提高数据检索的效率，降低数据库的IO成本</td>
+<td>索引列也是要占用空间的。</td>
+</tr>
+<tr>
+<td>通过索引列对数据进行排序，降低数据排序的成本，降低CPU的消耗。</td>
+<td>索引大大提高了查询效率，同时却也降低更新表的速度，如对表进行INSERT、UPDATE、DELETE时，效率降低。</td>
+</tr>
+</tbody></table>
+<h4 id="索引的结构"><a href="#索引的结构" class="headerlink" title="索引的结构"></a>索引的结构</h4><p>MySQL的索引是在存储引擎层实现的，不同的存储引擎有不同的索引结构，主要包含以下几种：</p>
+<ul>
+<li>B+Tree索引：最常见的索引类型，大部分引擎都支持 B+ 树索引</li>
+<li>Hash索引：底层数据结构是用哈希表实现的, 只有精确匹配索引列的查询才有效, 不支持范围查询，MEMORY引擎支持</li>
+<li>R-tree(空间索引）：空间索引是MyISAM引擎的一个特殊索引类型，主要用于地理空间数据类型，通常使用较少，MyISAM 引擎支持</li>
+<li>Full-text(全文索引)：是一种通过建立倒排索引,快速匹配文档的方式。类似于Lucene,Solr,ES</li>
+</ul>
+<p>索引结构特点解释：</p>
+<ul>
+<li>二叉树：顺序插入时形成链表</li>
+<li>红黑树（自平衡二叉树）：数据量大时，层级太深</li>
+<li>b树：B树是一种多叉路平衡查找树，相对于二叉树，B树每个节点可以有多个分支，即多叉。<ul>
+<li>特点：<ul>
+<li>具有中间元素向上分裂的特点</li>
+<li>在B树中，非叶子节点和叶子节点都会存放数据。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>b+树：所有的元素都是叶子节点，叶子节点形成单向链表（树的高度更低）,非叶子节点仅仅起到索引数据作用，具体的数据都是在叶子节点存放的。（MySQL优化：双向链表）</li>
+<li>hash索引：哈希索引就是采用一定的hash算法，将键值换算成新的hash值，映射到对应的槽位上，然后存储在hash表中。如果两个(或多个)键值，映射到一个相同的槽位上，他们就产生了hash冲突（也称为hash碰撞），可以通过链表来解决。<ul>
+<li>特点<ul>
+<li>Hash索引只能用于对等比较(&#x3D;，in)，不支持范围查询（between，&gt;，&lt; ，…）</li>
+<li>无法利用索引完成排序操作</li>
+<li>查询效率高，通常(不存在hash冲突的情况)只需要一次检索就可以了，效率通常要高于B+tree索引</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="索引分类"><a href="#索引分类" class="headerlink" title="索引分类"></a>索引分类</h4><h5 id="MySQL索引"><a href="#MySQL索引" class="headerlink" title="MySQL索引"></a>MySQL索引</h5><p>在MySQL数据库，将索引的具体类型主要分为以下几类：主键索引、唯一索引、常规索引、全文索引。</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>含义</th>
+<th>特点</th>
+<th>关键字</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>主键索引</td>
+<td>针对于表中主键创建的索引</td>
+<td>默认自动创建, 只能有一个</td>
+<td>PRIMARY</td>
+</tr>
+<tr>
+<td>唯一索引</td>
+<td>避免同一个表中某数据列中的值重复</td>
+<td>可以有多个</td>
+<td>UNIQUE</td>
+</tr>
+<tr>
+<td>常规索引</td>
+<td>快速定位特定数据</td>
+<td>可以有多个</td>
+<td></td>
+</tr>
+<tr>
+<td>全文索引</td>
+<td>全文索引查找的是文本中的关键词，而不是比较索引中的值</td>
+<td>可以有多个</td>
+<td>FULLTEXT</td>
+</tr>
+</tbody></table>
+<h5 id="聚集索引-二级索引"><a href="#聚集索引-二级索引" class="headerlink" title="聚集索引&amp;二级索引"></a>聚集索引&amp;二级索引</h5><p>而在<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=InnoDB%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E&spm=1001.2101.3001.7020">InnoDB存储引擎</a>中，根据索引的存储形式，又可以分为以下两种：</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>含义</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>聚集索引(Clustered Index)</td>
+<td>将数据存储与索引放到了一块，索引结构的叶子节点保存了行数据</td>
+<td>必须有,而且只有一个</td>
+</tr>
+<tr>
+<td>二级索引(Secondary Index)</td>
+<td>将数据与索引分开存储，索引结构的叶子节点关联的是对应的主键</td>
+<td>可以存在多个</td>
+</tr>
+</tbody></table>
+<p>聚集索引选取规则:</p>
+<ul>
+<li>如果存在主键，主键索引就是聚集索引。</li>
+<li>如果不存在主键，将使用第一个唯一（UNIQUE）索引作为聚集索引。</li>
+<li>如果表没有主键，或没有合适的唯一索引，则InnoDB会自动生成一个rowid作为隐藏的聚集索引。</li>
+</ul>
+<p>具体结构：</p>
+<ul>
+<li>聚集索引的叶子节点下挂的是这一行的数据 。</li>
+<li>二级索引的叶子节点下挂的是该字段值对应的主键值。</li>
+</ul>
+<h4 id="索引的语法"><a href="#索引的语法" class="headerlink" title="索引的语法"></a>索引的语法</h4><p>创建索引的语法<br>如果不写UNIQUE或FULLTEXT默认常规索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> [ <span class="keyword">UNIQUE</span> <span class="operator">|</span> FULLTEXT ] INDEX index_name <span class="keyword">ON</span> table_name (index_col_name,... ) ;</span><br></pre></td></tr></table></figure>
+
+<p>查看索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> INDEX <span class="keyword">FROM</span> table_name ;</span><br></pre></td></tr></table></figure>
+
+<p>删除索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> INDEX index_name <span class="keyword">ON</span> table_name ;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Sql性能分析"><a href="#Sql性能分析" class="headerlink" title="Sql性能分析"></a>Sql性能分析</h4><h5 id="sql执行频率"><a href="#sql执行频率" class="headerlink" title="sql执行频率"></a>sql执行频率</h5><p>MySQL 客户端连接成功后，通过 show [session|global] status 命令可以提供服务器状态信息。通过如下指令，可以查看当前数据库的INSERT、UPDATE、DELETE、SELECT的访问频次：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- session 是查看当前会话 ;</span></span><br><span class="line"><span class="comment">-- global 是查询全局数据 ;</span></span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">GLOBAL</span> STATUS <span class="keyword">LIKE</span> <span class="string">&#x27;Com_______&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="慢查询日志"><a href="#慢查询日志" class="headerlink" title="慢查询日志"></a>慢查询日志</h5><p>慢查询日志记录了所有执行时间超过指定参数（long_query_time，单位：秒，默认10秒）的所有SQL语句的日志。<br>MySQL的慢查询日志默认没有开启，如果要开启慢查询日志，需要在MySQL的配置文件（&#x2F;etc&#x2F;my.cnf）中配置如下信息：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 开启MySQL慢日志查询开关</span><br><span class="line">slow_query_log<span class="operator">=</span><span class="number">1</span></span><br><span class="line"># 设置慢日志的时间为<span class="number">2</span>秒，<span class="keyword">SQL</span>语句执行时间超过<span class="number">2</span>秒，就会视为慢查询，记录慢查询日志</span><br><span class="line">long_query_time<span class="operator">=</span><span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>配置完毕之后，通过以下指令重新启动MySQL服务器进行测试，查看慢日志文件中记录的信息<code>/var/lib/mysql/localhost-slow.log</code><br>然后，根据以下命令查看开关情况，慢查询日志就已经打开了。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> VARIABLES <span class="keyword">like</span> <span class="string">&#x27;slow_query_log&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="profile详情"><a href="#profile详情" class="headerlink" title="profile详情"></a>profile详情</h5><p>show profiles 能够在做SQL优化时帮助我们了解时间都耗费到哪里去了。通过have_profiling参数，能够看到当前MySQL是否支持profile操作：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@have_profiling</span> ; </span><br><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@profiling</span> ; # 查看支持profile操作</span><br></pre></td></tr></table></figure>
+
+<p>如果关闭了，我们可以通过set语句在session&#x2F;global级别开启profiling：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> profiling <span class="operator">=</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>执行一系列的业务SQL的操作，然后通过如下指令查看指令的执行耗时：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看每一条SQL的耗时基本情况</span></span><br><span class="line"><span class="keyword">show</span> profiles;</span><br><span class="line"><span class="comment">-- 查看指定query_id的SQL语句各个阶段的耗时情况</span></span><br><span class="line"><span class="keyword">show</span> profile <span class="keyword">for</span> query query_id;</span><br><span class="line"><span class="comment">-- 查看指定query_id的SQL语句CPU的使用情况</span></span><br><span class="line"><span class="keyword">show</span> profile cpu <span class="keyword">for</span> query query_id;</span><br></pre></td></tr></table></figure>
+
+<h5 id="explain"><a href="#explain" class="headerlink" title="explain"></a>explain</h5><p>EXPLAIN 或者 DESC命令获取 MySQL 如何执行 SELECT 语句的信息，包括在 SELECT 语句执行过程中表如何连接和连接的顺序。<br>语法:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 直接在select语句之前加上关键字 explain / desc</span></span><br><span class="line">EXPLAIN <span class="keyword">SELECT</span> 字段列表 <span class="keyword">FROM</span> 表名 <span class="keyword">WHERE</span> 条件 ;</span><br></pre></td></tr></table></figure>
+
+<h4 id="索引的规则"><a href="#索引的规则" class="headerlink" title="索引的规则"></a>索引的规则</h4><h5 id="最左前缀法则"><a href="#最左前缀法则" class="headerlink" title="最左前缀法则"></a>最左前缀法则</h5><p>如果索引了多列（联合索引），要遵守最左前缀法则。最左前缀法则指的是查询从索引的最左列开始（如果最开始的没有全部索引将失效），并且不跳过索引中的列。如果跳跃某一列，索引将会部分失效(后面的字段索引失效)。</p>
+<h5 id="范围查询"><a href="#范围查询" class="headerlink" title="范围查询"></a>范围查询</h5><p>联合索引中，出现范围查询(&gt;,&lt;)，范围查询右侧的列索引失效。</p>
+<h5 id="索引失效情况"><a href="#索引失效情况" class="headerlink" title="索引失效情况"></a>索引失效情况</h5><ul>
+<li><p>索引列运算</p>
+<p>不要在索引列上进行运算操作， 索引将失效</p>
+</li>
+<li><p>字符串不加引号</p>
+<p>字符串类型字段使用时，不加引号，索引将失效。</p>
+</li>
+<li><p>模糊查询</p>
+<p>如果仅仅是尾部模糊匹配，索引不会失效。如果是头部模糊匹配，索引失效。</p>
+</li>
+<li><p>or连接条件</p>
+<p>用or分割开的条件， 如果or前的条件中的列有索引，而后面的列中没有索引，那么涉及的索引都不会被用到。</p>
+</li>
+<li><p>数据分布影响</p>
+<p>如果MySQL评估使用索引比全表更慢，则不使用索引。</p>
+<p>就是因为MySQL在查询时，会评估使用索引的效率与走全表扫描的效率，如果走全表扫描更快，则放弃索引，走全表扫描。 因为索引是用来索引少量数据的，如果通过索引查询返回大批量的数据，则还不如走全表扫描来的快，此时索引就会失效。</p>
+</li>
+</ul>
+<h5 id="SQL提示"><a href="#SQL提示" class="headerlink" title="SQL提示"></a>SQL提示</h5><p>优化数据库的一个重要手段，简单来说，就是在SQL语句中加入一些人为的提示来达到优化操作的目的。</p>
+<ul>
+<li>use index ： 建议MySQL使用哪一个索引完成此次查询（仅仅是建议，mysql内部还会再次进行评估）。</li>
+<li>ignore index ： 忽略指定的索引。</li>
+<li>force index ： 强制使用索引</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># use index 可以替换为上面的任意一个 括号里面是索引名</span><br><span class="line">EXPLAIN <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_user use index (ids_profession) <span class="keyword">where</span> profession<span class="operator">=</span><span class="string">&#x27;软件工程&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h5><p>尽量使用覆盖索引，减少select *。  覆盖索引是指查询使用了索引，并且需要返回的列，在该索引中已经全部能够找到 。</p>
+<h5 id="前缀索引"><a href="#前缀索引" class="headerlink" title="前缀索引"></a>前缀索引</h5><p>当字段类型为字符串（varchar，text，longtext等）时，有时候需要索引很长的字符串，这会让索引变得很大，查询时，浪费大量的磁盘IO， 影响查询效率。此时可以只将字符串的一部分前缀，建立索引，这样可以大大节约索引空间，从而提高索引效率。</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> index idx_xxxx <span class="keyword">on</span> table_name(<span class="keyword">column</span>(n)) ;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>前缀长度</p>
+<p>可以根据索引的选择性来决定，而选择性是指不重复的索引值（基数）和数据表的记录总数的比值，索引选择性越高则查询效率越高， 唯一索引的选择性是1，这是最好的索引选择性，性能也是最好的。既不重复条数除以总条数。</p>
+</li>
+</ul>
+<h5 id="单列索引与联合索引"><a href="#单列索引与联合索引" class="headerlink" title="单列索引与联合索引"></a>单列索引与联合索引</h5><ul>
+<li>单列索引：即一个索引只包含单个列。</li>
+<li>联合索引：即一个索引包含了多个列</li>
+</ul>
+<p>在业务场景中，如果存在多个查询条件，考虑针对于查询字段建立索引时，建议建立联合索引，而非单列索引。</p>
+<h5 id="索引设计原则"><a href="#索引设计原则" class="headerlink" title="索引设计原则"></a>索引设计原则</h5><ul>
+<li>针对于数据量较大，且查询比较频繁的表建立索引。</li>
+<li>针对于常作为查询条件（where）、排序（order by）、分组（group by）操作的字段建立索引。</li>
+<li>尽量选择区分度高的列作为索引，尽量建立唯一索引，区分度越高，使用索引的效率越高。</li>
+<li>如果是字符串类型的字段，字段的长度较长，可以针对于字段的特点，建立前缀索引。</li>
+<li>尽量使用联合索引，减少单列索引，查询时，联合索引很多时候可以覆盖索引，节省存储空间，避免回表，提高查询效率。</li>
+<li>要控制索引的数量，索引并不是多多益善，索引越多，维护索引结构的代价也就越大，会影响增删改的效率。</li>
+<li>如果索引列不能存储NULL值，请在创建表时使用NOT NULL约束它。当优化器知道每列是否包含NULL值时，它可以更好地确定哪个索引最有效地用于查询。</li>
+</ul>
+<h3 id="sql优化"><a href="#sql优化" class="headerlink" title="sql优化"></a>sql优化</h3><h4 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h4><h5 id="insert插入"><a href="#insert插入" class="headerlink" title="insert插入"></a>insert插入</h5><p>如果我们需要一次性往数据库表中插入多条记录，可以从以下三个方面进行优化。</p>
+<ul>
+<li>批量插入</li>
+<li>手动开启事务</li>
+<li>主键顺序插入</li>
+</ul>
+<h5 id="大批量插入数据"><a href="#大批量插入数据" class="headerlink" title="大批量插入数据"></a>大批量插入数据</h5><p>如果一次性需要插入大批量数据(比如: 几百万的记录)，使用insert语句插入性能较低，此时可以使用MySQL数据库提供的load指令进行插入。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 客户端连接服务端时，加上参数 -–local-infile</span></span><br><span class="line">mysql <span class="comment">--local-infile -u root -p</span></span><br><span class="line"><span class="comment">-- 设置全局参数local_infile为1，开启从本地加载文件导入数据的开关</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> local_infile <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="comment">-- 执行load指令将准备好的数据，加载到表结构中</span></span><br><span class="line">load data <span class="keyword">local</span> infile <span class="string">&#x27;/root/sql1.log&#x27;</span> <span class="keyword">into</span> <span class="keyword">table</span> tb_user fields terminated <span class="keyword">by</span> <span class="string">&#x27;,&#x27;</span> lines terminated <span class="keyword">by</span> <span class="string">&#x27;\n&#x27;</span> ;</span><br></pre></td></tr></table></figure>
+
+<h4 id="主键优化"><a href="#主键优化" class="headerlink" title="主键优化"></a>主键优化</h4><p>主键顺序插入的性能是要高于乱序插入的。 乱序插入会发生页分裂，删除操作可能产生页合并等操作，都影响操作性能。</p>
+<p>索引设计原则</p>
+<ul>
+<li>满足业务需求的情况下，尽量降低主键的长度。</li>
+<li>插入数据时，尽量选择顺序插入，选择使用AUTO_INCREMENT自增主键。</li>
+<li>尽量不要使用UUID做主键或者是其他自然主键，如身份证号。</li>
+<li>业务操作时，避免对主键的修改。</li>
+</ul>
+<h4 id="order-by优化"><a href="#order-by优化" class="headerlink" title="order by优化"></a>order by优化</h4><p>MySQL的排序，有两种方式：</p>
+<ul>
+<li>Using filesort : 通过表的索引或全表扫描，读取满足条件的数据行，然后在排序缓冲区sort buffer中完成排序操作，所有不是通过索引直接返回排序结果的排序都叫 FileSort 排序。</li>
+<li>Using index : 通过有序索引顺序扫描直接返回有序数据，这种情况即为 using index，不需要额外排序，操作效率高。</li>
+</ul>
+<p>对于以上的两种排序方式，Using index的性能高，而Using filesort的性能低，我们在优化排序操作时，尽量要优化为 Using index。</p>
+<p>order by优化原则:</p>
+<ul>
+<li>根据排序字段建立合适的索引，多字段排序时，也遵循最左前缀法则。</li>
+<li>尽量使用覆盖索引。</li>
+<li>多字段排序, 一个升序一个降序，此时需要注意联合索引在创建时的规则（ASC&#x2F;DESC）。</li>
+<li>如果不可避免的出现filesort，大数据量排序时，可以适当增大排序缓冲区大小sort_buffer_size(默认256k)。</li>
+</ul>
+<h4 id="group-by优化"><a href="#group-by优化" class="headerlink" title="group by优化"></a>group by优化</h4><p>在分组操作中，我们需要通过以下两点进行优化，以提升性能：</p>
+<ol>
+<li>在分组操作时，可以通过索引来提高效率。</li>
+<li>分组操作时，索引的使用也是满足最左前缀法则的。</li>
+</ol>
+<h4 id="limit优化"><a href="#limit优化" class="headerlink" title="limit优化"></a>limit优化</h4><p>在数据量比较大时，如果进行limit分页查询，在查询时，越往后，分页查询效率越低。优化思路: 一般分页查询时，通过创建覆盖索引能够比较好地提高性能，可以通过覆盖索引加子查询形式进行优化。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">explain <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb_sku t , (<span class="keyword">select</span> id <span class="keyword">from</span> tb_sku <span class="keyword">order</span> <span class="keyword">by</span> id limit <span class="number">2000000</span>,<span class="number">10</span>) a <span class="keyword">where</span> t.id <span class="operator">=</span> a.id;</span><br></pre></td></tr></table></figure>
+
+<h4 id="count优化"><a href="#count优化" class="headerlink" title="count优化"></a>count优化</h4><p>概述</p>
+<ul>
+<li>MyISAM 引擎把一个表的总行数存在了磁盘上，因此执行 count(*) 的时候会直接返回这个数，效率很高； 但是如果是带条件的count，MyISAM也慢。</li>
+<li>InnoDB 引擎就麻烦了，它执行 count(*) 的时候，需要把数据一行一行地从引擎里面读出来，然后累积计数。如果说要大幅度提升InnoDB表的count效率，主要的优化思路：自己计数(可以借助于redis这样的数据库进行,但是如果是带条件的count又比较麻烦了)。</li>
+</ul>
+<p>count用法<br>count() 是一个聚合函数，对于返回的结果集，一行行地判断，如果 count 函数的参数不是NULL，累计值就加 1，否则不加，最后返回累计值。count(*)、count（主键）、count（字段）、count（数字）</p>
+<p>按照效率排序的话，count(字段) &lt; count(主键 id) &lt; count(1) ≈ count( * )，所以尽量使用 count( * )。</p>
+<h3 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h3><p>视图（View）是一种虚拟存在的表。视图中的数据并不在数据库中实际存在，行和列数据来自定义视图的查询中使用的表，并且是在使用视图时动态生成的。<br>通俗的讲，视图只保存了查询的SQL逻辑，不保存查询结果。所以我们在创建视图的时候，主要的工作就落在创建这条SQL查询语句上。</p>
+<h4 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h4><h5 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> [<span class="keyword">OR</span> REPLACE] <span class="keyword">VIEW</span> 视图名称[(列名列表)] <span class="keyword">AS</span> <span class="keyword">SELECT</span>语句 [ <span class="keyword">WITH</span> [<span class="keyword">CASCADED</span> <span class="operator">|</span> <span class="keyword">LOCAL</span> ] <span class="keyword">CHECK</span> OPTION ]</span><br><span class="line"><span class="comment">-- 举例</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">or</span> REPLACE <span class="keyword">view</span> stu_v_1 <span class="keyword">as</span> <span class="keyword">select</span> id,name <span class="keyword">from</span> student <span class="keyword">where</span> id<span class="operator">&lt;</span><span class="number">10</span> </span><br></pre></td></tr></table></figure>
+
+<h5 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--查看创建视图语句：</span></span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> <span class="keyword">VIEW</span> 视图名称;</span><br><span class="line"><span class="comment">-- 查看视图数据：</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> 视图名称 ...... ;</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">CREATE</span> <span class="keyword">view</span> stu_v_1</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> stu_v_1</span><br></pre></td></tr></table></figure>
+
+<h5 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 方式一：</span></span><br><span class="line"><span class="keyword">CREATE</span> [<span class="keyword">OR</span> REPLACE] <span class="keyword">VIEW</span> 视图名称[(列名列表)] <span class="keyword">AS</span> <span class="keyword">SELECT</span>语句 [ <span class="keyword">WITH</span>[ <span class="keyword">CASCADED</span> <span class="operator">|</span> <span class="keyword">LOCAL</span> ] <span class="keyword">CHECK</span> OPTION ]</span><br><span class="line"><span class="comment">-- 方式二：</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">VIEW</span> 视图名称[(列名列表)] <span class="keyword">AS</span> <span class="keyword">SELECT</span>语句 [ <span class="keyword">WITH</span> [ <span class="keyword">CASCADED</span> <span class="operator">|</span> <span class="keyword">LOCAL</span> ] <span class="keyword">CHECK</span> OPTION ]</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">view</span> stu_v_1 <span class="keyword">as</span> <span class="keyword">select</span> id,name,<span class="keyword">no</span> <span class="keyword">from</span> student <span class="keyword">where</span> id<span class="operator">&lt;</span><span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">VIEW</span> [IF <span class="keyword">EXISTS</span>] 视图名称 [,视图名称] ...</span><br></pre></td></tr></table></figure>
+
+<h4 id="检查选项"><a href="#检查选项" class="headerlink" title="检查选项"></a>检查选项</h4><p>当使用WITH CHECK OPTION子句创建视图时，MySQL会通过视图检查正在更改的每个行，例如 插入，更新，删除，以使其符合视图的定义。 MySQL允许基于另一个视图创建视图，它还会检查依赖视图中的规则以保持一致性。为了确定检查的范围，mysql提供了两个选项： CASCADED 和 LOCAL，默认值为 CASCADED 。</p>
+<h5 id="CASCADED"><a href="#CASCADED" class="headerlink" title="CASCADED"></a>CASCADED</h5><p>级联。<br>比如，v2视图是基于v1视图的，如果在v2视图创建的时候指定了检查选项为 cascaded，但是v1视图创建时未指定检查选项。 则在执行检查时，不仅会检查v2，还会级联检查v2的关联视图v1。</p>
+<h5 id="LOCAL"><a href="#LOCAL" class="headerlink" title="LOCAL"></a>LOCAL</h5><p>本地。<br>比如，v2视图是基于v1视图的，如果在v2视图创建的时候指定了检查选项为 local ，但是v1视图创建时未指定检查选项。 则在执行检查时，知会检查v2，不会检查v2的关联视图v1。</p>
+<h4 id="视图的更新"><a href="#视图的更新" class="headerlink" title="视图的更新"></a>视图的更新</h4><p>要使视图可更新，视图中的行与基础表中的行之间必须存在一对一的关系。如果视图包含以下任何一项，则该视图不可更新：</p>
+<ul>
+<li>聚合函数或窗口函数（SUM()、 MIN()、 MAX()、 COUNT()等）</li>
+<li>DISTINCT</li>
+<li>GROUP BY</li>
+<li>HAVING</li>
+<li>UNION 或者 UNION ALL</li>
+</ul>
+<h4 id="视图作用"><a href="#视图作用" class="headerlink" title="视图作用"></a>视图作用</h4><ul>
+<li><p>简单</p>
+<p>视图不仅可以简化用户对数据的理解，也可以简化他们的操作。那些被经常使用的查询可以被定义为视图，从而使得用户不必为以后的操作每次指定全部的条件。</p>
+</li>
+<li><p>安全</p>
+<p>数据库可以授权，但不能授权到数据库特定行和特定的列上。通过视图用户只能查询和修改他们所能见到的数据</p>
+</li>
+<li><p>数据独立</p>
+<p>视图可帮助用户屏蔽真实表结构变化带来的影响。</p>
+</li>
+</ul>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
+    
+      
+        <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 m-1 text-sm rounded-md transition-colors hover:bg-gray-200">
+          <a href="/tags/%E5%B7%A5%E5%85%B7/">工具</a>
+        </span>
+      
+    
+  </div>
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+    </div>
+    <div>
+      
+        <a href="/2024/08/19/Maven/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          Maven
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
+    
+
+  </div>
+</section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "default",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
+
+  </main>
+  <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
+  <!-- busuanzi -->
+  
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- Busuanzi Analytics -->
+<div class="flex items-center gap-2">
+  <span>Visitors</span>
+  <span id="busuanzi_value_site_uv"></span>
+  <span>Page Views</span>
+  <span id="busuanzi_value_site_pv"></span>
+</div>
+<!-- End Busuanzi Analytics -->
+
+
+  <!-- copyright -->
+  <div class="flex items-center gap-2">
+    <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: inherit;">CC BY-NC-SA 4.0</a>
+    <span>© 2022</span>
+    <iconify-icon width="18" icon="emojione-monotone:maple-leaf" ></iconify-icon>
+    <a href="https://github.com/xbmlz" target="_blank" rel="noopener noreferrer">xbmlz</a>
+  </div>
+  <!-- powered by -->
+  <div class="flex items-center gap-2">
+    <span>Powered by</span>
+    <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+    <span>&</span>
+    <a href="https://github.com/xbmlz/hexo-theme-maple" target="_blank" rel="noopener noreferrer">Maple</a>
+  </div>
+
+</footer>
+
+  <div class="back-to-top box-border fixed right-6 z-1024 -bottom-20 rounded py-1 px-1 bg-slate-900 opacity-60 text-white cursor-pointer text-center dark:bg-slate-600">
+    <span class="flex justify-center items-center text-sm">
+      <iconify-icon width="18" icon="ion:arrow-up-c" id="go-top"></iconify-icon>
+      <span id="scrollpercent"><span>0</span> %</span>
+    </span>
+  </div>
+  
+<script src="/js/main.js"></script>
+
+
+  <script>
+    $(document).ready(function () {
+      const mapleCount = "10";
+      const speed = "0.5";
+      const mapleEl = document.getElementById("maple");
+      const maples = Array.from({ length: mapleCount }).map(() => {
+        const maple = document.createElement("div");
+        const scale = Math.random() * 0.5 + 0.5;
+        const offset = Math.random() * 2 - 1;
+        const x = Math.random() * mapleEl.clientWidth;
+        const y = -Math.random() * mapleEl.clientHeight;
+        const duration = 10 / speed;
+        const delay = -duration;
+        maple.className = "maple";
+        maple.style.width = `${24 * scale}px`;
+        maple.style.height = `${24 * scale}px`;
+        maple.style.left = `${x}px`;
+        maple.style.top = `${y}px`;
+        maple.style.setProperty("--maple-fall-offset", offset);
+        maple.style.setProperty("--maple-fall-height", `${Math.abs(y) + mapleEl.clientHeight}px`);
+        maple.style.animation = `fall ${duration}s linear infinite`;
+        maple.style.animationDelay = `${delay}s`;
+        mapleEl.appendChild(maple)
+        return maple
+      })
+    });
+  </script>
+  
+
+
+  <div class="fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden" id="maple"></div>
+</body>
+
+</html>
