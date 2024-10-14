@@ -233,12 +233,12 @@
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>3 min</span>
+            <span>4 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>1.1k words</span>
+            <span>1.4k words</span>
           </span>
                   
         </section>
@@ -279,13 +279,26 @@
 <li>根据ID查询字段：直接查</li>
 </ul>
 </li>
-<li><h2 id="订单管理："><a href="#订单管理：" class="headerlink" title="订单管理："></a>订单管理：</h2></li>
+<li>订单管理：<ul>
+<li>查询历史订单：分页查询，前端需要传三个参数，页面开始、页面大小、状态。设置Mybatis分页查询插件的两个参数，然后根据条件查询返回的结果集封装为Page对象。然后将需要的参数封装到VO中。</li>
+<li>查询订单详细信息：根据订单id查询订单信息和详细信息封装到VO中返回即可。</li>
+<li>取消订单：判断是否有订单，是否未接单，然后修改状态，修改字段信息。</li>
+<li>再来一单：根据订单id查询订单详细信息，将其转换为购物车对象，将购物车集合插入数据库中。</li>
+<li>客户催单：根据订单id查询是否存在此订单，存在通过WebSocket转发一条催单信息。（思考：多个店铺，如何精准推送给当前下单店铺）</li>
+</ul>
+</li>
 </ul>
 <h5 id="2-用户登录注册"><a href="#2-用户登录注册" class="headerlink" title="2.用户登录注册"></a>2.用户登录注册</h5><p>第一次登录（session无效）：输入手机号以后会先根据code接口获取临时登录口令，login接口会对手机号和用户输入的口令做校验（手机号用正则表达式，口令用Redis里存的），成功后会查数据库判断用户是否存在，不存在会先注册。然后，UUID获取一个token值作为Redis里的key，用户数据处理后作为value，用Redis里的hash数据结构存并设置一个过期时间。最后将token值返回给前端。</p>
 <p>非第一次登录（session有效）：用户每次访问都会带有一个token值，访问请求会经过两道拦截器。第一个RefreshTokenInterceptor用于刷新token值（因为用户会访问一些不被拦截的页面，这些页面也要刷新token值，但是请求中没有token怎么刷新）没有则不刷新放行。第二个拦截器Login Interceptor才真正判断是否要被拦截（除了一些特定不需要拦截的）。都没有被拦截就会访问成功，返回有效值。</p>
 <p>将session存放在Redis中的好处：扩展性强，多节点服务器环境确保所有节点访问的是同一个session。</p>
 <h5 id="3-用户下单和支付"><a href="#3-用户下单和支付" class="headerlink" title="3.用户下单和支付"></a>3.用户下单和支付</h5><p>先查询订单中的地址是否为空，否判断是否超出配送范围（调用百度API）。查询购物车中的数据，保证其不为空。向订单和订单明细表中插入数据，然后清空购物车，封装信息返回前端处理。<br>支付时，修改订单表中的数据，通过WebSocket向管理端发送支付完成消息。</p>
-<h4 id="管理端"><a href="#管理端" class="headerlink" title="管理端"></a>管理端</h4><h5 id="1-查询或修改店铺营业情况"><a href="#1-查询或修改店铺营业情况" class="headerlink" title="1.查询或修改店铺营业情况"></a>1.查询或修改店铺营业情况</h5><p>店铺营业情况保存在Redis中，一个String结构，value用0或1表示。0代表打样，1代表营业。管理端读写该数据。</p>
+<h4 id="管理端"><a href="#管理端" class="headerlink" title="管理端"></a>管理端</h4><h5 id="1-基础CRUD-1"><a href="#1-基础CRUD-1" class="headerlink" title="1.基础CRUD"></a>1.基础CRUD</h5><ul>
+<li>店铺信息管理：</li>
+<li>员工管理：</li>
+<li>奶茶种类管理：</li>
+<li>订单管理：</li>
+</ul>
+<h5 id="2-查询或修改店铺营业情况"><a href="#2-查询或修改店铺营业情况" class="headerlink" title="2.查询或修改店铺营业情况"></a>2.查询或修改店铺营业情况</h5><p>店铺营业情况保存在Redis中，一个String结构，value用0或1表示。0代表打样，1代表营业。管理端读写该数据。</p>
 <h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3>
   </article>
   <!-- tag -->
@@ -302,9 +315,9 @@
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
       
-        <a href="/2024/10/03/%E7%AE%97%E6%B3%95/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+        <a href="/2024/10/08/%E7%BD%91%E7%AB%99%E5%9C%B0%E5%9D%80/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
           <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
-          算法
+          网站集合
         </a>
       
     </div>
