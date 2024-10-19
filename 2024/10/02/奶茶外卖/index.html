@@ -233,12 +233,12 @@
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>6 min</span>
+            <span>8 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>1.9k words</span>
+            <span>2.3k words</span>
           </span>
                   
         </section>
@@ -292,7 +292,17 @@
 <p>非第一次登录（session有效）：用户每次访问都会带有一个token值，访问请求会经过两道拦截器。第一个RefreshTokenInterceptor用于刷新token值（因为用户会访问一些不被拦截的页面，这些页面也要刷新token值，但是请求中没有token怎么刷新）没有则不刷新放行。第二个拦截器Login Interceptor才真正判断是否要被拦截（除了一些特定不需要拦截的）。都没有被拦截就会访问成功，返回有效值。</p>
 <p>将session存放在Redis中的好处：扩展性强，多节点服务器环境确保所有节点访问的是同一个session。</p>
 <h5 id="3-用户下单和支付"><a href="#3-用户下单和支付" class="headerlink" title="3.用户下单和支付"></a>3.用户下单和支付</h5><p>先查询订单中的地址是否为空，否判断是否超出配送范围（调用百度API）。查询购物车中的数据，保证其不为空。向订单和订单明细表中插入数据，然后清空购物车，封装信息返回前端处理。<br>支付时，修改订单表中的数据，通过WebSocket向管理端发送支付完成消息。</p>
-<h5 id="4-秒杀优惠券"><a href="#4-秒杀优惠券" class="headerlink" title="4.秒杀优惠券"></a>4.秒杀优惠券</h5><h5 id="5-签到"><a href="#5-签到" class="headerlink" title="5.签到"></a>5.签到</h5><h5 id="6-发布评价"><a href="#6-发布评价" class="headerlink" title="6.发布评价"></a>6.发布评价</h5><h4 id="二、管理端"><a href="#二、管理端" class="headerlink" title="二、管理端"></a>二、管理端</h4><h5 id="1-基础CRUD-1"><a href="#1-基础CRUD-1" class="headerlink" title="1.基础CRUD"></a>1.基础CRUD</h5><ul>
+<h5 id="4-秒杀优惠券"><a href="#4-秒杀优惠券" class="headerlink" title="4.秒杀优惠券"></a>4.秒杀优惠券</h5><p>查询优惠券id判断其是否过期是否未开始，可以抢券。获取Redisson提供的锁（可冲入、watchdog、原子性），成功去创建订单，完成之后释放锁。这里涉及到事务传播的问题，创建订单为单独方法要开启事务，同时和要和当前方法为同一个事务，利用动态代理技术实现（AopContaext的获取当前对象的代理对象方法），执行创建订单方法即可。<br>创建订单方法先判断当前用户是否使用过该优惠券，然后利用乐观锁理论保证扣减库存不超卖，然后构建订单保存即可。</p>
+<h5 id="6-评价管理"><a href="#6-评价管理" class="headerlink" title="6.评价管理"></a>6.评价管理</h5><ul>
+<li>发布评价：判断奶茶id和用户id，然后保存评价至数据库和Redis。</li>
+<li>查看评价：<ul>
+<li>根据时间查看（默认）：根据时间倒序查询。</li>
+<li>根据热度查看：根据点赞数量倒序查询。</li>
+</ul>
+</li>
+<li>点赞&#x2F;取消点赞：先判断用户是否点赞，未点赞数据库和Redis都存储实现点赞，点赞数据库和Redis都删除实现取消。</li>
+</ul>
+<h4 id="二、管理端"><a href="#二、管理端" class="headerlink" title="二、管理端"></a>二、管理端</h4><h5 id="1-基础CRUD-1"><a href="#1-基础CRUD-1" class="headerlink" title="1.基础CRUD"></a>1.基础CRUD</h5><ul>
 <li><p>店铺信息管理：</p>
 <ul>
 <li>查看营业状态：Redis直接get</li>
@@ -323,10 +333,26 @@
 <li>接单、拒单、派送、完成订单：都是修改一些字段。</li>
 </ul>
 </li>
+<li><p>优惠券管理：</p>
+<ul>
+<li><p>新增优惠券：</p>
+<ul>
+<li>普通券：根据前端传的参数直接保存。</li>
+<li>秒杀券：保存普通券然后保存秒杀信息，将优惠券信息保存至Redis。</li>
+</ul>
+</li>
+<li><p>查询优惠券：根据奶茶id查询优惠券。</p>
+</li>
+</ul>
+</li>
 </ul>
 <h5 id="2-公共字段填充"><a href="#2-公共字段填充" class="headerlink" title="2.公共字段填充"></a>2.公共字段填充</h5><p>AOP加注解实现公共字段填充。先写一个运行在方法上的注解，值为对数据的操作类型修改或者删除。然后写一个切面类。切面里包含切入点和通知，切入点的表达式为mapper包下和被注解修饰的方法。通知为环绕通知，根据切点获取方法签名，根据签名获得方法上的注解，即可得到对数据的操作方式。根据切点获得参数，默认第一个参数为实体类，然后通过反射注入相应的公共字段。</p>
 <h5 id="3-处理用户提交订单"><a href="#3-处理用户提交订单" class="headerlink" title="3.处理用户提交订单"></a>3.处理用户提交订单</h5><p>首先获得用户派送地址，可以根据订单里的地址ID。调用百度地图接口方法判断是否超出，超出会抛异常。然后根据用户ID查询购物车信息。包装订单数据插，包装订单明细表插入到数据库中。清空购物车数据，返回结果。</p>
-<h3 id="第四章-其它"><a href="#第四章-其它" class="headerlink" title="第四章 其它"></a>第四章 其它</h3>
+<h5 id="4-定时任务处理取消订单和未处理订单"><a href="#4-定时任务处理取消订单和未处理订单" class="headerlink" title="4.定时任务处理取消订单和未处理订单"></a>4.定时任务处理取消订单和未处理订单</h5><ul>
+<li>通过定时任务每分钟检查一次是否存在支付超时订单（下单后超过15分钟仍未支付则判定为支付超时订单），如果存在则修改订单状态为“已取消”</li>
+<li>通过定时任务每天凌晨1点检查一次是否存在“派送中”的订单，如果存在则修改订单状态为“已完成”</li>
+</ul>
+
   </article>
   <!-- tag -->
   <div class="mt-12 pt-6 border-t border-gray-200">
