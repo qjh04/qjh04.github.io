@@ -233,12 +233,12 @@
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>1 min</span>
+            <span>5 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>235 words</span>
+            <span>1.5k words</span>
           </span>
                   
         </section>
@@ -251,7 +251,41 @@
 <p>文档地址：[天机学堂]:<a target="_blank" rel="noopener" href="https://b11et3un53m.feishu.cn/wiki/wikcnrigEuKkRaba6YaZubSuINf">https://b11et3un53m.feishu.cn/wiki/wikcnrigEuKkRaba6YaZubSuINf</a></p>
 <h3 id="第二章-数据库设计"><a href="#第二章-数据库设计" class="headerlink" title="第二章 数据库设计"></a>第二章 数据库设计</h3><h3 id="第三章-后端设计"><a href="#第三章-后端设计" class="headerlink" title="第三章 后端设计"></a>第三章 后端设计</h3><p>微服务项目，后端分模块描述，模块下面描述接口、工具类等。</p>
 <h4 id="第一节-接口模块"><a href="#第一节-接口模块" class="headerlink" title="第一节 接口模块"></a>第一节 接口模块</h4><p>本节主要定义一些Feign接口、实体类、Caffeine缓存，用于微服务内部通信，传递对象信息等。</p>
-<h4 id="第二节-权限模块"><a href="#第二节-权限模块" class="headerlink" title="第二节 权限模块"></a>第二节 权限模块</h4><h4 id="第三节-通用模块"><a href="#第三节-通用模块" class="headerlink" title="第三节 通用模块"></a>第三节 通用模块</h4><h4 id="第四节-课程模块"><a href="#第四节-课程模块" class="headerlink" title="第四节 课程模块"></a>第四节 课程模块</h4><h4 id="第五节-数据模块"><a href="#第五节-数据模块" class="headerlink" title="第五节 数据模块"></a>第五节 数据模块</h4><h4 id="第六节-考试模块"><a href="#第六节-考试模块" class="headerlink" title="第六节 考试模块"></a>第六节 考试模块</h4><h4 id="第七节-网关模块"><a href="#第七节-网关模块" class="headerlink" title="第七节 网关模块"></a>第七节 网关模块</h4><h4 id="第八节-学习模块"><a href="#第八节-学习模块" class="headerlink" title="第八节 学习模块"></a>第八节 学习模块</h4><h4 id="第九节-媒体模块"><a href="#第九节-媒体模块" class="headerlink" title="第九节 媒体模块"></a>第九节 媒体模块</h4><h4 id="第十节-消息模块"><a href="#第十节-消息模块" class="headerlink" title="第十节 消息模块"></a>第十节 消息模块</h4><h4 id="第十一节-支付模块"><a href="#第十一节-支付模块" class="headerlink" title="第十一节 支付模块"></a>第十一节 支付模块</h4><h4 id="第十二节-促销模块"><a href="#第十二节-促销模块" class="headerlink" title="第十二节 促销模块"></a>第十二节 促销模块</h4><h4 id="第十三节-评论模块"><a href="#第十三节-评论模块" class="headerlink" title="第十三节 评论模块"></a>第十三节 评论模块</h4><h4 id="第十四节-搜索模块"><a href="#第十四节-搜索模块" class="headerlink" title="第十四节 搜索模块"></a>第十四节 搜索模块</h4><h4 id="第十五节-交易模块"><a href="#第十五节-交易模块" class="headerlink" title="第十五节 交易模块"></a>第十五节 交易模块</h4><h4 id="第十六节-用户模块"><a href="#第十六节-用户模块" class="headerlink" title="第十六节 用户模块"></a>第十六节 用户模块</h4>
+<h4 id="第二节-权限模块"><a href="#第二节-权限模块" class="headerlink" title="第二节 权限模块"></a>第二节 权限模块</h4><h4 id="第三节-通用模块"><a href="#第三节-通用模块" class="headerlink" title="第三节 通用模块"></a>第三节 通用模块</h4><h4 id="第四节-课程模块"><a href="#第四节-课程模块" class="headerlink" title="第四节 课程模块"></a>第四节 课程模块</h4><h4 id="第五节-数据模块"><a href="#第五节-数据模块" class="headerlink" title="第五节 数据模块"></a>第五节 数据模块</h4><h4 id="第六节-考试模块"><a href="#第六节-考试模块" class="headerlink" title="第六节 考试模块"></a>第六节 考试模块</h4><h4 id="第七节-网关模块"><a href="#第七节-网关模块" class="headerlink" title="第七节 网关模块"></a>第七节 网关模块</h4><h4 id="第八节-学习模块"><a href="#第八节-学习模块" class="headerlink" title="第八节 学习模块"></a>第八节 学习模块</h4><h5 id="一、利用Redis加RabbitMQ合并写请求，减少数据库压力"><a href="#一、利用Redis加RabbitMQ合并写请求，减少数据库压力" class="headerlink" title="一、利用Redis加RabbitMQ合并写请求，减少数据库压力"></a>一、利用Redis加RabbitMQ合并写请求，减少数据库压力</h5><p>背景：</p>
+<p>课表里的每节课都有学习进度，当前功能为提交学习进度。如考试、听课进度等，考试提交后直接保存记录即可。麻烦的是课程进度，因为每过几秒前端就会提交一次学习进度来保证记录进度的准确性。如果每次提交进度都要走数据库的话，在高并发的情况下势必会压垮数据库。所以有了该想法。</p>
+<p>总体实现：</p>
+<ul>
+<li>前端提交本小节参数后会先判断是考试还是视频，走各自的分支后返回是否完成本小节，完成本小节会走完成逻辑；<ul>
+<li>考试：新增一条学习记录，将参数注入后，插入表即可。然后返回完成本小节。</li>
+<li>视频：先查看数据库是否存在该观看记录，如果不存在会先插入一条观看记录然后返回未完成。如果存在判断是否未为第一次完成既状态为未完成且当前学习进度已经超过百分之五十，如果是只会更新记录然后清除Redis中的缓存，返回已完成。如果未超过百分之五十或者已经完成会走下面逻辑，返回未完成。<ul>
+<li>未超百分之五十：封装一条学习记录，然后交给缓存服务。先更新一下Redis中的学习记录，方便后续读取视频记录。然后将该记录放入MQ中，MQ是一个延迟消息队列，到一定时间取出消息和Redis中的判断学习记录是否发生变化，变了证明用户并没有退出观看不需要写入数据库中，没变证明用户已经停止了观看，将该数据写入数据库中。</li>
+</ul>
+</li>
+<li>完成：根据课表查询该课程总小节信息，如果当前完成小节已经大于等于总小节数，需跟更新语句一起更新记录内容。更新内容包括学习状态、最后一次学习时间、最后一次学习小节id、学习小节总数等内容，然后向MQ中发送一条关于积分的消息。</li>
+</ul>
+</li>
+</ul>
+<p>消息队列实现：</p>
+<ul>
+<li>创建一个延迟交换机： 使用 RabbitMQ 的插件或创建一个 TTL（Time-To-Live）策略来实现延迟处理。例如，可以创建一个死信交换机（DLX），并将其设置为接收过期的消息。</li>
+<li>配置消息队列： 在你的 RabbitMQ 中，创建一个队列并设置适当的参数。可以使用 <code>x-message-ttl</code> 参数来指定消息在队列中保留的时间，过期后将消息发送到 DLX。</li>
+<li>发送延迟消息： 在你的 Java 代码中，将消息发送到创建的队列中。确保设置 TTL（如10秒后过期），这样消息在队列中的时间达到 TTL 时会被转发到死信队列。</li>
+<li>消费死信队列中的消息： 创建一个消费者来监听死信队列，并处理这些消息。这样可以实现延迟任务的处理。</li>
+</ul>
+<h5 id="二、使用RabbitMQ将回复、点赞等消息异步发送到对应的服务"><a href="#二、使用RabbitMQ将回复、点赞等消息异步发送到对应的服务" class="headerlink" title="二、使用RabbitMQ将回复、点赞等消息异步发送到对应的服务"></a>二、使用RabbitMQ将回复、点赞等消息异步发送到对应的服务</h5><p>背景：</p>
+<p>为了调动学生学习热情该项目设立了排行榜功能，而排行榜靠积分排名，积分靠平时的课程学习、每日签到、回复问答、课程笔记等积累。学生完成这些任务后就可以获得一定的积分，但是每天都有限制。当前服务是学习微服务，而像评论这种功能并没有在当前模块下，为了模块间降低耦合度，引入了RabbitMQ异步发送消息消费消息。</p>
+<p>在上面提到了回复回答，既然可以回复回答就要让优质评论显示在前面，实现这个可以用点赞。而点赞记录该服务可以保存但是点赞数是在其他服务上的，所以点赞功能又需要独立于其他服务实现。</p>
+<p>积分实现：</p>
+<ul>
+<li>学习积分：在上面合并写请求亮点中，已经说明了在完成视频观看的任务后会发送一条消息，消费者收到后会根据其加分类型自动转到加分功能实现。</li>
+<li>评论积分、签到积分：在该业务处详细描述。</li>
+<li>主要消费实现：该功能接收三个参数用户id，分数和添加类型。会根据类型判断是否有上限，如果有上限已经超了就不加了，还未超保存未超的分数。累加到总积分中，为了算历史排行榜等。</li>
+</ul>
+<p>点赞实现：</p>
+<ul>
+<li>点赞数变更时，通过MQ通知业务方，业务方就可以更新自己的点赞数量了。并且还避免了点赞系统与业务方的耦合。</li>
+</ul>
+<h4 id="第九节-媒体模块"><a href="#第九节-媒体模块" class="headerlink" title="第九节 媒体模块"></a>第九节 媒体模块</h4><h4 id="第十节-消息模块"><a href="#第十节-消息模块" class="headerlink" title="第十节 消息模块"></a>第十节 消息模块</h4><h4 id="第十一节-支付模块"><a href="#第十一节-支付模块" class="headerlink" title="第十一节 支付模块"></a>第十一节 支付模块</h4><h4 id="第十二节-促销模块"><a href="#第十二节-促销模块" class="headerlink" title="第十二节 促销模块"></a>第十二节 促销模块</h4><h4 id="第十三节-评论模块"><a href="#第十三节-评论模块" class="headerlink" title="第十三节 评论模块"></a>第十三节 评论模块</h4><h4 id="第十四节-搜索模块"><a href="#第十四节-搜索模块" class="headerlink" title="第十四节 搜索模块"></a>第十四节 搜索模块</h4><h4 id="第十五节-交易模块"><a href="#第十五节-交易模块" class="headerlink" title="第十五节 交易模块"></a>第十五节 交易模块</h4><h4 id="第十六节-用户模块"><a href="#第十六节-用户模块" class="headerlink" title="第十六节 用户模块"></a>第十六节 用户模块</h4>
   </article>
   <!-- tag -->
   <div class="mt-12 pt-6 border-t border-gray-200">
@@ -267,7 +301,7 @@
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
       
-        <a href="/2024/10/28/%E7%AE%97%E6%B3%95/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+        <a href="/2024/11/03/%E7%AE%97%E6%B3%95/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
           <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
           算法
         </a>
