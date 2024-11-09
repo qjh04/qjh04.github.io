@@ -228,17 +228,17 @@
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2024-10-24</time>
+            <time>2024-11-09</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>5 min</span>
+            <span>8 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>1.5k words</span>
+            <span>2.4k words</span>
           </span>
                   
         </section>
@@ -285,7 +285,33 @@
 <ul>
 <li>点赞数变更时，通过MQ通知业务方，业务方就可以更新自己的点赞数量了。并且还避免了点赞系统与业务方的耦合。</li>
 </ul>
-<h4 id="第九节-媒体模块"><a href="#第九节-媒体模块" class="headerlink" title="第九节 媒体模块"></a>第九节 媒体模块</h4><h4 id="第十节-消息模块"><a href="#第十节-消息模块" class="headerlink" title="第十节 消息模块"></a>第十节 消息模块</h4><h4 id="第十一节-支付模块"><a href="#第十一节-支付模块" class="headerlink" title="第十一节 支付模块"></a>第十一节 支付模块</h4><h4 id="第十二节-促销模块"><a href="#第十二节-促销模块" class="headerlink" title="第十二节 促销模块"></a>第十二节 促销模块</h4><h4 id="第十三节-评论模块"><a href="#第十三节-评论模块" class="headerlink" title="第十三节 评论模块"></a>第十三节 评论模块</h4><h4 id="第十四节-搜索模块"><a href="#第十四节-搜索模块" class="headerlink" title="第十四节 搜索模块"></a>第十四节 搜索模块</h4><h4 id="第十五节-交易模块"><a href="#第十五节-交易模块" class="headerlink" title="第十五节 交易模块"></a>第十五节 交易模块</h4><h4 id="第十六节-用户模块"><a href="#第十六节-用户模块" class="headerlink" title="第十六节 用户模块"></a>第十六节 用户模块</h4>
+<h4 id="第九节-媒体模块"><a href="#第九节-媒体模块" class="headerlink" title="第九节 媒体模块"></a>第九节 媒体模块</h4><h4 id="第十节-短信模块"><a href="#第十节-短信模块" class="headerlink" title="第十节 短信模块"></a>第十节 短信模块</h4><h4 id="第十一节-支付模块"><a href="#第十一节-支付模块" class="headerlink" title="第十一节 支付模块"></a>第十一节 支付模块</h4><h4 id="第十二节-促销模块"><a href="#第十二节-促销模块" class="headerlink" title="第十二节 促销模块"></a>第十二节 促销模块</h4><h4 id="第十三节-点赞模块"><a href="#第十三节-点赞模块" class="headerlink" title="第十三节 点赞模块"></a>第十三节 点赞模块</h4><h5 id="一、重构点赞系统"><a href="#一、重构点赞系统" class="headerlink" title="一、重构点赞系统"></a>一、重构点赞系统</h5><p>背景：</p>
+<p>点赞可用于多处，如问答评论点赞、课堂笔记点赞等。那么就不可能每一个功能实现一个点赞功能，我们将其抽离出来形成一个通用的点赞系统，提高代码复用性。</p>
+<p>实现：</p>
+<ul>
+<li>点赞或取消点赞：<ul>
+<li>点赞逻辑：根据传入的业务id查询Redis中的一个SET结构存储的列表，将当前用户加入该列表即可。</li>
+<li>取消点赞逻辑：根据传入的业务id查询Redis中的一个SET结构存储的列表，判断当前用户是否为列表中的元素，如果是删除。</li>
+<li>点赞或取消点赞完且不报错之后会统计当前业务id的总点赞数，将其存储在Redis中的一个ZSET集合中。</li>
+</ul>
+</li>
+<li>查询当前用户当前页面点赞内容：<ul>
+<li>遍历业务id集合，根据业务id在Redis中查找相关SET集合，然后判断当前用户id是否为集合元素。将返回是的业务id添加到结果集返回给前端。前端根据后端返回的结果点亮点赞标记。</li>
+</ul>
+</li>
+</ul>
+<h5 id="二、定时将点赞总数同步到数据库（某个业务ID的点赞总数）"><a href="#二、定时将点赞总数同步到数据库（某个业务ID的点赞总数）" class="headerlink" title="二、定时将点赞总数同步到数据库（某个业务ID的点赞总数）"></a>二、定时将点赞总数同步到数据库（某个业务ID的点赞总数）</h5><p>背景：</p>
+<p>上面讲的点赞功能的实现都是在Redis中操作，目的是为了提高并发量。但是数据不能一直保存在Redis中，还是要持久化到数据库，尽管Redis有RDB和AOF等持久化功能。</p>
+<p>实现：</p>
+<ul>
+<li>定时发送：每20秒钟执行一次持久化功能。因为点赞系统是抽离出来的，独立于每一个业务的。所以循环将每个业务类型下的N条数据读取到一个DTO中，该DTO记录了每个业务id的点赞总数量。将DTO收集到一个列表中，然后通过消息队列将该数据列表发送到各个业务模块中进行保存。有一个细节在读取的时候同步移除在Redis中的记录。</li>
+<li>接收：这里拿回答举例，回答服务地下的监听者监听消息队列发送来的消息，一有消息发送到会将发送来的列表遍历封装在本服务里的DTO列表中，然后交给持久化层将其持久化到数据库。</li>
+</ul>
+<h5 id="三、定时将点赞记录同步到数据库中（持久化点赞记录）"><a href="#三、定时将点赞记录同步到数据库中（持久化点赞记录）" class="headerlink" title="三、定时将点赞记录同步到数据库中（持久化点赞记录）"></a>三、定时将点赞记录同步到数据库中（持久化点赞记录）</h5><p>背景：</p>
+<p>到现在，我们已经完成了减少对数据库的访问将点赞暂时存储在Redis中，将Redis中每个评论或者笔记的点赞数量发回给对应的服务并将其点赞总数量进行保存。但是我们并没有将具体的点赞记录持久化到数据库，而是修改了点赞数据结构从而只在Redis中记录点赞人、点赞目标、点赞类型等，我们缺少了添加时间等日志信息。我想这并无大碍，如果后续加入了如短视频平台中的点赞记录需要按时间进行排序在从插入数据库的时机进行考虑。</p>
+<p>实现：</p>
+<p>同上面将点赞总数发送到消息队列中一样，我们不需要发送到对应的服务，所以将业务id保留，根据其查询Redis中点赞人信息。而我们的记录需要点赞人(USERID)、点赞目标(BIZID)、点赞类型都已经有了，还剩两个时间就插入当前时间即可，时间不是特别重要。还有不要忘了将Redis中的记录删除。</p>
+<h4 id="第十四节-搜索模块"><a href="#第十四节-搜索模块" class="headerlink" title="第十四节 搜索模块"></a>第十四节 搜索模块</h4><h4 id="第十五节-交易模块"><a href="#第十五节-交易模块" class="headerlink" title="第十五节 交易模块"></a>第十五节 交易模块</h4><h4 id="第十六节-用户模块"><a href="#第十六节-用户模块" class="headerlink" title="第十六节 用户模块"></a>第十六节 用户模块</h4>
   </article>
   <!-- tag -->
   <div class="mt-12 pt-6 border-t border-gray-200">
@@ -301,16 +327,11 @@
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
       
-        <a href="/2024/11/03/%E7%AE%97%E6%B3%95/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
-          算法
-        </a>
-      
     </div>
     <div>
       
-        <a href="/2024/10/08/%E7%BD%91%E7%AB%99%E5%9C%B0%E5%9D%80/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          网站集合
+        <a href="/2024/11/09/%E7%AE%97%E6%B3%95/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          算法
           <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
         </a>
       
