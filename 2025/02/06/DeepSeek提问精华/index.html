@@ -233,12 +233,12 @@
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>2 min</span>
+            <span>8 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>669 words</span>
+            <span>2.5k words</span>
           </span>
                   
         </section>
@@ -313,6 +313,85 @@
 </ol>
 <hr>
 <p><strong>总结</strong>：幂等性是保障系统可靠性的重要手段，需结合业务场景选择合适策略，避免重复操作导致数据不一致。</p>
+<hr>
+<h2 id="二、项目深挖问题"><a href="#二、项目深挖问题" class="headerlink" title="二、项目深挖问题"></a>二、项目深挖问题</h2><h3 id="在线职业技能培训平台"><a href="#在线职业技能培训平台" class="headerlink" title="在线职业技能培训平台"></a><strong>在线职业技能培训平台</strong></h3><h4 id="1-技术选型与架构"><a href="#1-技术选型与架构" class="headerlink" title="1. 技术选型与架构"></a><strong>1. 技术选型与架构</strong></h4><p>为什么选择SpringCloud而不是Dubbo？Nacos和Eureka有什么区别？</p>
+<p>​	我们选择SpringCloud主要是因为其全栈微服务能力，尤其是与Spring Boot生态的无缝集成，能快速搭建	网关、服务注册、配置管理等模块。而Nacos相比Eureka，不仅支持服务发现，还提供动态配置中心功	能。例如，在项目中需要动态更新网关路由表，Nacos的配置推送机制能直接实现热更新，无需重启服	务。此外，Nacos的AP&#x2F;CP模式切换和健康检查机制更灵活，适合应对高并发和复杂业务场景。</p>
+<p>网关（Gateway）的路由表热更新是如何实现的？如何保证更新过程中服务不中断？</p>
+<p>​	网关监听Nacos共享配置的变化，当配置发生变化时，网关将配置拉下来，然后封装规则去更新路由信	息。如果是传统方式更新配置文件的话还要停掉服务从新开，这样就避免了服务中断问题。</p>
+<p>为什么用XXL-JOB而不用Elastic-Job或Quartz？XXL-JOB的调度原理是什么？</p>
+<p>​	我们选择XXL-JOB主要是因为其轻量化和开箱即用的特性。项目中需要快速实现分布式任务调度，而XXL-	JOB无需依赖ZooKeeper等外部组件，通过可视化控制台即可完成任务的动态配置和监控，大幅降低了运	维成本。</p>
+<p>​	其调度原理分为两部分：</p>
+<p>​		<strong>调度中心</strong>负责解析Cron表达式、计算分片参数，并通过HTTP通知执行器；</p>
+<p>​		<strong>执行器</strong>接收分片参数后处理具体业务，例如按分片索引处理不同数据范围。</p>
+<p>​	此外，XXL-JOB支持故障转移和动态分片。例如，当某台执行器宕机时，调度中心会自动将其未完成的分	片任务分配给其他健康的执行器，保障任务的高可用性。</p>
+<p>为什么用RabbitMQ，不用其他的？</p>
+<p>​	我们选择RabbitMQ主要基于业务需求和技术匹配度。项目中需要实现订单超时自动取消功能，RabbitMQ	的死信交换机结合消息TTL可以原生支持延迟消息，开发成本低。而Kafka的延迟消息需依赖外部方案，增	加了复杂度。</p>
+<p>​	此外，项目中涉及多个子系统（如库存、营销）的异步通知，RabbitMQ的灵活路由（如Fanout广播、	Topic匹配）能高效解耦业务。Kafka的Topic分区机制在动态路由场景下不够灵活。 </p>
+<p>​	最后，RabbitMQ的ACK机制和消息持久化保障了订单业务的高可靠性，而Kafka更侧重吞吐量，适合日志	处理而非交易场景。</p>
+<h4 id="2-高并发场景设计"><a href="#2-高并发场景设计" class="headerlink" title="2. 高并发场景设计"></a><strong>2. 高并发场景设计</strong></h4><p>你提到“Redis缓存+MQ合并写”降低数据库压力，具体如何实现批处理？批量写入的数据量和频率如何控制？</p>
+<p>Redis缓存和MySQL的数据一致性如何保障？有没有遇到过缓存穿透或雪崩？如何解决的？</p>
+<p>实时排行榜（ZSet）的积分更新是同步还是异步？ZSet的存储结构是什么？如果数据量过大（如百万级），如何优化内存占用？</p>
+<p>​	同步</p>
+<ul>
+<li><p>ziplist（压缩列表）</p>
+<ul>
+<li>元素数量 ≤ <code>zset-max-ziplist-entries</code>（默认128）；</li>
+<li>每个元素的成员（member）长度 ≤ <code>zset-max-ziplist-value</code>（默认64字节）。</li>
+<li>所有元素（成员和分数）按分数升序连续存储，结构紧凑，内存占用低。</li>
+<li>插入和查询的时间复杂度为O(N)，适合小规模数据。</li>
+</ul>
+</li>
+<li><p>skiplist + dict（跳跃表+字典）</p>
+<ul>
+<li>当元素数量或成员长度超过ziplist阈值时，自动转换为<code>skiplist+dict</code>组合结构。</li>
+<li>跳跃表（skiplist）：按分数排序，支持平均O(log N)复杂度的插入、删除和范围查询。</li>
+<li>字典（dict）：存储成员（member）到分数（score）的映射，支持O(1)复杂度的成员分数查询。</li>
+<li>兼顾排序和快速查询，但内存占用较高。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-性能优化"><a href="#3-性能优化" class="headerlink" title="3. 性能优化"></a><strong>3. 性能优化</strong></h4><p>项目上线后的QPS是多少？如何通过JMeter压测验证系统性能？</p>
+<p>网关路由热更新后，如何验证系统的灵活性提升？有没有监控到具体指标（如接口响应时间）的变化？</p>
+<p>使用RabbitMQ合并写时，如果MQ宕机导致消息丢失，如何保证数据不丢失？</p>
+<h4 id="4-问题排查"><a href="#4-问题排查" class="headerlink" title="4. 问题排查"></a><strong>4. 问题排查</strong></h4><p>项目中遇到的最棘手的问题是什么？如何定位和解决的？</p>
+<p>有没有遇到过分布式锁失效的情况？如何排查并修复？</p>
+<p>如果Redis集群出现脑裂，如何保证排行榜数据的准确性？</p>
+<hr>
+<h3 id="奶茶派送项目"><a href="#奶茶派送项目" class="headerlink" title="奶茶派送项目"></a><strong>奶茶派送项目</strong></h3><h4 id="1-秒杀场景设计"><a href="#1-秒杀场景设计" class="headerlink" title="1. 秒杀场景设计"></a><strong>1. 秒杀场景设计</strong></h4><ol>
+<li>优惠券秒杀的库存扣减逻辑是什么？为什么同时使用Redisson分布式锁和数据库乐观锁？</li>
+<li>分布式锁的锁超时时间设置多久？如果业务执行时间超过锁超时时间怎么办？</li>
+<li>如何限制每个用户只能抢一张优惠券？如果用户用多个账号绕过限制，如何防范？</li>
+</ol>
+<h4 id="2-Redis与缓存设计"><a href="#2-Redis与缓存设计" class="headerlink" title="2. Redis与缓存设计"></a><strong>2. Redis与缓存设计</strong></h4><ol>
+<li>使用Redis缓存奶茶商品数据时，如何保证缓存与数据库的一致性？延迟双删的具体实现步骤是什么？</li>
+<li>布隆过滤器是如何防止缓存穿透的？布隆过滤器的误判率如何控制？</li>
+<li>如果Redis宕机，如何保证系统的高可用？有没有设计降级方案？</li>
+</ol>
+<h4 id="3-消息队列与可靠性"><a href="#3-消息队列与可靠性" class="headerlink" title="3. 消息队列与可靠性"></a><strong>3. 消息队列与可靠性</strong></h4><ol>
+<li>RabbitMQ的死信队列是如何配置的？消息重试机制如何设计？</li>
+<li>订单超时自动取消功能中，如果消费者处理消息失败，如何保证消息不丢失？</li>
+<li>消息堆积时，如何快速恢复系统？是否考虑过消费者扩容或限流？</li>
+</ol>
+<h4 id="4-代码设计与优化"><a href="#4-代码设计与优化" class="headerlink" title="4. 代码设计与优化"></a><strong>4. 代码设计与优化</strong></h4><ol>
+<li>使用AOP记录日志时，如何避免切面影响核心业务的性能？</li>
+<li>乐观锁（如version字段）在代码中如何实现？如果高并发下大量请求冲突，如何优化？</li>
+<li>你提到“查询效率提高30倍”，这个数据是如何得出的？压测时使用的数据集规模是多少？</li>
+</ol>
+<hr>
+<h3 id="通用问题"><a href="#通用问题" class="headerlink" title="通用问题"></a><strong>通用问题</strong></h3><h4 id="1-项目整体"><a href="#1-项目整体" class="headerlink" title="1. 项目整体"></a><strong>1. 项目整体</strong></h4><ol>
+<li>项目的业务价值是什么？上线后用户反馈如何？</li>
+<li>如果是你重新设计这个项目，会在架构或技术选型上做哪些改进？</li>
+<li>你在项目中最大的技术成长是什么？</li>
+</ol>
+<h4 id="2-技术原理"><a href="#2-技术原理" class="headerlink" title="2. 技术原理"></a><strong>2. 技术原理</strong></h4><ol>
+<li>为什么Redis单线程还能支持高并发？Redis的持久化机制（RDB&#x2F;AOF）如何选择？</li>
+<li>RabbitMQ如何保证消息的顺序性？Kafka为什么吞吐量更高？</li>
+<li>MySQL的索引为什么用B+树？什么情况下会索引失效？</li>
+</ol>
+<h4 id="3-团队协作"><a href="#3-团队协作" class="headerlink" title="3. 团队协作"></a><strong>3. 团队协作</strong></h4><ol>
+<li>项目中如何与前端&#x2F;测试&#x2F;产品经理协作？遇到过沟通障碍吗？如何解决的？</li>
+<li>如果有队友代码质量差导致BUG，你会如何处理？</li>
+</ol>
 
   </article>
   <!-- tag -->
