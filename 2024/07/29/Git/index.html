@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Git分布式版本控制 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Git分布式版本控制系统没有“中央服务器”，每个人的电脑上都是一个完整的版本库，无需联网版本库就在你的电脑上。多人协作只需将个人修改的地方推给对方，就能互相看到对方的修改了。但是一般都是推到共享版本库。 第一章 Git常用命令第一节 基础操作什么是状态？git工作目录下对于文件的修改会存在几个状态，这些状态会随着我们执行的命令变化而变化。 工作区（修改和新建的） –&gt; 暂存区（已暂存的） –">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git分布式版本控制">
+<meta property="og:url" content="http://example.com/2024/07/29/Git/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Git分布式版本控制系统没有“中央服务器”，每个人的电脑上都是一个完整的版本库，无需联网版本库就在你的电脑上。多人协作只需将个人修改的地方推给对方，就能互相看到对方的修改了。但是一般都是推到共享版本库。 第一章 Git常用命令第一节 基础操作什么是状态？git工作目录下对于文件的修改会存在几个状态，这些状态会随着我们执行的命令变化而变化。 工作区（修改和新建的） –&gt; 暂存区（已暂存的） –">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-07-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-04T11:55:37.875Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Git" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/07/29/Git/" class="article-date">
+  <time class="dt-published" datetime="2024-07-28T16:00:00.000Z" itemprop="datePublished">2024-07-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Git分布式版本控制
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p>分布式版本控制系统没有“中央服务器”，每个人的电脑上都是一个完整的版本库，无需联网版本库就在你的电脑上。多人协作只需将个人修改的地方推给对方，就能互相看到对方的修改了。但是一般都是推到共享版本库。</p>
+<h2 id="第一章-Git常用命令"><a href="#第一章-Git常用命令" class="headerlink" title="第一章 Git常用命令"></a>第一章 Git常用命令</h2><h3 id="第一节-基础操作"><a href="#第一节-基础操作" class="headerlink" title="第一节 基础操作"></a>第一节 基础操作</h3><h4 id="什么是状态？"><a href="#什么是状态？" class="headerlink" title="什么是状态？"></a>什么是状态？</h4><p>git工作目录下对于文件的修改会存在几个状态，这些状态会随着我们执行的命令变化而变化。</p>
+<p>工作区（修改和新建的） –&gt; 暂存区（已暂存的） –&gt; 仓库（变成一次提交记录）</p>
+<ul>
+<li>git add . –&gt; 工作区到暂存区</li>
+<li>git commit -m ’注释内容‘ –&gt; 暂存区到仓库</li>
+</ul>
+<h4 id="查看状态"><a href="#查看状态" class="headerlink" title="查看状态"></a>查看状态</h4><p>git status 查看状态</p>
+<h4 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h4><p>git log [option] 查看提交日志</p>
+<p>git reflog 查看历史日志</p>
+<h4 id="版本回退"><a href="#版本回退" class="headerlink" title="版本回退"></a>版本回退</h4><p>git reset - -hard commitID -&gt;这个id可以用log查看</p>
+<h4 id="添加文件至忽略列表"><a href="#添加文件至忽略列表" class="headerlink" title="添加文件至忽略列表"></a>添加文件至忽略列表</h4><p>创建一个.gitignore文件，在里面添加需要忽略的文件的文件名</p>
+<h3 id="第二节-分支"><a href="#第二节-分支" class="headerlink" title="第二节 分支"></a>第二节 分支</h3><p>当前工作区只能修改当前分支</p>
+<h4 id="查看分支"><a href="#查看分支" class="headerlink" title="查看分支"></a>查看分支</h4><p>git branch</p>
+<h4 id="创建分支"><a href="#创建分支" class="headerlink" title="创建分支"></a>创建分支</h4><p>git branch 分支名</p>
+<h4 id="切换分支"><a href="#切换分支" class="headerlink" title="切换分支"></a>切换分支</h4><p>git checkout [-b] 分支名</p>
+<ul>
+<li>-b：不存在直接创建并且切换</li>
+</ul>
+<h4 id="合并分支"><a href="#合并分支" class="headerlink" title="合并分支"></a>合并分支</h4><p>git merge 分支名 -&gt; 将该分支合并到当前分支，一般合并到master分支</p>
+<h4 id="删除分支"><a href="#删除分支" class="headerlink" title="删除分支"></a>删除分支</h4><p>git branch -d 分支名 -&gt; 删除其他分支非对当前进行删除</p>
+<h4 id="解决冲突"><a href="#解决冲突" class="headerlink" title="解决冲突"></a>解决冲突</h4><p>当两个分支上对文件的修改可能会存在冲突,例如同时修改了同一个文件的同一行,这时就需要手动解决冲突,解决冲突步骤如下:</p>
+<ol>
+<li>冲突了会有提示，手动改完文件中冲突的地方</li>
+<li>将解决完冲突的文件加入暂存区(add)</li>
+<li>提交到仓库(commit)</li>
+</ol>
+<h4 id="开发中分支的使用规范"><a href="#开发中分支的使用规范" class="headerlink" title="开发中分支的使用规范"></a>开发中分支的使用规范</h4><ul>
+<li>master(生产)分支线上分支,主分支,中小规模项目作为线上运行的应用对应的分支;</li>
+<li>develop(开发)分支是从master创建的分支,一般作为开发部门的主要开发分支,如果没有其他并行开发不同期上线要求,都可以在此版本进行开发,阶段开发完成后,需要是合并到master分支,准备上线。</li>
+<li>feature&#x2F;xxxx分支从develop创建的分支,一般是同期并行开发,但不同期上线时创建的分支,分支上的研发任务完成后合并到develop分支。</li>
+<li>hotfix&#x2F;xxxx分支从master派生的分支,一般作为线上bug修复使用,修复完成后需要合并到master、test、develop分支。</li>
+<li>还有一些其他分支,在此不再详述,例如test分支(用于代码测试)、pre分支(预上线分支)等等。</li>
+</ul>
+<h2 id="第二章-Git远程仓库"><a href="#第二章-Git远程仓库" class="headerlink" title="第二章 Git远程仓库"></a>第二章 Git远程仓库</h2><h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>在gitee上创建个仓库，在本地生成ssh公钥</p>
+<ul>
+<li>ssh-keygen -t rsa</li>
+<li>不断回车，如果公钥已经存在会自动覆盖</li>
+</ul>
+<p>在gitee上配置生成的公钥，可以在.ssh文件中查看，也可以用命令查看</p>
+<h3 id="添加远程仓库"><a href="#添加远程仓库" class="headerlink" title="添加远程仓库"></a>添加远程仓库</h3><p>git remote add 远程仓库名（origin） 路径（ssh地址）</p>
+<h3 id="查看远程仓库"><a href="#查看远程仓库" class="headerlink" title="查看远程仓库"></a>查看远程仓库</h3><p>git remote </p>
+<h3 id="推送到远程仓库"><a href="#推送到远程仓库" class="headerlink" title="推送到远程仓库"></a>推送到远程仓库</h3><p>git push 远程仓库名（origin） 分支名（master）</p>
+<h3 id="从远程仓库克隆"><a href="#从远程仓库克隆" class="headerlink" title="从远程仓库克隆"></a>从远程仓库克隆</h3><p>git clone ssh路径</p>
+<h3 id="抓取和拉取"><a href="#抓取和拉取" class="headerlink" title="抓取和拉取"></a>抓取和拉取</h3><ul>
+<li>抓取：git fetch [remote name] [branch name]<ul>
+<li>抓取指令就是将仓库里更新的都抓取到本地，但不会合并</li>
+<li>如果不指定远端名称和分支名称，则抓取所有分支</li>
+</ul>
+</li>
+<li>拉取：git pull [remote name] [branch name]<ul>
+<li>拉取指令就是将远端仓库的修改拉到本地并自行合并</li>
+<li>如果不指定远端名称和分支名称，则拉取所有分支</li>
+</ul>
+</li>
+</ul>
+<h3 id="解决合并冲突问题"><a href="#解决合并冲突问题" class="headerlink" title="解决合并冲突问题"></a>解决合并冲突问题</h3><p>先用git pull在本地解决冲突，再用git push推送到远程仓库</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/07/29/Git/" data-id="cmhkkpc7i0003o4fefa1f34bv" data-title="Git分布式版本控制" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/07/30/RabbitMQ/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          RabbitMQ
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/07/28/Docker/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Docker</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">August 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2025/01/11/Netty/">Netty</a>
+          </li>
+        
+          <li>
+            <a href="/2024/12/06/%E7%BD%91%E7%AB%99%E5%9C%B0%E5%9D%80/">网站集合</a>
+          </li>
+        
+          <li>
+            <a href="/2024/09/02/JVM/">JVM</a>
+          </li>
+        
+          <li>
+            <a href="/2024/08/29/MySQL/">MySQL</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

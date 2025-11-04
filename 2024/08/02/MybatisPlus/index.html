@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>MybatisPlus | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MybatisPlus第一章 入门认识第一节 搭建步骤 引入依赖mybatis-plus-boot-starter 自定义Mapper继承BaseMapper类，泛型为需要操作表的实体类 测试  第二节 常见注解MybatisPlus扫描实体类，并基于反射获取实体类的信息作为数据库信息  MybatisPlus会把PO实体的类名驼峰转下划线作为表名 MybatisPlus会把PO实体的所有变量名驼">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MybatisPlus">
+<meta property="og:url" content="http://example.com/2024/08/02/MybatisPlus/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MybatisPlus第一章 入门认识第一节 搭建步骤 引入依赖mybatis-plus-boot-starter 自定义Mapper继承BaseMapper类，泛型为需要操作表的实体类 测试  第二节 常见注解MybatisPlus扫描实体类，并基于反射获取实体类的信息作为数据库信息  MybatisPlus会把PO实体的类名驼峰转下划线作为表名 MybatisPlus会把PO实体的所有变量名驼">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-08-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-04T11:55:37.890Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-MybatisPlus" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/08/02/MybatisPlus/" class="article-date">
+  <time class="dt-published" datetime="2024-08-01T16:00:00.000Z" itemprop="datePublished">2024-08-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      MybatisPlus
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="MybatisPlus"><a href="#MybatisPlus" class="headerlink" title="MybatisPlus"></a>MybatisPlus</h1><h2 id="第一章-入门认识"><a href="#第一章-入门认识" class="headerlink" title="第一章 入门认识"></a>第一章 入门认识</h2><h3 id="第一节-搭建步骤"><a href="#第一节-搭建步骤" class="headerlink" title="第一节 搭建步骤"></a>第一节 搭建步骤</h3><ol>
+<li>引入依赖mybatis-plus-boot-starter</li>
+<li>自定义Mapper继承BaseMapper类，泛型为需要操作表的实体类</li>
+<li>测试</li>
+</ol>
+<h3 id="第二节-常见注解"><a href="#第二节-常见注解" class="headerlink" title="第二节 常见注解"></a>第二节 常见注解</h3><p>MybatisPlus扫描实体类，并基于反射获取实体类的信息作为数据库信息</p>
+<ul>
+<li>MybatisPlus会把PO实体的类名驼峰转下划线作为表名</li>
+<li>MybatisPlus会把PO实体的所有变量名驼峰转下划线作为表的字段名，并根据变量类型推断字段类型</li>
+<li>MybatisPlus会把名为id的字段作为主键</li>
+</ul>
+<h4 id="TableName"><a href="#TableName" class="headerlink" title="@TableName"></a>@TableName</h4><ul>
+<li>描述：表名注解，标识实体类对应的表</li>
+<li>使用位置：实体类</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>属性</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>必须指定</strong></th>
+<th><strong>默认值</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>value</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>表名</td>
+</tr>
+<tr>
+<td>schema</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>schema</td>
+</tr>
+<tr>
+<td>keepGlobalPrefix</td>
+<td>boolean</td>
+<td>否</td>
+<td>false</td>
+<td>是否保持使用全局的 tablePrefix 的值（当全局 tablePrefix 生效时）</td>
+</tr>
+<tr>
+<td>resultMap</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>xml 中 resultMap 的 id（用于满足特定类型的实体类对象绑定）</td>
+</tr>
+<tr>
+<td>autoResultMap</td>
+<td>boolean</td>
+<td>否</td>
+<td>false</td>
+<td>是否自动构建 resultMap 并使用（如果设置 resultMap 则不会进行 resultMap 的自动构建与注入）</td>
+</tr>
+<tr>
+<td>excludeProperty</td>
+<td>String[]</td>
+<td>否</td>
+<td>{}</td>
+<td>需要排除的属性名 @since 3.3.1</td>
+</tr>
+</tbody></table>
+<h4 id="TableId"><a href="#TableId" class="headerlink" title="@TableId"></a>@TableId</h4><ul>
+<li>描述：主键注解，标识实体类中的主键字段</li>
+<li>使用位置：实体类的主键字段</li>
+</ul>
+<p>注解支持两个属性：</p>
+<table>
+<thead>
+<tr>
+<th><strong>属性</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>必须指定</strong></th>
+<th><strong>默认值</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>value</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>表名</td>
+</tr>
+<tr>
+<td>type</td>
+<td>Enum</td>
+<td>否</td>
+<td>IdType.NONE</td>
+<td>指定主键类型</td>
+</tr>
+</tbody></table>
+<p>支持的类型有：</p>
+<table>
+<thead>
+<tr>
+<th><strong>值</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AUTO</td>
+<td>数据库 ID 自增</td>
+</tr>
+<tr>
+<td>NONE</td>
+<td>无状态，该类型为未设置主键类型（注解里等于跟随全局，全局里约等于 INPUT）</td>
+</tr>
+<tr>
+<td>INPUT</td>
+<td>insert 前自行 set 主键值</td>
+</tr>
+<tr>
+<td>ASSIGN_ID</td>
+<td>分配 ID(主键类型为 Number(Long 和 Integer)或 String)(since 3.3.0),使用接口IdentifierGenerator的方法nextId(默认实现类为DefaultIdentifierGenerator雪花算法)</td>
+</tr>
+<tr>
+<td>ASSIGN_UUID</td>
+<td>分配 UUID,主键类型为 String(since 3.3.0),使用接口IdentifierGenerator的方法nextUUID(默认 default 方法)</td>
+</tr>
+<tr>
+<td>ID_WORKER</td>
+<td>分布式全局唯一 ID 长整型类型(please use ASSIGN_ID)</td>
+</tr>
+<tr>
+<td>UUID</td>
+<td>32 位 UUID 字符串(please use ASSIGN_UUID)</td>
+</tr>
+<tr>
+<td>ID_WORKER_STR</td>
+<td>分布式全局唯一 ID 字符串类型(please use ASSIGN_ID)</td>
+</tr>
+</tbody></table>
+<h4 id="TableField"><a href="#TableField" class="headerlink" title="@TableField"></a>@TableField</h4><p>普通字段注解</p>
+<p>一般情况下我们并不需要给字段添加注解，一些特殊情况除外：</p>
+<ul>
+<li>成员变量名与数据库字段名不一致</li>
+<li>成员变量是以命名，按照的规范，识别字段时会把去除，这就导致与数据库不符。</li>
+<li>成员变量名与数据库一致，但是与数据库的关键字冲突。使用注解给字段名添加转义字符：&#96;&#96;</li>
+</ul>
+<p>支持的其它属性如下：</p>
+<table>
+<thead>
+<tr>
+<th><strong>属性</strong></th>
+<th><strong>类型</strong></th>
+<th><strong>必填</strong></th>
+<th><strong>默认值</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>value</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>数据库字段名</td>
+</tr>
+<tr>
+<td>exist</td>
+<td>boolean</td>
+<td>否</td>
+<td>true</td>
+<td>是否为数据库表字段</td>
+</tr>
+<tr>
+<td>condition</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>字段 where 实体查询比较条件，有值设置则按设置的值为准，没有则为默认全局的，<a target="_blank" rel="noopener" href="https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java">参考(opens new window)</a></td>
+</tr>
+<tr>
+<td>update</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>字段 update set 部分注入，例如：当在version字段上注解update&#x3D;”%s+1” 表示更新时会 set version&#x3D;version+1 （该属性优先级高于 el 属性）</td>
+</tr>
+<tr>
+<td>insertStrategy</td>
+<td>Enum</td>
+<td>否</td>
+<td>FieldStrategy.DEFAULT</td>
+<td>举例：</td>
+</tr>
+<tr>
+<td>updateStrategy</td>
+<td>Enum</td>
+<td>否</td>
+<td>FieldStrategy.DEFAULT</td>
+<td>举例：</td>
+</tr>
+<tr>
+<td>whereStrategy</td>
+<td>Enum</td>
+<td>否</td>
+<td>FieldStrategy.DEFAULT</td>
+<td>举例：</td>
+</tr>
+<tr>
+<td>fill</td>
+<td>Enum</td>
+<td>否</td>
+<td>FieldFill.DEFAULT</td>
+<td>字段自动填充策略</td>
+</tr>
+<tr>
+<td>select</td>
+<td>boolean</td>
+<td>否</td>
+<td>true</td>
+<td>是否进行 select 查询</td>
+</tr>
+<tr>
+<td>keepGlobalFormat</td>
+<td>boolean</td>
+<td>否</td>
+<td>false</td>
+<td>是否保持使用全局的 format 进行处理</td>
+</tr>
+<tr>
+<td>jdbcType</td>
+<td>JdbcType</td>
+<td>否</td>
+<td>JdbcType.UNDEFINED</td>
+<td>JDBC 类型 (该默认值不代表会按照该值生效)</td>
+</tr>
+<tr>
+<td>typeHandler</td>
+<td>TypeHander</td>
+<td>否</td>
+<td></td>
+<td>类型处理器 (该默认值不代表会按照该值生效)</td>
+</tr>
+<tr>
+<td>numericScale</td>
+<td>String</td>
+<td>否</td>
+<td>“”</td>
+<td>指定小数点后保留的位数</td>
+</tr>
+</tbody></table>
+<h3 id="第三节-常见配置"><a href="#第三节-常见配置" class="headerlink" title="第三节 常见配置"></a>第三节 常见配置</h3><p>大多数的配置都有默认值，因此我们都无需配置。但还有一些是没有默认值的，例如:</p>
+<ul>
+<li>实体类的别名扫描包</li>
+<li>全局id类型</li>
+</ul>
+<p>需要注意的是，MyBatisPlus也支持手写SQL的，而mapper文件的读取地址可以自己配置：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="第二章-核心功能"><a href="#第二章-核心功能" class="headerlink" title="第二章 核心功能"></a>第二章 核心功能</h2><h3 id="第一节-条件构造器"><a href="#第一节-条件构造器" class="headerlink" title="第一节 条件构造器"></a>第一节 条件构造器</h3><h4 id="QueryWrapper"><a href="#QueryWrapper" class="headerlink" title="QueryWrapper"></a>QueryWrapper</h4><p>无论是修改、删除、查询，都可以使用QueryWrapper来构建查询条件。</p>
+<h4 id="UpdateWrapper"><a href="#UpdateWrapper" class="headerlink" title="UpdateWrapper"></a>UpdateWrapper</h4><p>基于BaseMapper中的update方法更新时只能直接赋值，对于一些复杂的需求就难以实现。</p>
+<h4 id="LambdaQueryWrapper"><a href="#LambdaQueryWrapper" class="headerlink" title="LambdaQueryWrapper"></a>LambdaQueryWrapper</h4><p>无论是QueryWrapper还是UpdateWrapper在构造条件的时候都需要写死字段名称，会出现字符串魔法值。这在编程规范中显然是不推荐的。其中一种办法是基于变量的方法结合反射技术。因此我们只要将条件对应的字段的方法传递给MybatisPlus，它就能计算出对应的变量名了。而传递方法可以使用JDK8中的和表达式。 因此MybatisPlus又提供了一套基于Lambda的Wrapper，包含两个：</p>
+<ul>
+<li>LambdaQueryWrapper</li>
+<li>LambdaUpdateWrapper</li>
+</ul>
+<p>分别对应QueryWrapper和UpdateWrapper</p>
+<h3 id="第二节-自定义SQL"><a href="#第二节-自定义SQL" class="headerlink" title="第二节 自定义SQL"></a>第二节 自定义SQL</h3><p>可以用Wrapper构建复杂where条件，其它的自己写，步骤如下</p>
+<ul>
+<li>基于wrapper构建where条件，将wrapper往下层传递</li>
+<li>mapper层接收参数用param注解声明wrapper参数为ew</li>
+<li>在手写sql后面加上一个 ${ew.customSqlSegment}</li>
+</ul>
+<h3 id="第三节-IService接口"><a href="#第三节-IService接口" class="headerlink" title="第三节 IService接口"></a>第三节 IService接口</h3><p>自定义service继承IService，泛型同样为要操作的实体类。自定义serviceImpl继承ServiceImpl实现service，需要传两个泛型，一个为下一层mapper类一个为要操作的实体类。</p>
+<h2 id="第三章-拓展功能"><a href="#第三章-拓展功能" class="headerlink" title="第三章 拓展功能"></a>第三章 拓展功能</h2><h3 id="第一节-代码生成器"><a href="#第一节-代码生成器" class="headerlink" title="第一节 代码生成器"></a>第一节 代码生成器</h3><ol>
+<li>安装插件MybatisPlus</li>
+<li>在菜单栏选择other配置数据库</li>
+</ol>
+<h3 id="第二节-静态工具"><a href="#第二节-静态工具" class="headerlink" title="第二节 静态工具"></a>第二节 静态工具</h3><p>Db静态工具，MybatisPlus最新工具，可以避免service循环依赖注入，用法基本相同。</p>
+<h3 id="第三节-逻辑删除"><a href="#第三节-逻辑删除" class="headerlink" title="第三节 逻辑删除"></a>第三节 逻辑删除</h3><ul>
+<li>设置一个逻辑删除字段</li>
+<li>删除时把字段设为1</li>
+<li>查询所有删除字段为0的数据</li>
+</ul>
+<p>MybatisPlus已经提供相关解决方案，不用改变方法调用方式，而在底层帮我们自动修改CRUD语句，我们要做的就是配置即可。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>逻辑删除会导致数据库表中垃圾数据越来越多，数据率越来越多，查询效率越来越低。不推荐逻辑删除，可以用数据迁移到其他表。</p>
+<h3 id="第四节-枚举处理器"><a href="#第四节-枚举处理器" class="headerlink" title="第四节 枚举处理器"></a>第四节 枚举处理器</h3><ol>
+<li>给枚举里的那个要插入数据库里的值加注解@EnumValue</li>
+<li>在yml文件中配置全局处理器</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="第五节-JSON处理器"><a href="#第五节-JSON处理器" class="headerlink" title="第五节 JSON处理器"></a>第五节 JSON处理器</h3><p>在需要JSON的字段上加一个注解@TableField（typeHandler &#x3D; JacksonTypeHandler.class）</p>
+<p>在类的@TableName中加一个配置autoResultMap &#x3D; true</p>
+<h2 id="第四章-插件功能"><a href="#第四章-插件功能" class="headerlink" title="第四章 插件功能"></a>第四章 插件功能</h2><h3 id="第一节-分页插件"><a href="#第一节-分页插件" class="headerlink" title="第一节 分页插件"></a>第一节 分页插件</h3><p>现在配置类中将分页插件添加到核心插件，就可以去使用了</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="第二节-通用分页实体"><a href="#第二节-通用分页实体" class="headerlink" title="第二节 通用分页实体"></a>第二节 通用分页实体</h3><ul>
+<li>前端请求的参数需要有当前页，多少条，是否排序，排序字段等</li>
+<li>响应体需要有总条数，总页数，当前页的内容等</li>
+</ul>
+<p>构建对象和解析对象逻辑相同，可以抽成工具类放在上面两个类中</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/08/02/MybatisPlus/" data-id="cmhkkpc7l0007o4fe9rcf2m4o" data-title="MybatisPlus" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/08/19/Maven/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Maven
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/08/01/ES/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ElasticSeach</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">August 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2025/01/11/Netty/">Netty</a>
+          </li>
+        
+          <li>
+            <a href="/2024/12/06/%E7%BD%91%E7%AB%99%E5%9C%B0%E5%9D%80/">网站集合</a>
+          </li>
+        
+          <li>
+            <a href="/2024/09/02/JVM/">JVM</a>
+          </li>
+        
+          <li>
+            <a href="/2024/08/29/MySQL/">MySQL</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/page/2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Docker" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/07/28/Docker/" class="article-date">
+  <time class="dt-published" datetime="2024-07-27T16:00:00.000Z" itemprop="datePublished">2024-07-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/07/28/Docker/">Docker</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><h2 id="第一章-快速入门"><a href="#第一章-快速入门" class="headerlink" title="第一章 快速入门"></a>第一章 快速入门</h2><h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><h4 id="1、镜像和容器"><a href="#1、镜像和容器" class="headerlink" title="1、镜像和容器"></a>1、镜像和容器</h4><p>当我们利用Docker安装应用时,Docker会自动搜索并下载应用镜像(image)。镜像不仅包含应用本身,还包含应用运行所需要的环境、配置、系统函数库。Docker会在运行镜像时创建一个隔离环境,称为容器(container)。</p>
+<p>例如部署MySQL</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>镜像的名称不是随意的，而是要到DockerRegistry中寻找，镜像运行时的配置也不是随意的，要参考镜像的帮助文档，这些在DockerHub网站或者软件的官方网站中都能找到。</p>
+<p>如果我们要安装其它软件，也可以到DockerRegistry中寻找对应的镜像名称和版本，阅读相关配置即可。</p>
+<h2 id="第二章-Docker基础"><a href="#第二章-Docker基础" class="headerlink" title="第二章 Docker基础"></a>第二章 Docker基础</h2><h3 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h3><table>
+<thead>
+<tr>
+<th><strong>命令</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>文档地址</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>docker pull</td>
+<td>拉取镜像</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/pull/">docker pull</a></td>
+</tr>
+<tr>
+<td>docker push</td>
+<td>推送镜像到DockerRegistry</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/push/">docker push</a></td>
+</tr>
+<tr>
+<td>docker images</td>
+<td>查看本地镜像</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/images/">docker images</a></td>
+</tr>
+<tr>
+<td>docker rmi</td>
+<td>删除本地镜像</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/rmi/">docker rmi</a></td>
+</tr>
+<tr>
+<td>docker run</td>
+<td>创建并运行容器（不能重复创建）</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/run/">docker run</a></td>
+</tr>
+<tr>
+<td>docker stop</td>
+<td>停止指定容器</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/stop/">docker stop</a></td>
+</tr>
+<tr>
+<td>docker start</td>
+<td>启动指定容器</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/start/">docker start</a></td>
+</tr>
+<tr>
+<td>docker restart</td>
+<td>重新启动容器</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/restart/">docker restart</a></td>
+</tr>
+<tr>
+<td>docker rm</td>
+<td>删除指定容器</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/rm/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker ps</td>
+<td>查看容器</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/ps/">docker ps</a></td>
+</tr>
+<tr>
+<td>docker logs</td>
+<td>查看容器运行日志</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/logs/">docker logs</a></td>
+</tr>
+<tr>
+<td>docker exec</td>
+<td>进入容器</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/exec/">docker exec</a></td>
+</tr>
+<tr>
+<td>docker save</td>
+<td>保存镜像到本地压缩文件</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/save/">docker save</a></td>
+</tr>
+<tr>
+<td>docker load</td>
+<td>加载本地压缩文件到镜像</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/load/">docker load</a></td>
+</tr>
+<tr>
+<td>docker inspect</td>
+<td>查看容器详细信息</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/inspect/">docker inspect</a></td>
+</tr>
+</tbody></table>
+<h3 id="数据卷"><a href="#数据卷" class="headerlink" title="数据卷"></a>数据卷</h3><p>数据卷（vloume）是一个虚拟目录，是容器内目录与宿主机目录之间的桥梁。</p>
+<h4 id="数据卷命令"><a href="#数据卷命令" class="headerlink" title="数据卷命令"></a>数据卷命令</h4><table>
+<thead>
+<tr>
+<th><strong>命令</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>文档地址</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>docker volume create</td>
+<td>创建数据卷</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/volume_create/">docker volume create</a></td>
+</tr>
+<tr>
+<td>docker volume ls</td>
+<td>查看所有数据卷</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/volume_ls/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker volume rm</td>
+<td>删除指定数据卷</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/volume_prune/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker volume inspect</td>
+<td>查看某个数据卷的详情</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/volume_inspect/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker volume prune</td>
+<td>清除数据卷</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/volume_prune/">docker volume prune</a></td>
+</tr>
+</tbody></table>
+<p>docker run 命令里的 -v 参数也可以进行映射</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="自定义镜像"><a href="#自定义镜像" class="headerlink" title="自定义镜像"></a>自定义镜像</h3><p>自定义镜像本质就是依次准备好程序运行的基础环境、依赖、应用本身、运行配置等文件，并且打包而成。<strong>镜像就是一堆文件的集合</strong>。</p>
+<h4 id="dockerfile语法"><a href="#dockerfile语法" class="headerlink" title="dockerfile语法"></a>dockerfile语法</h4><p>dockerfile是一个文本文件，其中包含一条条指令，里面描述了执行什么操作构建镜像。</p>
+<table>
+<thead>
+<tr>
+<th><strong>指令</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>FROM</strong></td>
+<td>指定基础镜像</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ENV</strong></td>
+<td>设置环境变量，可在后面指令使用</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>COPY</strong></td>
+<td>拷贝本地文件到镜像的指定目录</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>RUN</strong></td>
+<td>执行Linux的shell命令，一般是安装过程的命令</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>EXPOSE</strong></td>
+<td>指定容器运行时监听的端口，是给镜像使用者看的</td>
+<td>EXPOSE 8080</td>
+</tr>
+<tr>
+<td><strong>ENTRYPOINT</strong></td>
+<td>镜像中应用的启动命令，容器运行时调用</td>
+<td>ENTRYPOINT java -jar xx.jar</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><p>自定义网络，ip地址不会变，避免ip地址来回变，服务找不到</p>
+<h4 id="网络命令"><a href="#网络命令" class="headerlink" title="网络命令"></a>网络命令</h4><table>
+<thead>
+<tr>
+<th><strong>命令</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>文档地址</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>docker network create</td>
+<td>创建一个网络</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_create/">docker network create</a></td>
+</tr>
+<tr>
+<td>docker network ls</td>
+<td>查看所有网络</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_ls/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker network rm</td>
+<td>删除指定网络</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_rm/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker network prune</td>
+<td>清除未使用的网络</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_prune/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker network connect</td>
+<td>使指定容器连接加入某网络</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_connect/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker network disconnect</td>
+<td>使指定容器连接离开某网络</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_disconnect/">docker network disconnect</a></td>
+</tr>
+<tr>
+<td>docker network inspect</td>
+<td>查看网络详细信息</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_inspect/">docker network inspect</a></td>
+</tr>
+</tbody></table>
+<p><strong>总结</strong>：</p>
+<ul>
+<li>在自定义网络中，可以给容器起多个别名，默认的别名是容器名本身</li>
+<li>在同一个自定义网络中的容器，可以通过别名互相访问</li>
+</ul>
+<h2 id="第三章-前后端部署"><a href="#第三章-前后端部署" class="headerlink" title="第三章 前后端部署"></a>第三章 前后端部署</h2><h3 id="DockerCompose"><a href="#DockerCompose" class="headerlink" title="DockerCompose"></a>DockerCompose</h3><p>docker-compose.yaml文件中可以定义多个相互关联的应用容器，每一个应用容器被称为一个服务（service）。由于service就是在定义某个应用的运行时参数，因此与参数非常相似</p>
+<p>先编写一个docker-compose.yaml文件，例如：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>命令行执行dockercompose基本语法：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><strong>类型</strong></th>
+<th><strong>参数或指令</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Options</td>
+<td>-f</td>
+<td>指定compose文件的路径和名称</td>
+</tr>
+<tr>
+<td></td>
+<td>-p</td>
+<td>指定project名称。project就是当前compose文件中设置的多个service的集合，是逻辑概念</td>
+</tr>
+<tr>
+<td>Commands</td>
+<td>up</td>
+<td>创建并启动所有service容器</td>
+</tr>
+<tr>
+<td></td>
+<td>down</td>
+<td>停止并移除所有容器、网络</td>
+</tr>
+<tr>
+<td></td>
+<td>ps</td>
+<td>列出所有启动的容器</td>
+</tr>
+<tr>
+<td></td>
+<td>logs</td>
+<td>查看指定容器的日志</td>
+</tr>
+<tr>
+<td></td>
+<td>stop</td>
+<td>停止容器</td>
+</tr>
+<tr>
+<td></td>
+<td>start</td>
+<td>启动容器</td>
+</tr>
+<tr>
+<td></td>
+<td>restart</td>
+<td>重启容器</td>
+</tr>
+<tr>
+<td></td>
+<td>top</td>
+<td>查看运行的进程</td>
+</tr>
+<tr>
+<td></td>
+<td>exec</td>
+<td>在指定的运行中容器中执行命令</td>
+</tr>
+</tbody></table>
+<p>该方法不仅可以部署单个服务，还可以部署集群。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/07/28/Docker/" data-id="cmhkkpc7c0000o4fegx9a4s76" data-title="Docker" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Linux" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/07/28/Linux/" class="article-date">
+  <time class="dt-published" datetime="2024-07-27T16:00:00.000Z" itemprop="datePublished">2024-07-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/07/28/Linux/">Linux</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><h2 id="第一章-初识Linux"><a href="#第一章-初识Linux" class="headerlink" title="第一章 初识Linux"></a>第一章 初识Linux</h2><h3 id="第一节-操作系统概述"><a href="#第一节-操作系统概述" class="headerlink" title="第一节 操作系统概述"></a>第一节 操作系统概述</h3><p>用户和计算机硬件之间的桥梁，调度和管理硬件进行工作。</p>
+<h3 id="第二节-初识Linux"><a href="#第二节-初识Linux" class="headerlink" title="第二节 初识Linux"></a>第二节 初识Linux</h3><p>组成：</p>
+<ul>
+<li>Linux系统内核<ul>
+<li>提供最核心的功能，如cpu调度、内存调度等</li>
+</ul>
+</li>
+<li>系统级应用程序<ul>
+<li>可理解为出厂自带软件，供用户快速上手，如文件管理器、视频播放器等</li>
+</ul>
+</li>
+</ul>
+<h3 id="第三节-虚拟机"><a href="#第三节-虚拟机" class="headerlink" title="第三节 虚拟机"></a>第三节 虚拟机</h3><p>借助虚拟化技术，通过软件模拟计算机硬件，并给虚拟硬件安装操作系统。这样，就可以在电脑上安装一个虚拟操作系统。</p>
+<p>小知识：ncpa.cpl 命令可以打开网络适配器查看页面。</p>
+<h3 id="第四节-虚拟机快照"><a href="#第四节-虚拟机快照" class="headerlink" title="第四节 虚拟机快照"></a>第四节 虚拟机快照</h3><p>快照可以将当前虚拟机的状态保存下来，在以后可以通过快照恢复到前面所保存的状态。</p>
+<h2 id="第二章-Linux基础命令"><a href="#第二章-Linux基础命令" class="headerlink" title="第二章 Linux基础命令"></a>第二章 Linux基础命令</h2><h3 id="第一节-Linux的目录结构"><a href="#第一节-Linux的目录结构" class="headerlink" title="第一节 Linux的目录结构"></a>第一节 Linux的目录结构</h3><p>树形结构，没有盘符概念，只有一个根目录 &#x2F; ，所有文件都在它之下。</p>
+<h3 id="第二节-Linux命令入门"><a href="#第二节-Linux命令入门" class="headerlink" title="第二节 Linux命令入门"></a>第二节 Linux命令入门</h3><p>命令：即Linux程序，一个命令就是一个程序。</p>
+<p>命令行：即Linux终端，是一种命令提示符界面，以纯字符的形式操作系统，可以使用各种字符化命令对系统发出指令。</p>
+<p>通用格式： command [-potions] [parameter]</p>
+<h3 id="第三节-ls命令入门"><a href="#第三节-ls命令入门" class="headerlink" title="第三节 ls命令入门"></a>第三节 ls命令入门</h3><p>语法： ls [-a -l -h] [Linux路径]</p>
+<p>不加选项，会展示出当前目录下（默认home目录）的内容，以平铺格式显示。</p>
+<p>每一个用户在Linux系统的专属目录,默认在:&#x2F;home&#x2F;用户名</p>
+<p>Linux命令行在执行命令的时候,需要一个工作目录,打开命令行程序(终端)默认设置工作目录在用户的HOME目录</p>
+<h4 id="选项解释："><a href="#选项解释：" class="headerlink" title="选项解释："></a>选项解释：</h4><ul>
+<li>-a ：表示all，所有文件，可以看到隐藏文件夹</li>
+<li>-l ：从横向平铺变成竖向的列表</li>
+<li>-h ：方便阅读，会列出单位K、M、G</li>
+</ul>
+<h3 id="第四节-目录切换命令cd、pwd"><a href="#第四节-目录切换命令cd、pwd" class="headerlink" title="第四节 目录切换命令cd、pwd"></a>第四节 目录切换命令cd、pwd</h3><p>语法：cd [Linux路径]</p>
+<p>不写参数，切换到home目录。</p>
+<p>语法：pwd</p>
+<p>打印当前工作目录路径</p>
+<h3 id="第五节-相对路径、绝对路径和特殊路径"><a href="#第五节-相对路径、绝对路径和特殊路径" class="headerlink" title="第五节 相对路径、绝对路径和特殊路径"></a>第五节 相对路径、绝对路径和特殊路径</h3><ul>
+<li>绝对路径：以根目录为起点</li>
+<li>相对路径：以当前所在目录作为起点</li>
+<li>特殊路径符：. 表示当前目录 .. 表示上一级目录 ~表示home目录</li>
+</ul>
+<h3 id="第六节-创建目录命令-mkdir"><a href="#第六节-创建目录命令-mkdir" class="headerlink" title="第六节 创建目录命令 mkdir"></a>第六节 创建目录命令 mkdir</h3><p>语法：mkdir [-p] Linux路径</p>
+<p>选项-p表示可以自动创建不存在的父目录，即可以创建多层级目录</p>
+<h3 id="第七节-文件操作命令"><a href="#第七节-文件操作命令" class="headerlink" title="第七节 文件操作命令"></a>第七节 文件操作命令</h3><h4 id="1、touch创建文件"><a href="#1、touch创建文件" class="headerlink" title="1、touch创建文件"></a>1、touch创建文件</h4><p>语法：touch Linux路径</p>
+<h4 id="2、cat查看文件"><a href="#2、cat查看文件" class="headerlink" title="2、cat查看文件"></a>2、cat查看文件</h4><p>语法： cat Linux路径</p>
+<h4 id="3、more查看文件"><a href="#3、more查看文件" class="headerlink" title="3、more查看文件"></a>3、more查看文件</h4><p>语法： more Linux路径</p>
+<p>与cat不同，多行可以翻页，通过空格翻页，通过q退出</p>
+<h4 id="4、cp复制文件文件夹"><a href="#4、cp复制文件文件夹" class="headerlink" title="4、cp复制文件文件夹"></a>4、cp复制文件文件夹</h4><p>语法： cp [-r] 参数1 参数</p>
+<ul>
+<li>选项-r：当复制文件夹时使用，表示递归</li>
+<li>参数1：被复制的文件或文件夹</li>
+<li>参数2：要复制去的地方</li>
+</ul>
+<h4 id="5、mv移动文件文件夹"><a href="#5、mv移动文件文件夹" class="headerlink" title="5、mv移动文件文件夹"></a>5、mv移动文件文件夹</h4><p>语法： mv 参数1 参数2</p>
+<ul>
+<li>参数1：要移动的文件或文件夹</li>
+<li>参数2：要移动到的地方</li>
+</ul>
+<h4 id="6、rm删除文件文件夹"><a href="#6、rm删除文件文件夹" class="headerlink" title="6、rm删除文件文件夹"></a>6、rm删除文件文件夹</h4><p>语法： rm [-r -f] 参数1 参数2 参数、、、</p>
+<ul>
+<li>同cp命令一样，-r表示删除文件夹</li>
+<li>-f表示强制删除</li>
+<li>参数表示要删除的文件或文件夹路径</li>
+<li>支持通配符*，表示任何内容</li>
+</ul>
+<h3 id="第八节-查找命令"><a href="#第八节-查找命令" class="headerlink" title="第八节 查找命令"></a>第八节 查找命令</h3><h4 id="1、which"><a href="#1、which" class="headerlink" title="1、which"></a>1、which</h4><p>语法： which 要查找的命令名</p>
+<p>前面所学的命令，本质上都是一个二进制程序，可以通过switch命令，查看使用的一系列命令程序文件</p>
+<h4 id="2、find"><a href="#2、find" class="headerlink" title="2、find"></a>2、find</h4><p>语法： find 起始路径 -name 被查找文件名</p>
+<p>通过find命令去搜索指定的文件，也可以使用通配符*，</p>
+<p>按文件大小查找文件</p>
+<p>语法： find 起始路径 -size +|-n[kmg]</p>
+<ul>
+<li><p>+、-表示大于和小于</p>
+</li>
+<li><p>n表示大小数字</p>
+</li>
+<li><p>kMG表示大小单位,k(小写字母)表示kb,M表示MB,G表示GB</p>
+</li>
+</ul>
+<h3 id="第九节-grep、wc和管道符"><a href="#第九节-grep、wc和管道符" class="headerlink" title="第九节 grep、wc和管道符"></a>第九节 grep、wc和管道符</h3><h4 id="1、grep"><a href="#1、grep" class="headerlink" title="1、grep"></a>1、grep</h4><p>可以通过grep命令,从文件中通过关键字过滤文件行。</p>
+<p>语法: grep [-n] 关键字 文件路径</p>
+<ul>
+<li>选项-n,可选,表示在结果中显示匹配的行的行号。</li>
+<li>参数,关键字,必填,表示过滤的关键字,带有空格或其它特殊符号,建议使用”将关键字包围起来</li>
+<li>参数,文件路径,必填,表示要过滤内容的文件路径,可作为内容输入端口</li>
+</ul>
+<h4 id="2、wc"><a href="#2、wc" class="headerlink" title="2、wc"></a>2、wc</h4><p>可以通过wc命令统计文件的行数、单词数量等</p>
+<p>语法： WC [-c -m -1 -w] 文件路径</p>
+<ul>
+<li><p>选项,-C,统计bytes数量</p>
+</li>
+<li><p>选项,-m,统计字符数量</p>
+</li>
+<li><p>选项,-l,统计行数</p>
+</li>
+<li><p>选项,-w,统计单词数量</p>
+</li>
+<li><p>参数,文件路径,被统计的文件,可作为内容输入端口</p>
+</li>
+</ul>
+<h4 id="3、管道符"><a href="#3、管道符" class="headerlink" title="3、管道符 |"></a>3、管道符 |</h4><p>将左边的结果 作为 右边的输入</p>
+<h3 id="第十节-echo、tail和重定符"><a href="#第十节-echo、tail和重定符" class="headerlink" title="第十节 echo、tail和重定符"></a>第十节 echo、tail和重定符</h3><h4 id="1、echo"><a href="#1、echo" class="headerlink" title="1、echo"></a>1、echo</h4><p>可以用echo命令在命令行界面输出想输出的内容</p>
+<p>语法： echo 字符串</p>
+<p>如果字符串里有特殊符号，需要双引号引起来</p>
+<p>反引号 ‘ ’ ：可以被看做转义字符，引号里的字符可以被看做是命令执行</p>
+<h4 id="2、重定向符"><a href="#2、重定向符" class="headerlink" title="2、重定向符"></a>2、重定向符</h4><ul>
+<li>“&gt;” ：将左侧的结果覆盖写入到右边的文件中</li>
+<li>“&gt;&gt;”：将左侧的结果追加写入到右边的文件中</li>
+</ul>
+<h4 id="3、tail命令"><a href="#3、tail命令" class="headerlink" title="3、tail命令"></a>3、tail命令</h4><p>使用tail命令,可以查看文件尾部内容,跟踪文件的最新更改,语法如下:</p>
+<p>tail [-f -num] Linux路径</p>
+<ul>
+<li><p>参数,Linux路径,表示被跟踪的文件路径</p>
+</li>
+<li><p>选项,-f,表示持续跟踪</p>
+</li>
+<li><p>选项,-num,表示,查看尾部多少行,不填默认10行</p>
+</li>
+</ul>
+<h3 id="第十一节-vi、vim编辑器"><a href="#第十一节-vi、vim编辑器" class="headerlink" title="第十一节 vi、vim编辑器"></a>第十一节 vi、vim编辑器</h3><ul>
+<li>命令模式：所有按键被视为命令，以命令驱动执行不同的功能，不能自由进行文本编辑</li>
+<li>输入模式：所谓的编辑模式，可以对文本进行编辑</li>
+<li>底线命令模式：以：开始，通常用于保存或退出</li>
+</ul>
+<h2 id="第三章-Linux用户和权限"><a href="#第三章-Linux用户和权限" class="headerlink" title="第三章 Linux用户和权限"></a>第三章 Linux用户和权限</h2><h3 id="第一节认识root用户"><a href="#第一节认识root用户" class="headerlink" title="第一节认识root用户"></a>第一节认识root用户</h3><p>超级管理员，拥有操作系统最大操作权限</p>
+<h4 id="切换用户"><a href="#切换用户" class="headerlink" title="切换用户"></a>切换用户</h4><p>语法： su [-] [用户名]</p>
+<p>用于账户切换的系统命令，-：表示切换的同时加载环境变量，不填用户名默认切换到root，exit退出</p>
+<h4 id="sudo命令"><a href="#sudo命令" class="headerlink" title="sudo命令"></a>sudo命令</h4><p>sudo 其他命令</p>
+<p>为普通命令授权，临时以root身份执行，需要为普通用户配置sudo认证才可以使用 </p>
+<h3 id="第二节用户和用户组"><a href="#第二节用户和用户组" class="headerlink" title="第二节用户和用户组"></a>第二节用户和用户组</h3><p>Linux可以配置多个用户，多个用户组，一个用户可以进多个用户组。可以针对用户进行权限管控，也可以对用户组进行管控</p>
+<h4 id="用户组管理"><a href="#用户组管理" class="headerlink" title="用户组管理"></a>用户组管理</h4><ul>
+<li>创建用户组：groupadd 用户组名</li>
+<li>删除用户组：groupdel 用户组名</li>
+</ul>
+<h4 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h4><ul>
+<li>创建用户：useradd [-g -d] 用户名<ul>
+<li>选项 :- g指定用户的组,不指定-g,会创建同名组并自动加入,指定-g需要组已经存在,如已存在名组,必须使用-g</li>
+<li>选项 :- d指定用户HOME路径,不指定,HOME目录默认在:&#x2F;home&#x2F;用户名</li>
+</ul>
+</li>
+<li>删除用户：userdel [-r] 用户名<ul>
+<li>选项：-r表示删除用户的home目录</li>
+</ul>
+</li>
+<li>查看用户所属组：id[用户名]<ul>
+<li>选项用户名不加 则查看当前用户的所属组</li>
+</ul>
+</li>
+<li>修改用户所属组：usermod -aG 用户组 用户名<ul>
+<li>将指定用户加入用户组</li>
+</ul>
+</li>
+<li>查看所有用户或用户组：getnet passwd &#x2F; group</li>
+</ul>
+<h3 id="第三节-查看权限控制"><a href="#第三节-查看权限控制" class="headerlink" title="第三节 查看权限控制"></a>第三节 查看权限控制</h3><p>r：可读 w：可写 x：可执行</p>
+<h4 id="修改权限信息"><a href="#修改权限信息" class="headerlink" title="修改权限信息"></a>修改权限信息</h4><p>语法：chmod [-R] 权限 文件或文件夹</p>
+<p>选项-R表示对文件夹内部的所有文件应用同样的权限，权限可以用二进制表示rwx</p>
+<h4 id="修改用户用户组权限"><a href="#修改用户用户组权限" class="headerlink" title="修改用户用户组权限"></a>修改用户用户组权限</h4><p>语法：chown [-R] [用户] [:] [用户组] 文件文件夹</p>
+<p>此命令只适用于root用户，将文件文件夹修改为某用户用户组，-R同上</p>
+<h2 id="第四章-Linux实用操作"><a href="#第四章-Linux实用操作" class="headerlink" title="第四章 Linux实用操作"></a>第四章 Linux实用操作</h2><h3 id="第一节-实用小技巧"><a href="#第一节-实用小技巧" class="headerlink" title="第一节 实用小技巧"></a>第一节 实用小技巧</h3><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>快捷键</th>
+<th>功能</th>
+<th>快捷键</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>强制停止</td>
+<td>ctrl+c</td>
+<td>退出账户登录</td>
+<td>ctrl + d</td>
+</tr>
+<tr>
+<td>历史命令搜索</td>
+<td>history</td>
+<td>历史命令匹配</td>
+<td>ctrl+r</td>
+</tr>
+<tr>
+<td>跳到命令开头</td>
+<td>ctrl+a</td>
+<td>跳到命令结尾</td>
+<td>ctrl+e</td>
+</tr>
+<tr>
+<td>向左挑一个单词</td>
+<td>ctrl+左键</td>
+<td>向右挑一个单词</td>
+<td>ctrl+右键</td>
+</tr>
+<tr>
+<td>清屏</td>
+<td>ctrl+l</td>
+<td>清屏</td>
+<td>clear</td>
+</tr>
+</tbody></table>
+<h3 id="第二节-安装软件"><a href="#第二节-安装软件" class="headerlink" title="第二节 安装软件"></a>第二节 安装软件</h3><h4 id="yum命令"><a href="#yum命令" class="headerlink" title="yum命令"></a>yum命令</h4><p>RPM包软件管理器,用于自动化安装配置Linux软件,并可以自动解决依赖问题。</p>
+<p>语法:yum [-y] [install | remove | search] 软件名称</p>
+<ul>
+<li><p>选项 :- y,自动确认,无需手动确认安装或卸载过程</p>
+</li>
+<li><p>install:安装</p>
+</li>
+<li><p>remove:卸载</p>
+</li>
+<li><p>search:搜索</p>
+</li>
+</ul>
+<p>yum命令需要root权限哦,可以su切换到root,或使用sudo提权，yum命令需要联网</p>
+<h4 id="systemctl命令"><a href="#systemctl命令" class="headerlink" title="systemctl命令"></a>systemctl命令</h4><p>Linux系统很多软件(内置或第三方)均支持使用systemctl命令控制:启动、停止、开机自启</p>
+<p>能够被systemctl管理的软件,一般也称之为:服务</p>
+<p>语法: systemctl start | stop| status | enable| disable 服务名</p>
+<ul>
+<li>start 启动</li>
+<li>stop关闭</li>
+<li>status查看状态</li>
+<li>enable开启开机自启</li>
+<li>disable 关闭开机自启</li>
+</ul>
+<h3 id="第三节-软连接"><a href="#第三节-软连接" class="headerlink" title="第三节 软连接"></a>第三节 软连接</h3><p>类似windows中的快捷方式</p>
+<p>语法：ls -s 参数1 参数2</p>
+<ul>
+<li><p>-s选项,创建软连接</p>
+</li>
+<li><p>参数1:被链接的文件或文件夹</p>
+</li>
+<li><p>参数2:要链接去的目的地</p>
+</li>
+</ul>
+<h3 id="第四节-日期和时区"><a href="#第四节-日期和时区" class="headerlink" title="第四节 日期和时区"></a>第四节 日期和时区</h3><p>通过date命令可以在命令行中查看系统的时间</p>
+<p>语法:date [-d] [+格式化字符串]</p>
+<ul>
+<li>-d按照给定的字符串显示日期,一般用于日期计算，+号后边可以加day、month、year</li>
+<li>格式化字符串:通过特定的字符串标记,来控制显示的日期格式<br>%Y 年<br>%y 年份后两位数字(00.99)<br>%M 月份(01.12)<br>%d 日 (01.31)<br>%H 小时(00.23)<br>%M 分钟(00.59)<br>%s 秒(00.60)<br>%s 自 1970-01-01 00:0000 UTC 到现在的秒数</li>
+</ul>
+<p>修改时区</p>
+<ul>
+<li>rm -f &#x2F;etc&#x2F;localtime</li>
+<li>sudo ln -s &#x2F;usr&#x2F;share&#x2F;zoneinfo&#x2F;Asia&#x2F;Shanghai &#x2F;etc&#x2F;localtime</li>
+</ul>
+<p>也可以用ntp程序自动校准</p>
+<h3 id="第五节-ip地址和主机名"><a href="#第五节-ip地址和主机名" class="headerlink" title="第五节 ip地址和主机名"></a>第五节 ip地址和主机名</h3><p>命令：ifconfig 和 hostname</p>
+<h3 id="第六节-网络传输"><a href="#第六节-网络传输" class="headerlink" title="第六节 网络传输"></a>第六节 网络传输</h3><h4 id="ping"><a href="#ping" class="headerlink" title="ping"></a>ping</h4><p>可以通过ping命令,检查指定的网络服务器是否是可联通状态</p>
+<p>语法:ping [-c num] ip或主机名</p>
+<ul>
+<li><p>选项 :- c,检查的次数,不使用-c选项,将无限次数持续检查</p>
+</li>
+<li><p>参数:ip或主机名,被检查的服务器的ip地址或主机名地址</p>
+</li>
+</ul>
+<h4 id="wget"><a href="#wget" class="headerlink" title="wget"></a>wget</h4><p>wget是非交互式的文件下载器,可以在命令行内下载网络文件</p>
+<p>语法:wget [-b] ur1</p>
+<ul>
+<li><p>选项 :- b,可选,后台下载,会将日志写入到当前工作目录的wget-log文件</p>
+</li>
+<li><p>参数:url,下载链接</p>
+</li>
+</ul>
+<h4 id="curl"><a href="#curl" class="headerlink" title="curl"></a>curl</h4><p>curl可以发送http网络请求,可用于:下载文件、获取信息等</p>
+<p>语法:curl [-0] ur1</p>
+<ul>
+<li><p>选项 :- 0,用于下载文件,当url是下载链接时,可以使用此选项保存文件</p>
+</li>
+<li><p>参数:url,要发起请求的网络地址</p>
+</li>
+</ul>
+<h4 id="nmap"><a href="#nmap" class="headerlink" title="nmap"></a>nmap</h4><p>可以通过Linux命令去查看端口的占用情况，使用nmap命令,安装nmap:yum-y install nmap</p>
+<p>语法:nmap 被查看的IP地址</p>
+<h4 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h4><p>查看端口占用情况</p>
+<p>语法:netstat -anp | grep 端口号,安装netstat:yum-y install net-tools</p>
+<h3 id="第七节-进程管理"><a href="#第七节-进程管理" class="headerlink" title="第七节 进程管理"></a>第七节 进程管理</h3><h4 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h4><p>查看进程信息</p>
+<p>语法： ps [-e -f]，一般来说两个选项都需要用，会展示出详细信息</p>
+<h4 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h4><p>关闭进程</p>
+<p>语法： kill [-9] 进程ID，选项-9表示强制关闭</p>
+<h3 id="第八节-主机状态"><a href="#第八节-主机状态" class="headerlink" title="第八节 主机状态"></a>第八节 主机状态</h3><h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><p>查看cpu、内存占用状态</p>
+<h4 id="df-h"><a href="#df-h" class="headerlink" title="df [-h]"></a>df [-h]</h4><p>查看磁盘使用情况，-h会显示单位</p>
+<h4 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h4><p>可以使用iostat查看CPU、磁盘的相关信息</p>
+<p>语法:iostat [-x] [num1] [num2]</p>
+<ul>
+<li><p>选项 :- x,显示更多信息</p>
+</li>
+<li><p>num1:数字,刷新间隔,num2:数字,刷新几次</p>
+</li>
+</ul>
+<h4 id="sar"><a href="#sar" class="headerlink" title="sar"></a>sar</h4><p>可以使用sar命令查看网络的相关统计(sar命令非常复杂,这里仅简单用于统计网络)</p>
+<p>语法:sar -n DEV num1 num2</p>
+<ul>
+<li><p>选项 :- n,查看网络,DEV表示查看网络接口</p>
+</li>
+<li><p>num1:刷新间隔(不填就查看一次结束),num2:查看次数(不填无限次数)</p>
+</li>
+</ul>
+<h3 id="第九节-环境变量"><a href="#第九节-环境变量" class="headerlink" title="第九节 环境变量"></a>第九节 环境变量</h3><p>记录一些关键性信息，辅助系统运行，是一种键值对型结构，env命令可查看环境变量</p>
+<p>取到环境变量语法： echo $PWD</p>
+<p>设置环境变量语法： export key&#x3D;value，如果设置永久生效需要修改配置文件</p>
+<h3 id="第十节-压缩和解压"><a href="#第十节-压缩和解压" class="headerlink" title="第十节 压缩和解压"></a>第十节 压缩和解压</h3><p>两种文件格式：.tar 简单封装，体积不会有太大变化，.gz 极大减少压缩后的体积</p>
+<h4 id="tar命令常用组合"><a href="#tar命令常用组合" class="headerlink" title="tar命令常用组合"></a>tar命令常用组合</h4><p>压缩：</p>
+<ul>
+<li>tar -cvf test.tar t1.txt t2.txt 选项解释：压缩 显示 创建的文件</li>
+<li>tar -zcvf test.tar.gz t1.txt t2.txt 选项解释：gzip格式 压缩 显示 创建的文件</li>
+</ul>
+<p>解压：</p>
+<ul>
+<li>tar -xvf test.tar 选项解释：解压 显示 要解压的文件</li>
+<li>tar -xvf test.tar -C Linux文件路径 选项解释：解压 显示 要解压的文件 加一个目标路径</li>
+<li>tar -zxvf test.tar.gz 选项解释：gzip格式 解压 显示 要解压的文件</li>
+</ul>
+<h4 id="zip压缩格式"><a href="#zip压缩格式" class="headerlink" title="zip压缩格式"></a>zip压缩格式</h4><p>压缩：</p>
+<ul>
+<li>命令： zip [-r] 参数1 参数2 参数3 ……</li>
+<li>有文件夹时，加上 -r</li>
+</ul>
+<p>解压：</p>
+<ul>
+<li>命令： unzip [-d] 参数</li>
+<li>-d 表示要解压到的地方，后边接路径</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/07/28/Linux/" data-id="cmhkkpc7k0004o4fe499q5w4q" data-title="Linux" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Redis" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/07/27/Redis/" class="article-date">
+  <time class="dt-published" datetime="2024-07-26T16:00:00.000Z" itemprop="datePublished">2024-07-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/07/27/Redis/">Redis</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h1><h2 id="基础篇"><a href="#基础篇" class="headerlink" title="基础篇"></a>基础篇</h2><h3 id="第一章-初始Redis"><a href="#第一章-初始Redis" class="headerlink" title="第一章 初始Redis"></a>第一章 初始Redis</h3><h4 id="1、认识NoSQL"><a href="#1、认识NoSQL" class="headerlink" title="1、认识NoSQL"></a>1、认识NoSQL</h4><p>非关系型数据库，非结构化、非关联、非SQL不固定、无法全部满足ACID事务、存储在内存、数据结构不固定。提高查询性能用这个。</p>
+<h4 id="2、认识Redis"><a href="#2、认识Redis" class="headerlink" title="2、认识Redis"></a>2、认识Redis</h4><p>基于内存的键值型NoSQL数据库，诞生于2009年全称RemoteDictionaryService，远程词典服务器。<br>特点：键值型、单线程、低延迟、速度快（内存、IO复用、良好的编码）、支持数据持久性、支持主从集群、分片集群、支持多语言客户端。</p>
+<h3 id="第二章-Redis常见命令"><a href="#第二章-Redis常见命令" class="headerlink" title="第二章 Redis常见命令"></a>第二章 Redis常见命令</h3><h4 id="1、Redis通用命令"><a href="#1、Redis通用命令" class="headerlink" title="1、Redis通用命令"></a>1、Redis通用命令</h4><p>KEYS:查看符合模板的所有KEY<br>DEL:删除一个指定的KEY<br>EXISTS:判断KEY是否存在<br>EXPIRE:给KEY设置有效期<br>TTL:查看有效期</p>
+<h4 id="2、Redis数据结构"><a href="#2、Redis数据结构" class="headerlink" title="2、Redis数据结构"></a>2、Redis数据结构</h4><p>String类型：字符串类型是Redis中的基本类型，表面是字符串但是有三种格式分为string、int、float。int、float可以自增自减。<br>Hash类型：也叫散列，其value是一个无序字典，类似于java中HashMap。<br>LIst类型：与java中的LinkedList类似，可以看做是一个双向链表，既可以正向检索也可以反向。<br>Set类型：与java中的HashSet类似，多了交集、并集、差集等功能。<br>SortedSet类型：可排序的set集合，与java中的TreeSet类似，底层实现差距巨大。SortedSet底层存储一个score属性，根据此属性进行排序，根据跳表、哈希表实现。</p>
+<h4 id="3、KEY的层级设置"><a href="#3、KEY的层级设置" class="headerlink" title="3、KEY的层级设置"></a>3、KEY的层级设置</h4><p>可以利用多个单词中间用 : 间隔，实现层级隔离效果。</p>
+<h3 id="第三章-Redis的Java客户端"><a href="#第三章-Redis的Java客户端" class="headerlink" title="第三章 Redis的Java客户端"></a>第三章 Redis的Java客户端</h3><h4 id="1、Jedis客户端"><a href="#1、Jedis客户端" class="headerlink" title="1、Jedis客户端"></a>1、Jedis客户端</h4><p><a target="_blank" rel="noopener" href="https://github.com/redis/jedis">https://github.com/redis/jedis</a></p>
+<p>第一步：引入依赖<br>第二步：建立连接，url、密码、库等<br>第三步：测试各种方法<br>第四步：关闭连接</p>
+<p>Jedis连接池：本身是线程不安全，在并发环境下，用连接池的方式代替上方直连方式。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="2、SpringDataRedis"><a href="#2、SpringDataRedis" class="headerlink" title="2、SpringDataRedis"></a>2、SpringDataRedis</h4><ul>
+<li>对不同Redis客户端的整合（Jedis、Lettuce）</li>
+<li>提供了RedisTemplate统一API管理</li>
+<li>支持Redis哨兵、集群</li>
+</ul>
+<p>第一步：引入依赖 Redis依赖和连接池依赖（common-pool2)<br>第二步：配置文件 配置Redis的ip、密码<br>第三步：注入RedisTemplate，进行编码</p>
+<p>SpringDataRedis的序列化方式：默认采用JDK序列化，可读性差、内存占用较大。可以改变序列化工具如下，但是这样会导致存储value为对象时，会自动存储对象的引用地址，方便反序列化。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>还有一种方式，自己手动序列化后再存储到Redis中。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="实战篇"><a href="#实战篇" class="headerlink" title="实战篇"></a>实战篇</h2><h3 id="第一章-短信登录"><a href="#第一章-短信登录" class="headerlink" title="第一章 短信登录"></a>第一章 短信登录</h3><h4 id="1、基于-redis-短信登录"><a href="#1、基于-redis-短信登录" class="headerlink" title="1、基于 redis 短信登录"></a>1、基于 redis 短信登录</h4><p>问题描述：在拦截器中无法注入StringRedisTemplate<br>解决办法：在配置程序中，利用构造函数形式，传参进入拦截器。因为配置类代码被@configuration修饰，也被springboot管理，可以进行依赖注入。</p>
+<h3 id="第二章-商户查询缓存"><a href="#第二章-商户查询缓存" class="headerlink" title="第二章 商户查询缓存"></a>第二章 商户查询缓存</h3><p>缓存就是数据交换的缓冲区，存储数据的临时地方，读写速度高。</p>
+<h4 id="1、缓存穿透"><a href="#1、缓存穿透" class="headerlink" title="1、缓存穿透"></a>1、缓存穿透</h4><p>查询一个不存在的数据时，缓存里没有，数据库查不到，也不会写入缓存，导致每次请求都打到数据库。<br>解决方法：</p>
+<ul>
+<li>缓存空对象，在缓存中存储Null值空数据。</li>
+<li>利用布隆过滤器，布隆过滤器放在缓存之前在请求到来的时候先判断一下缓存中有没有，没有就拦截，有就放行，有一定的误判率。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="2、缓存雪崩"><a href="#2、缓存雪崩" class="headerlink" title="2、缓存雪崩"></a>2、缓存雪崩</h4><p>同一时段内，大部分key同时失效或者Redis服务宕机，导致大量请求打到数据库。<br>解决方法：</p>
+<ul>
+<li>给不同的key的TTL添加随机值</li>
+<li>利用Redis集群提高服务的可靠性</li>
+<li>给缓存业务添加降级限流策略</li>
+<li>给业务参加多级缓存</li>
+</ul>
+<h4 id="3、缓存击穿"><a href="#3、缓存击穿" class="headerlink" title="3、缓存击穿"></a>3、缓存击穿</h4><p>热点key问题，被高并发访问并且缓存重建业务比较复杂的key突然失效，无数的请求会在瞬间给数据库带来压力。<br>解决方法：</p>
+<ul>
+<li>互斥锁：加锁，获得锁以后，才可以进行重建</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<ul>
+<li>逻辑过期 ：取消TTL，加个字段表示逻辑过期时间。<br>实现过程：当一个线程发现逻辑过期了，会去抢锁，抢不到返回过期数据，抢到了会开启新线程重建业务，旧线程返回过期数据。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="第三章-优惠券秒杀"><a href="#第三章-优惠券秒杀" class="headerlink" title="第三章 优惠券秒杀"></a>第三章 优惠券秒杀</h3><h4 id="1、全局唯一ID"><a href="#1、全局唯一ID" class="headerlink" title="1、全局唯一ID"></a>1、全局唯一ID</h4><p>全局ID生成器：在分布式环境下生成全局唯一ID的工具。<br>一般满足五个特点：唯一性、高可用、高性能、递增性、安全性。</p>
+<p>基于Redis的全局唯一ID生成策略：一共64位，1位符号位，31位时间戳，32位自增数</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="2、超卖问题"><a href="#2、超卖问题" class="headerlink" title="2、超卖问题"></a>2、超卖问题</h4><p>高并发场景下，发生优惠券超卖。</p>
+<p>解决方法：</p>
+<ul>
+<li>乐观锁：认为线程安全问题不一定会发生，因此不加锁，只是在更新数据时去判断有没有其他线程修改数据。如果没有修改数据则认为安全，自己更新数据。如果已经被修改，则认为出现了安全问题，可以抛异常或者重新执行。<br>版本号法：新加一个字段版本号，每次修改之前查出版本号，修改时看版本号是否和查的一样。<br>CAS法：compare and switch，把要修改的字段看做版本号</li>
+<li>悲观锁：认为线程安全问题一定会发生，因此在操作数据之前先获取锁，确保线程串行执行。例如synchronized、lock都属于悲观锁。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="3、一人一单问题"><a href="#3、一人一单问题" class="headerlink" title="3、一人一单问题"></a>3、一人一单问题</h4><ul>
+<li>单体结构中：可以给操作数据的部分加锁，根据用户id确保每个用户一把锁，还需要引依赖加配置才能开启spring的事务。</li>
+<li>集群模式中：可以用分布式锁。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="4、分布式锁"><a href="#4、分布式锁" class="headerlink" title="4、分布式锁"></a>4、分布式锁</h4><p>满足分布式系统下多进程可见并且互斥的锁，满足高可用、高性能、高并发、安全性。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>mysql</th>
+<th>redis</th>
+<th>zookeeper</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>互斥</td>
+<td>利用数据库本身的互斥锁机制</td>
+<td>利用setnx互斥命令</td>
+<td>利用节点的唯一性和有序性实现互斥</td>
+</tr>
+<tr>
+<td>高可用</td>
+<td>好</td>
+<td>好</td>
+<td>好</td>
+</tr>
+<tr>
+<td>高性能</td>
+<td>一般</td>
+<td>好</td>
+<td>一般</td>
+</tr>
+<tr>
+<td>安全性</td>
+<td>断开连接自动释放锁</td>
+<td>利用锁超时时间到期释放</td>
+<td>临时节点，断开连接自动释放</td>
+</tr>
+</tbody></table>
+<p>redis实现分布式锁：</p>
+<ul>
+<li><p>获取锁<br>互斥确保只能有一个进程获得锁：set lock thread nx ex 10<br>非阻塞式：获取失败返回false，反之返回true</p>
+</li>
+<li><p>释放锁</p>
+</li>
+</ul>
+<p>手动释放锁：del lock<br>超时释放：获取锁时添加一个过期时间</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>lua脚本：<br>在一个脚本中编写多条redis命令，确保多条命令执行时的原子性</p>
+<h2 id="高级篇"><a href="#高级篇" class="headerlink" title="高级篇"></a>高级篇</h2><h3 id="第一章-分布式缓存"><a href="#第一章-分布式缓存" class="headerlink" title="第一章 分布式缓存"></a>第一章 分布式缓存</h3><h4 id="1、Redis持久化"><a href="#1、Redis持久化" class="headerlink" title="1、Redis持久化"></a>1、Redis持久化</h4><h5 id="RDB持久化"><a href="#RDB持久化" class="headerlink" title="RDB持久化"></a>RDB持久化</h5><p>Redis数据备份文件，也被称作Redis数据快照。把内存中的数据写到磁盘，当Redis发生故障重启，从磁盘读取快照恢复数据。默认开启，在停机那一刻会自动触发，但是意外宕机不会。所以需要在配置文件中配置保存条件，Redis内部有触发RDB的机制,可以在redis.conf文件中找到,格式如下:</p>
+<ul>
+<li>900秒内,如果至少有1个key被修改,则执行bgsave,如果是save ”则表示禁用RDB</li>
+</ul>
+<p>save 900 1</p>
+<p>save 300 10</p>
+<p>save 60 10000</p>
+<ul>
+<li>是否压缩 ,建议不开启,压缩也会消耗cpu,磁盘的话不值钱</li>
+</ul>
+<p>rdbcompression yes</p>
+<ul>
+<li>RDB文件名称</li>
+</ul>
+<p>dbfilename dump.rdb</p>
+<ul>
+<li>文件保存的路径目录</li>
+</ul>
+<p>dir .&#x2F;</p>
+<p>底层原理：</p>
+<ul>
+<li>RDB方式bgsave的基本流程?</li>
+</ul>
+<p>fork主进程得到一个子进程,共享内存空间</p>
+<p> 子进程读取内存数据并写入新的RDB文件</p>
+<p>用新RDB文件替换旧的RDB文件。</p>
+<ul>
+<li>RDB会在什么时候执行?save 60 1000代表什么含义?</li>
+</ul>
+<p>默认是服务停止时。</p>
+<p>代表60秒内至少执行1000次修改则触发RDB</p>
+<ul>
+<li>RDB的缺点?</li>
+</ul>
+<p>RDB执行间隔时间长,两次RDB之间写入数据有丢失的风险</p>
+<p>fork子进程、压缩、写出RDB文件都比较耗时</p>
+<h5 id="AOF持久化"><a href="#AOF持久化" class="headerlink" title="AOF持久化"></a>AOF持久化</h5><p>追加文件，Redis处理的每一个命令都会记录到AOF文件中，可以看作是命令日志文件。默认关闭，打开需要修改配置文件。</p>
+<ul>
+<li>是否开启AOF功能,默认是no</li>
+</ul>
+<p>appendonly yes</p>
+<ul>
+<li>AOF文件的名称</li>
+</ul>
+<p>appendfilename “appendonly.aof”</p>
+<ul>
+<li><p>AOF的命令记录的频率也可以通过redis.conf文件来配:</p>
+</li>
+<li><p>表示每执行一次写命令,立即记录到AOF文件</p>
+</li>
+</ul>
+<p>appendfsync always 效率差但是安全</p>
+<ul>
+<li>写命令执行完先放入AOF缓冲区,然后表示每隔1秒将缓冲区数据写到AOF文件,是默认方案</li>
+</ul>
+<p>appendfsync everysec 效率还行也还安全</p>
+<ul>
+<li>写命令执行完先放入AOF缓冲区,由操作系统决定何时将缓冲区内容写回磁盘</li>
+</ul>
+<p>appendfsync no 效率高但是及不安全</p>
+<p>因为是记录命令,AOF文件会比RDB文件大的多。而且AOF会记录对同一个key的多次写操作,但只有最后一次写操作才有意义。通过执行bgrewriteaof命令,可以让AOF文件执行重写功能,用最少的命令达到相同效果。</p>
+<ul>
+<li>AOF文件比上次文件 增长超过多少百分比则触发重写</li>
+</ul>
+<p>auto-aof-rewrite-percentage 100</p>
+<ul>
+<li>AOF文件体积最小多大以上才触发重写</li>
+</ul>
+<p>auto-aof-rewrite-min-size 64mb</p>
+<h3 id="第二章-Redis主从"><a href="#第二章-Redis主从" class="headerlink" title="第二章 Redis主从"></a>第二章 Redis主从</h3><p>单节点的Redis并发有上限，需要进一步提高Redis的并发能力，就要搭建主从集群，实现读写分离。</p>
+<p>如何搭建：在从节点上输入命令 slaveof ip port</p>
+<p>数据同步原理：</p>
+<p>master如何判断slave是不是第一次来同步数据?这里会用到两个很重要的概念:</p>
+<ul>
+<li>Replication ld:简称replid,是数据集的标记,id一致则说明是同一数据集。每一个master都有唯一的replid,<br>slave则会继承master节点的replid</li>
+<li>offset:偏移量,随着记录在repl_baklog中的数据增多而逐渐增大。slave完成同步时也会记录当前同步的offset。<br>如果slave的offset小于master的offset,说明slave数据落后于master,需要更新。</li>
+</ul>
+<p>因此slave做数据同步,必须向master声明自己的replication id和offset,master才可以判断到底需要同步哪些数据</p>
+<h4 id="1、两种同步方式："><a href="#1、两种同步方式：" class="headerlink" title="1、两种同步方式："></a>1、两种同步方式：</h4><ul>
+<li>全量同步：第一次同步或者宕机实在太久。先判断id和offset，可以同步，将所有数据通过RDB持久化到从节点，还要保存一个命令文件到从节点。以后的主节点每次更新都会发送到从节点 。</li>
+<li>增量同步：根据id确认关系，根据offset确认主节点需要发送哪些命令。</li>
+<li>保存命令的repl_baklog文件有上限，写满后会覆盖前面写的命令，从节点宕机时间太久，就可能无法得到被覆盖的命令，只能去内存找了。</li>
+</ul>
+<h4 id="2、优化主从集群"><a href="#2、优化主从集群" class="headerlink" title="2、优化主从集群"></a>2、优化主从集群</h4><ul>
+<li>在master中配置repl-diskless-sync yes启用无磁盘复制,避免全量同步时的磁盘IO。</li>
+<li>Redis单节点上的内存占用不要太大,减少RDB导致的过多磁盘IO。</li>
+<li>适当提高repl_baklog的大小,发现slave宕机时尽快实现故障恢复,尽可能避免全量同步。</li>
+<li>限制一个master上的slave节点数量,如果实在是太多slave,则可以采用主-从-从链式结构,减少master压力。</li>
+</ul>
+<h3 id="第三章-Redis哨兵"><a href="#第三章-Redis哨兵" class="headerlink" title="第三章 Redis哨兵"></a>第三章 Redis哨兵</h3><p>哨兵（sentinel）实现主从集群的自动故障恢复</p>
+<h4 id="1、作用："><a href="#1、作用：" class="headerlink" title="1、作用："></a>1、作用：</h4><ul>
+<li><p>监控:Sentinel 会不断检查您的master和slave是否按预期工作</p>
+</li>
+<li><p>自动故障恢复:如果master故障,Sentinel会将一个slave提升为master。当故障实例恢复后也以新的master为主</p>
+</li>
+<li><p>通知:Sentinel充当Redis客户端的服务发现来源,当集群发生故障转移时,会将最新信息推送给Redis的客户端</p>
+</li>
+</ul>
+<h4 id="2、服务状态监控："><a href="#2、服务状态监控：" class="headerlink" title="2、服务状态监控："></a>2、服务状态监控：</h4><p>Sentinel基于心跳机制监测服务状态,每隔1秒向集群的每个实例发送ping命令:</p>
+<ul>
+<li><p>主观下线:如果某sentinel节点发现某实例未在规定时间响应,则认为该实例主观下线。</p>
+</li>
+<li><p>客观下线:若超过指定数量(quorum)的sentinel都认为该实例主观下线,则该实例客观下线。quorum值最好超过Sentinel实例数量的一半。</p>
+</li>
+</ul>
+<h4 id="3、选举新的master："><a href="#3、选举新的master：" class="headerlink" title="3、选举新的master："></a>3、选举新的master：</h4><p>一旦发现master故障,sentinel需要在salve中选择一个作为新的master,选择依据是这样的:</p>
+<ul>
+<li>首先会判断slave节点与master节点断开时间长短,如果超过指定值(down-after-milliseconds*10)则会排除slave节点</li>
+<li>然后判断slave节点的slave-priority值,越小优先级越高,如果是0则永不参与选举</li>
+<li>如果slave-prority一样，则判断slave节点的offset值,越大说明数据越新,优先级越高</li>
+<li>最后是判断slave节点的运行id大小,越小优先级越高。</li>
+</ul>
+<h4 id="4、如何实现故障转移"><a href="#4、如何实现故障转移" class="headerlink" title="4、如何实现故障转移"></a>4、如何实现故障转移</h4><p>当选中了其中一个slave为新的master后(例如slave1),故障的转移的步骤如下:</p>
+<ul>
+<li><p>sentinel给备选的slave1节点发送slaveof no one命令,让该节点成为master</p>
+</li>
+<li><p>sentinel给所有其它slave发送slaveof ipadress port命令,让这些slave成为新master的从节点,开始从新的master上同步数据。</p>
+</li>
+<li><p>最后,sentinel将故障节点标记为slave,当故障节点恢复后会自动成为新的master的slave节点</p>
+</li>
+</ul>
+<h3 id="第四章-Redis分片集群"><a href="#第四章-Redis分片集群" class="headerlink" title="第四章 Redis分片集群"></a>第四章 Redis分片集群</h3><h4 id="1、散列插槽"><a href="#1、散列插槽" class="headerlink" title="1、散列插槽"></a>1、散列插槽</h4><p>分片集群会有0-16383共计16384个插槽分给若干个Redis实例用于负载均衡。分配方式如下：</p>
+<ul>
+<li><p>将16384个插槽分配到不同的实例</p>
+</li>
+<li><p>根据key的有效部分计算哈希值,对16384取余</p>
+</li>
+<li><p>余数作为插槽,寻找插槽所在实例即可</p>
+</li>
+</ul>
+<h4 id="2、集群伸缩"><a href="#2、集群伸缩" class="headerlink" title="2、集群伸缩"></a>2、集群伸缩</h4><p>参考命令</p>
+<h4 id="3、故障转移"><a href="#3、故障转移" class="headerlink" title="3、故障转移"></a>3、故障转移</h4><p>参考命令</p>
+<h3 id="第五章-多级缓存"><a href="#第五章-多级缓存" class="headerlink" title="第五章 多级缓存"></a>第五章 多级缓存</h3><p>充分利用请求处理的每个环节，分别添加缓存，缓解Tomcat压力，提升服务性能。</p>
+<h4 id="1、JVM进程缓存"><a href="#1、JVM进程缓存" class="headerlink" title="1、JVM进程缓存"></a>1、JVM进程缓存</h4><p>基于Caffeine做JVM进程缓存</p>
+<h4 id="2、lua语法"><a href="#2、lua语法" class="headerlink" title="2、lua语法"></a>2、lua语法</h4><h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><p>nil：表示无效值，在条件表达式中相当于false</p>
+<ul>
+<li>boolean：只有true和false两种</li>
+<li>number：表示双精度的浮点数</li>
+<li>string：字符串由一对引号来表示</li>
+<li>function：由c或lua编写的函数</li>
+<li>table：接近java中的map，也可以表示数组</li>
+</ul>
+<p>type（）函数可以测试一个变量的类型</p>
+<h5 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h5><p>直接用local声明 不需要变量类型：local str &#x3D; ‘str’ local num &#x3D; 2<br>注意数组从1开始，字符拼接用..，不加lcoal表示全局变量</p>
+<h5 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h5><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h5 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h5><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h5 id="条件控制"><a href="#条件控制" class="headerlink" title="条件控制"></a>条件控制</h5><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="3、多级缓存"><a href="#3、多级缓存" class="headerlink" title="3、多级缓存"></a>3、多级缓存</h4><p>略</p>
+<p>……</p>
+<h4 id="4、缓存同步"><a href="#4、缓存同步" class="headerlink" title="4、缓存同步"></a>4、缓存同步</h4><p>略……</p>
+<h3 id="第六章-Redis最佳实践"><a href="#第六章-Redis最佳实践" class="headerlink" title="第六章 Redis最佳实践"></a>第六章 Redis最佳实践</h3><h4 id="1、Redis键值设计"><a href="#1、Redis键值设计" class="headerlink" title="1、Redis键值设计"></a>1、Redis键值设计</h4><h5 id="Key的设计"><a href="#Key的设计" class="headerlink" title="Key的设计"></a>Key的设计</h5><ul>
+<li>遵循基本的格式：【业务名称】：【数据名】：id</li>
+<li>长度不超过44个字节</li>
+<li>不包含特殊字符</li>
+</ul>
+<h5 id="Value的设计"><a href="#Value的设计" class="headerlink" title="Value的设计"></a>Value的设计</h5><ul>
+<li>存储一个自定义对象可以用hash结构</li>
+<li>假如一个hash类型的key，其中有100万个fielld和对应的value，field是自增的，存在什么问题如何优化：数据量太大，已经超过ziplist可存储的最小值，内存占用高。可以将打哈希打撒成小哈希。</li>
+</ul>
+<h4 id="2、批处理优化"><a href="#2、批处理优化" class="headerlink" title="2、批处理优化"></a>2、批处理优化</h4><h5 id="pipeline"><a href="#pipeline" class="headerlink" title="pipeline"></a>pipeline</h5><ul>
+<li>利用原生m操作存储string类型的数据，利用pipeline传输复杂结构。</li>
+<li>不建议一次携带过多数据，pipeline命令之间不具备原子性</li>
+</ul>
+<h5 id="集群批处理"><a href="#集群批处理" class="headerlink" title="集群批处理"></a>集群批处理</h5><p>当Redis是一个集群的时候，批处理的命令的多个key必须落在一个插槽里，否则报错。</p>
+<h4 id="3、服务端优化"><a href="#3、服务端优化" class="headerlink" title="3、服务端优化"></a>3、服务端优化</h4><h5 id="持久化配置"><a href="#持久化配置" class="headerlink" title="持久化配置"></a>持久化配置</h5><ul>
+<li>用来做缓存的Redis实例没必要做实例化</li>
+<li>建议关闭RDB，使用AOF</li>
+<li>适当手动做RDB，实现数据备份</li>
+<li>设置合理的rewrite阈值,避免频繁的bgrewrite</li>
+<li>配置no-appendfsync-on-rewrite&#x3D;yes,禁止在rewrite期间做aof,避免因AOF引起的阻塞</li>
+</ul>
+<h6 id="部署有关建议"><a href="#部署有关建议" class="headerlink" title="部署有关建议:"></a>部署有关建议:</h6><ul>
+<li>Redis实例的物理机要预留足够内存,应对fork和rewrite</li>
+<li>单个Redis实例内存上限不要太大,例如4G或8G。可以加快fork的速度、减少主从同步、数据迁移压力</li>
+<li>不要与CPU密集型应用部署在一起不要与高硬盘负载应用一起部署。例如:数据库、消息队列</li>
+</ul>
+<h5 id="慢查询"><a href="#慢查询" class="headerlink" title="慢查询"></a>慢查询</h5><p>在Redis中执行命令的时间超过某个阈值，就会被认为是 慢查询</p>
+<h5 id="命令及安全配置"><a href="#命令及安全配置" class="headerlink" title="命令及安全配置"></a>命令及安全配置</h5><p>设置足够复杂的密码</p>
+<h5 id="内存配置"><a href="#内存配置" class="headerlink" title="内存配置"></a>内存配置</h5><p>内存划分：数据内存、进程内存、缓冲区内存</p>
+<ul>
+<li>数据内存：主要部分，存储键值信息，可能是bigkey的问题。</li>
+<li>进程内存 ：Redis主进程运行需要内存，如代码、常量池，可忽略。</li>
+<li>缓冲区内存：一般包括客户端缓冲区、AOF缓冲区、复制缓冲区等，可能是这部分导致。</li>
+</ul>
+<h4 id="4、集群的最佳实践"><a href="#4、集群的最佳实践" class="headerlink" title="4、集群的最佳实践"></a>4、集群的最佳实践</h4><ul>
+<li>完整性问题：默认配置中，如果一个插槽不能用了，整个集群都不服务了</li>
+<li>带宽问题：集群节点间会不断地png来确定集群中其他节点的状态，每次ping会携带大量信息，如果节点变多，携带的信息也会变多，所占的带宽也会变大。</li>
+<li>数据倾斜问题：</li>
+<li>客户端性能问题：</li>
+<li>命令的集群兼容性问题：</li>
+<li>lua和事务的问题：</li>
+</ul>
+<p>单体或者主从能满足的情况下，不推荐使用集群。</p>
+<h2 id="原理篇"><a href="#原理篇" class="headerlink" title="原理篇"></a>原理篇</h2><h3 id="第一章-Redis数据结构"><a href="#第一章-Redis数据结构" class="headerlink" title="第一章 Redis数据结构"></a>第一章 Redis数据结构</h3><h4 id="1、动态字符串SDS"><a href="#1、动态字符串SDS" class="headerlink" title="1、动态字符串SDS"></a>1、动态字符串SDS</h4><p>虽然Redis底层用C语言实现，但是C语言的字符类型存在许多问题，所以自定义了一种类型。SDS具备扩容功能，并且有记录字符长度和申请空间数量，所以不会读到‘\0’结束。</p>
+<p>组成 ：字符个数+分配长度（不带结束标识）+类型+字符串本身</p>
+<p>优势：获取字符串长度的时间为O（1），支持动态扩容，减少内存分配次数，二进制安全。</p>
+<h4 id="2、IntSet"><a href="#2、IntSet" class="headerlink" title="2、IntSet"></a>2、IntSet</h4><p>基于整数数组实现，并且具备长度可变、有序。</p>
+<p>组成：字符编码+元素个数+整数数组</p>
+<p>特点：Redis确保IntSet中的元素唯一、有序，具备类型升级节省空间，底层采用二分查找来查询</p>
+<h4 id="3、Dict"><a href="#3、Dict" class="headerlink" title="3、Dict"></a>3、Dict</h4><p>Dictionary缩写，键值的映射关系通过Dict实现。</p>
+<p>组成：哈希表（两个，一个存储数据，一个rehash用）+哈希节点+字典</p>
+<p>当我们向Dict中添加键值对时，Redis首先根据key计算出hash值，然后利用hash值与长度减一的值做与运算，得到的值就是节点存储索引值。哈希冲突时，同一个hash值的元素用头插法表示成链表。当集合元素过多时，哈希冲突也越来越多，链表过长，查询速度也会变慢，此时需要用到扩容机制。</p>
+<p>Dict在每次新增键值对时都会检查负载因子(LoadFactor&#x3D;used&#x2F;size),满足以下两种情况时会触发哈希表扩容:</p>
+<ul>
+<li>哈希表的LoadFactor&gt;&#x3D;1,并且服务器没有执行BGSAVE或者BGREWRITEAOF等后台进程;</li>
+<li>哈希表的LoadFactor&gt;5;</li>
+</ul>
+<p>除了扩容，当删除元素时，也会判断负载因子是不是小于0.1，小于了则会收缩。</p>
+<ul>
+<li><p>当LoadFactor大于5或者LoadFactor大于1并且没有子进程任务时,Dict扩容</p>
+</li>
+<li><p>当LoadFactor小于0.1时,Dict收缩</p>
+</li>
+<li><p>扩容大小为第一个大于等于used+1的2的n次</p>
+</li>
+<li><p>收缩大小为第一个大于等于used的2的n次</p>
+</li>
+<li><p>Dict采用渐进式rehash,每次访问Dict时执行一次rehash</p>
+</li>
+<li><p>rehash时ht[0]只减不增,新增操作只在ht[1]执行,其它操作在两个哈希表</p>
+</li>
+</ul>
+<h4 id="4、ZipList"><a href="#4、ZipList" class="headerlink" title="4、ZipList"></a>4、ZipList</h4><p>压缩链表，一种特殊的双端列表，可以从任意一段压入或弹出并且该操作的时间复杂度为O（1）</p>
+<p>组成 ：总字节数+尾结点偏移量+实体个数+若干实体+结束标识符</p>
+<p>实体组成 ：前节点长度字节数+Encoding编码属性+内容</p>
+<p>Encoding编码：</p>
+<ul>
+<li>00、01、10开头都表示字符串，00编码长度一个字节，01长度2个字节，10长度5个字节，相对应的内容就是2的编码长度次。</li>
+<li>11开头表示内容是整数，Encoding固定占用一个字节</li>
+</ul>
+<h5 id="ZipList连锁更新问题："><a href="#ZipList连锁更新问题：" class="headerlink" title="ZipList连锁更新问题："></a>ZipList连锁更新问题：</h5><p>ZipList的每个Entry都包含previous_entry_length来记录上一个节点的大小,长度是1个或5个字节:</p>
+<ul>
+<li>如果前一节点的长度小于254字节,则采用1个字节来保存</li>
+<li>这个长度值如果前一节点的长度大于等于254字节,则采用5个字节来保存这个长度值,第一个字节为Oxfe,后四个字节才是真实长度数据</li>
+</ul>
+<p>特殊情况下产生的连续多次空间扩展操作称之为连锁更新，新增删除都可能导致该问题的发生 。</p>
+<h5 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h5><ul>
+<li><p>压缩列表的可以看做一种连续内存空间的“双向链表”</p>
+</li>
+<li><p>列表的节点之间不是通过指针连接,而是记录上一节点和本</p>
+</li>
+<li><p>节点长度来寻址,内存占用较低</p>
+</li>
+<li><p>如果列表数据过多,导致链表过长,可能影响查询性能</p>
+</li>
+<li><p>增或删较大数据时有可能发生连续更新问题</p>
+</li>
+</ul>
+<h4 id="5、QuickList"><a href="#5、QuickList" class="headerlink" title="5、QuickList"></a>5、QuickList</h4><p>本质是一个双端链表，链表中的每个节点都是一个ZipList，控制ZipList大小同时不让其分散。</p>
+<h4 id="6、SkipList"><a href="#6、SkipList" class="headerlink" title="6、SkipList"></a>6、SkipList</h4><p>跳表本身也是链表，元素按照升序排列，节点允许包含多个指针，指针跨度不同。允许有32层，每层按倍数2增加。</p>
+<ul>
+<li><p>跳跃表是一个双向链表,每个节点都包含score和ele值</p>
+</li>
+<li><p>节点按照score值排序,score值一样则按照ele字典排序</p>
+</li>
+<li><p>每个节点都可以包含多层指针,层数是1到32之间的随机数</p>
+</li>
+<li><p>不同层指针到下一个节点的跨度不同,层级越高,跨度越大</p>
+</li>
+<li><p>增删改查效率与红黑树基本一致,实现却更简单</p>
+</li>
+</ul>
+<h4 id="7、RedisObject"><a href="#7、RedisObject" class="headerlink" title="7、RedisObject"></a>7、RedisObject</h4><p>Redis中的任意键值对都会被封装为RedisObject，也叫做Redis对象。</p>
+<p>组成：数据类型+编码+记录最近一次被访问时间+引用计数器+指向对象的指针</p>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>编码方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String</td>
+<td>raw、int、embstr</td>
+</tr>
+<tr>
+<td>List</td>
+<td>LinkedList和Ziplist(3.2以前)、QuickList(3.2以后)</td>
+</tr>
+<tr>
+<td>Hash</td>
+<td>intset、ht</td>
+</tr>
+<tr>
+<td>Set</td>
+<td>ziplist、ht、skiplist</td>
+</tr>
+<tr>
+<td>ZSet</td>
+<td>ziplist、ht+skiplist</td>
+</tr>
+</tbody></table>
+<h3 id="第二章-五种数据类型"><a href="#第二章-五种数据类型" class="headerlink" title="第二章 五种数据类型"></a>第二章 五种数据类型</h3><h4 id="1、String"><a href="#1、String" class="headerlink" title="1、String"></a>1、String</h4><ul>
+<li><p>其基本编码方式是RAW,基于简单动态字符串(SDS)实现,存储上限为512mb。</p>
+</li>
+<li><p>如果存储的SDS长度小于44字节,则会采用EMBSTR编码,此时object head与SDS是一段连续空间。申请内存时只需要调用一次内存分配函数,效率更高。</p>
+</li>
+<li><p>如果存储的字符串是整数值,并且大小在LONG_MAX范围内,则会采用INT编码:直接将数据保存在RedisObject的ptr指针位置(刚好8字节),不再需要SDS了。</p>
+</li>
+</ul>
+<h4 id="2、List"><a href="#2、List" class="headerlink" title="2、List"></a>2、List</h4><ul>
+<li><p>在3.2版本之前,Redis采用ZipList和LinkedList来实现List,当元素数量小于512并且元素大小小于64字节时采用ZipList编码,超过则采用LinkedList编码。</p>
+</li>
+<li><p>在3.2版本之后,Redis统一采用QuickList来实现List:</p>
+</li>
+</ul>
+<h4 id="3、Set"><a href="#3、Set" class="headerlink" title="3、Set"></a>3、Set</h4><ul>
+<li><p>为了查询效率和唯一性,set采用HT编码(Dict)。Dict中的key用来存储元素,value统一为null。</p>
+</li>
+<li><p>当存储的所有数据都是整数,并且元素数量不超过set-max-intset-entries时,Set会采用IntSet编码,以节省内存。</p>
+</li>
+</ul>
+<h4 id="4、ZSet"><a href="#4、ZSet" class="headerlink" title="4、ZSet"></a>4、ZSet</h4><ul>
+<li><p>SkipList:可以排序,并且可以同时存储score和ele值(member)</p>
+</li>
+<li><p>HT(Dict):可以键值存储,并且可以根据key找value</p>
+</li>
+</ul>
+<p>当元素数量不多时,HT和SkipList的优势不明显,而且更耗内存。因此zset还会采用ZipList结构来节省内存,不过需要同时满足两个条件:</p>
+<ul>
+<li><p>元素数量小于zset_max_ziplist_entries,默认值128</p>
+</li>
+<li><p>每个元素都小于zset_max_ziplist_value字节,默认值64</p>
+</li>
+</ul>
+<p>ziplist本身没有排序功能,而且没有键值对的概念,因此需要有zset通过编码实现:</p>
+<p>ZipList是连续内存,因此score和element是紧挨在一起的两个entry,element在前,score在后score越小越接近队首,score越大越接近队尾,按照score值升序排列</p>
+<h4 id="5、Hash"><a href="#5、Hash" class="headerlink" title="5、Hash"></a>5、Hash</h4><ul>
+<li><p>Hash结构默认采用ZipList编码,用以节省内存。ZipList中相邻的两个entry分别保存field和value</p>
+</li>
+<li><p>当数据量较大时,Hash结构会转为HT编码,也就是Dict,触发条件有两个:</p>
+</li>
+</ul>
+<p>1 ZipList中的元素数量超过了hash-max-ziplist-entries(默认512)</p>
+<p>2 ZipList中的任意entry大小超过了hash-max-ziplist-value(默认64字节)</p>
+<h3 id="第三章-Redis网络模型"><a href="#第三章-Redis网络模型" class="headerlink" title="第三章 Redis网络模型"></a>第三章 Redis网络模型</h3><p>主要是优化用户调用内核API和内核缓冲区向用户缓冲区发送数据两种行为所花费的时间</p>
+<h4 id="1、阻塞IO"><a href="#1、阻塞IO" class="headerlink" title="1、阻塞IO"></a>1、阻塞IO</h4><p>顾名思义，阻塞IO就是在用户调用内核API和内核缓冲区向用户缓冲区发送数据的时候等待，等到有数据为止。</p>
+<h4 id="2、非阻塞IO"><a href="#2、非阻塞IO" class="headerlink" title="2、非阻塞IO"></a>2、非阻塞IO</h4><p>会在两种情况下立即返回结果，不等待。</p>
+<h4 id="3、IO多路复用"><a href="#3、IO多路复用" class="headerlink" title="3、IO多路复用"></a>3、IO多路复用</h4><p>文件描述符(File Descriptor):简称FD,是一个从0开始递增的无符号整数,用来关联Linux中的一个文件。在Linux<br>中,一切皆文件,例如常规文件、视频、硬件设备等,当然也包括网络套接字(Socket)。</p>
+<p>IO多路复用:是利用单个线程来同时监听多个FD,并在某个FD可读、可写时得到通知,从而避免无效的等待,充分利用CPU资源。实现方式有三种：select、poll、epoll</p>
+<p>差异:</p>
+<ul>
+<li><p>select和poll只会通知用户进程有FD就绪,但不确定具体是哪个FD,需要用户进程逐个遍历FD来确认</p>
+</li>
+<li><p>epoll则会在通知用户进程FD就绪的同时,把已就绪的FD写入用户空间</p>
+</li>
+</ul>
+<h5 id="select"><a href="#select" class="headerlink" title="select"></a>select</h5><p>最早的实现方案，存在若干问题，需要用户态和内核态频繁转换，只能监听1024个FD。</p>
+<h5 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h5><p>和select差不多，增加了监听数量，理论无上限，但是消耗时间就等多了，性能下降。</p>
+<h5 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h5><ul>
+<li><p>基于epoll实例中的红黑树保存要监听的FD,理论上无上限,而且增删改查效率都非常高,性能不会随监听的FD数量增多而下降</p>
+</li>
+<li><p>每个FD只需要执行一次epoll_ctl添加到红黑树,以后每次epol_wait无需传递任何参数,无需重复拷贝FD到内核空间</p>
+</li>
+<li><p>内核会将就绪的FD直接拷贝到用户空间的指定位置,用户进程无需遍历所有FD就能知道就绪的FD是谁</p>
+</li>
+</ul>
+<h5 id="时间通知机制"><a href="#时间通知机制" class="headerlink" title="时间通知机制"></a>时间通知机制</h5><ul>
+<li><p>LevelTriggered:简称LT。当FD有数据可读时,会重复通知多次,直至数据处理完成。是Epoll的默认模式。</p>
+</li>
+<li><p>EdgeTriggered:简称ET。当FD有数据可读时,只会被通知一次,不管数据是否处理完成。</p>
+</li>
+</ul>
+<p>结论</p>
+<ul>
+<li><p>ET模式避免了LT模式可能出现的惊群现象</p>
+</li>
+<li><p>ET模式最好结合非阻塞I0读取FD数据,相比LT会复杂一些</p>
+</li>
+</ul>
+<h4 id="4、信号驱动IO"><a href="#4、信号驱动IO" class="headerlink" title="4、信号驱动IO"></a>4、信号驱动IO</h4><p>创建一个信号处理程序，有请求时向内核发送请求信号然后去干别的，内核准备好后会发给信息处理程序一个准备好的信号，再去从内核拷贝到用户。</p>
+<h4 id="5、异步IO"><a href="#5、异步IO" class="headerlink" title="5、异步IO"></a>5、异步IO</h4><p>只需告诉内核需要哪个FD，内核把所有过程完成后，再告诉用户。</p>
+<h4 id="6、Redis网络模型"><a href="#6、Redis网络模型" class="headerlink" title="6、Redis网络模型"></a>6、Redis网络模型</h4><h5 id="Redis到底是单线程还是多线程"><a href="#Redis到底是单线程还是多线程" class="headerlink" title="Redis到底是单线程还是多线程?"></a>Redis到底是单线程还是多线程?</h5><ul>
+<li><p>如果仅仅聊Redis的核心业务部分(命令处理),答案是单线程</p>
+</li>
+<li><p>如果是聊整个Redis,那么答案就是多线程</p>
+</li>
+</ul>
+<p>在Redis版本迭代过程中,在两个重要的时间节点上引入了多线程的支持:</p>
+<ul>
+<li><p>Redis v4.0:引入多线程异步处理一些耗时较长的任务,例如异步删除命令unlink</p>
+</li>
+<li><p>Redis v6.0:在核心网络模型中引入 多线程,进一步提高对于多核CPU的利用率</p>
+</li>
+</ul>
+<h5 id="为什么Redis要选择单线程"><a href="#为什么Redis要选择单线程" class="headerlink" title="为什么Redis要选择单线程?"></a>为什么Redis要选择单线程?</h5><ul>
+<li><p>抛开持久化不谈,Redis是纯内存操作,执行速度非常快,它的性能瓶颈是网络延迟而不是执行速度,因此多线程并不会带来巨大的性能提升。</p>
+</li>
+<li><p>多线程会导致过多的上下文切换,带来不必要的开销</p>
+</li>
+<li><p>引入多线程会面临线程安全问题,必然要引入线程锁这样的安全手段,实现复杂度增高,而且性能也会大打折扣</p>
+</li>
+</ul>
+<p>重点 没听懂……回来再说</p>
+<h3 id="第四章-Redis通信协议"><a href="#第四章-Redis通信协议" class="headerlink" title="第四章 Redis通信协议"></a>第四章 Redis通信协议</h3><h4 id="1、RESP协议"><a href="#1、RESP协议" class="headerlink" title="1、RESP协议"></a>1、RESP协议</h4><h5 id="数据类型-1"><a href="#数据类型-1" class="headerlink" title="数据类型"></a>数据类型</h5><ul>
+<li><p>单行字符串:首字节是‘+’,后面跟上单行字符串,以CRLF(“\r\n”)结尾。例如返回”OK”:”+OK\r\n”</p>
+</li>
+<li><p>错误(Errors):首字节是‘-’,与单行字符串格式一样,只是字符串是异常信息,例如:”-Error message\r\n”</p>
+</li>
+<li><p>数值:首字节是‘:’,后面跟上数字格式的字符串,以CRLF结尾。例如:”:10\r\n”</p>
+</li>
+<li><p>多行字符串:首字节是‘$’,表示二进制安全的字符串,最大支持512MB:</p>
+<ul>
+<li>如果大小为0,则代表空字符串:”$0\r\n\r\n”</li>
+<li>如果大小为-1,则代表不存在:”$-1\r\n”</li>
+</ul>
+</li>
+<li><p>数组:首字节是‘*’,后面跟上数组元素个数,再跟上元素,元素数据类型不限</p>
+</li>
+</ul>
+<p>一般请求都是数组，回复会是其他类型</p>
+<h3 id="第五章-Redis内存策略"><a href="#第五章-Redis内存策略" class="headerlink" title="第五章 Redis内存策略"></a>第五章 Redis内存策略</h3><h4 id="过期策略"><a href="#过期策略" class="headerlink" title="过期策略"></a>过期策略</h4><p>expire命令设置TTL过期时间</p>
+<p>Redis是如何知道一个key是否过期呢?</p>
+<ul>
+<li>利用两个Dict分别记录key-value对及key-ttl对</li>
+</ul>
+<p>是不是TTL到期就立即删除了呢?</p>
+<ul>
+<li>惰性删除<ul>
+<li>不立即删除，而是在访问一个key的时候，检查该key的存活时间，如果已经过期才删除</li>
+<li>如果很多key都过期，但是没有人访问，则会产生堆积问题</li>
+</ul>
+</li>
+<li>周期删除<ul>
+<li>周期性的抽样部分过期的key，然后执行删除<ul>
+<li>Redis会在初始化时设置一个定时任务serverCron(),按照server.hz的频率来执行过期key清理,模式为SLOW，默认执行频率为10，不超过25ms</li>
+<li>Redis的每个事件循环前会调用beforeSleep()函数,执行过期key清理,模式为FAST，频率不固定，但每次间隔不超过2ms，耗时不超过1ms</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="淘汰策略"><a href="#淘汰策略" class="headerlink" title="淘汰策略"></a>淘汰策略</h4><p>当Redis内存使用达到阈值时，Redis主动挑选部分Key删除以释放更多内存。Redis在执行任何命令之前都检查内存是否满足，不满足会拒绝。</p>
+<h5 id="八种淘汰策略"><a href="#八种淘汰策略" class="headerlink" title="八种淘汰策略"></a>八种淘汰策略</h5><ul>
+<li><p>noeviction:不淘汰任何key,但是内存满时不允许写入新数据,默认就是这种策略。</p>
+</li>
+<li><p>volatile-ttl:对设置了TTL的key,比较key的剩余TTL值,TTL越小越先被淘汰</p>
+</li>
+<li><p>allkeys-random:对全体key,随机进行淘汰。也就是直接从db-&gt;dict中随机挑选</p>
+</li>
+<li><p>volatile-random:对设置了TTL的key,随机进行淘汰。也就是从db-&gt;expires中随机挑选。</p>
+</li>
+<li><p>allkeys-lru: 对全体key,基于LRU算法进行淘汰</p>
+</li>
+<li><p>volatile-lru:对设置了TTL的key,基于LRU算法进行淘汰</p>
+</li>
+<li><p>allkeys-lfu: 对全体key,基于LFU算法进行淘汰</p>
+</li>
+<li><p>volatile-lfu:对设置了TTL的key,基于LFI算法进行淘汰</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/07/27/Redis/" data-id="cmhkkpc7n000ao4fe66cmbibk" data-title="Redis" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">August 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2025/01/11/Netty/">Netty</a>
+          </li>
+        
+          <li>
+            <a href="/2024/12/06/%E7%BD%91%E7%AB%99%E5%9C%B0%E5%9D%80/">网站集合</a>
+          </li>
+        
+          <li>
+            <a href="/2024/09/02/JVM/">JVM</a>
+          </li>
+        
+          <li>
+            <a href="/2024/08/29/MySQL/">MySQL</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

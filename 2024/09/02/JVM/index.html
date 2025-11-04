@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>JVM | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="JVM基础篇简介什么是JVM  Java Virtual Machine 是Java虚拟机。 JVM本质上是一个运行在计算机上的程序，职责是运行Java字节码文件。 因为计算机只能运行机器码，所以Java虚拟机负责将字节码转化为机器码。 JVM可以自动为对象和方法分配内存，具有自动的垃圾回收机制，回收不再使用的对象。  JVM的功能 JVM包含：内存管理、解释执行虚拟机指令、即时编译三大功能。 J">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM">
+<meta property="og:url" content="http://example.com/2024/09/02/JVM/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="JVM基础篇简介什么是JVM  Java Virtual Machine 是Java虚拟机。 JVM本质上是一个运行在计算机上的程序，职责是运行Java字节码文件。 因为计算机只能运行机器码，所以Java虚拟机负责将字节码转化为机器码。 JVM可以自动为对象和方法分配内存，具有自动的垃圾回收机制，回收不再使用的对象。  JVM的功能 JVM包含：内存管理、解释执行虚拟机指令、即时编译三大功能。 J">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-09-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-04T11:55:37.908Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-JVM" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/09/02/JVM/" class="article-date">
+  <time class="dt-published" datetime="2024-09-01T16:00:00.000Z" itemprop="datePublished">2024-09-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      JVM
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h1><h2 id="基础篇"><a href="#基础篇" class="headerlink" title="基础篇"></a>基础篇</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><strong>什么是JVM</strong></p>
+<ul>
+<li>Java Virtual Machine 是Java虚拟机。</li>
+<li>JVM本质上是一个运行在计算机上的程序，职责是运行Java字节码文件。</li>
+<li>因为计算机只能运行机器码，所以Java虚拟机负责将字节码转化为机器码。</li>
+<li>JVM可以自动为对象和方法分配内存，具有自动的垃圾回收机制，回收不再使用的对象。</li>
+</ul>
+<p><strong>JVM的功能</strong></p>
+<p>JVM包含：内存管理、解释执行虚拟机指令、即时编译三大功能。</p>
+<p><strong>Java虚拟机的组成</strong></p>
+<ul>
+<li><p>类加载器：把字节码文件的内容加载到内存中。</p>
+</li>
+<li><p>运行时数据区域（JVM管理的内存）：负责管理JVM使用到的内存，比如创建对象和销毁对象。</p>
+</li>
+<li><p>执行引擎：即时编译器、解释器、垃圾回收器。执行引擎负责本地接口的调用。</p>
+</li>
+<li><p>本地接口。native方法，用C++编写。</p>
+</li>
+</ul>
+<p><strong>字节码文件的组成</strong></p>
+<ul>
+<li>基础信息：包含魔数、字节码文件对应的Java版本号，访问标识。父类和接口。</li>
+<li>常量池：保存了字符串常量，类或接口名，字段名主要在字节码指令中使用。</li>
+<li>字段：当前类或接口声明的字段信息。</li>
+<li>方法：当前类或接口声明的方法信息字节码指令。</li>
+<li>属性：类的属性，比如源码的文件名内部类的列表等。</li>
+</ul>
+<p><strong>常量池和方法</strong></p>
+<p>常量池作用：避免相同内容重复定义，节省空间。</p>
+<p>在常量池中存放1份字符串，在别处引用，节省空间。</p>
+<p>常量池中的数据都有一个编号，编号从1开始。在字段或字节码指令中通过编号可以快速的找到对应的数据。</p>
+<p>字节码指令中通过编号引用到常量池的过程称之为符号引用。</p>
+<h3 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h3><p><strong>类的生命周期加载阶段</strong></p>
+<p>根据类的全限定名把字节码文件的内容加载并转换成合适的数据放入内存中，存放在方法区和堆上。</p>
+<p>加载，链接，初始化，使用，卸载。</p>
+<p><strong>加载阶段：</strong></p>
+<ol>
+<li><p>加载阶段第一步是类加载器根据类的全限定名通过不同渠道（本地文件，通过网络传输的类，动态代理生成）以二进制流的方式获取字节码信息。</p>
+</li>
+<li><p>类加载器在加载完类之后，Java虚拟机会将字节码中的信息保存到方法区中。</p>
+</li>
+<li><p>生成一个InstanceKlass对象，保存类的所有信息，里面还包含实现特定功能比如多态的信息。</p>
+</li>
+<li><p>Java虚拟机还会在堆中生成一份与方法区中数据类似的java.lang.Class对象。作用是在Java代码中获取类的信息以及存储静态字段的数据。</p>
+</li>
+</ol>
+<p><strong>链接阶段：</strong></p>
+<ul>
+<li>验证阶段：对魔数、版本号等进行验证，一般不需要程序员关注。</li>
+<li>准备阶段：为静态变量分配内存并设置初始值。</li>
+<li>解析阶段：将常量池中的符号引用（编号）替换为直接引用（内存地址）。</li>
+</ul>
+<p><strong>初始化阶段：</strong></p>
+<p>执行静态代码块和静态变量的赋值。</p>
+<p>初始化阶段会执行静态代码块中的代码，并为静态变量赋值。</p>
+<p>初始化阶段会执行字节码文件中clinit（class init类的初始化）部分的字节码指令。</p>
+<p>以下几种方式会导致类的初始化：</p>
+<ul>
+<li><p>访问一个类的静态变量或者静态方法（如果变量时final修饰的并且等号右边是常量不会触发初始化，因为在连接阶段会直接赋常量值）</p>
+</li>
+<li><p>调用Class.forName(String className)</p>
+</li>
+<li><p>new一个该类的对象时。</p>
+</li>
+<li><p>执行Main方法的当前类。</p>
+</li>
+</ul>
+<p><strong>类加载器的分类</strong></p>
+<p>类加载器ClassLoader：是Java虚拟机提供给应用程序去实现获取类和接口字节码数据的技术。负责在类加载过程中的字节码获取并加载到内存中。通过加载字节码数据放入内存转换成byte[]，接下来调用虚拟机底层方法将byte[]转换成方法区和堆中的数据。</p>
+<ul>
+<li>虚拟机底层实现（c++)<ul>
+<li>启动类加载器</li>
+</ul>
+</li>
+<li>Java实现（Java）<ul>
+<li>扩展类加载器</li>
+<li>应用程序加载器</li>
+<li>自定义加载器</li>
+</ul>
+</li>
+</ul>
+<p><strong>双亲委派机制</strong><br>Java虚拟机中有多个类加载器，双亲委派机制的核心是解决一个类到底由谁加载的问题。</p>
+<ol>
+<li>保证类加载的安全性：通过双亲委派机制避免恶意代码替换JDK中的核心类库。</li>
+<li>避免重复加载：双亲委派机制可以避免同一个类多次加载。</li>
+</ol>
+<p>双亲委派机制：<br>当一个类加载器接收到加载类的任务时，会自底向上查看类是否加载过，如果加载过加载流程就结束了，把类的class对象返回即可；如果所有的加载器都没加载过，就会层层向上委派查看是否加载过，如果都没加载过，就会由顶向下尝试进行加载，如果一个类加载器，发现这个类在自己的加载路径中，就会选择去加载这个类。</p>
+<p>一个类优先由启动类加载器加载，加载不了才交给扩展类加载器处理。因为底层代码是用C++编写。如果类加载器返回的是null，说明是启动类加载器加载，因为启动类加载器底层是用C++编写。每个Java实现的类加载器中保存了一个成员变量叫“父”Parent类加载器，可以理解为它的上级，不是继承关系。</p>
+<p><strong>打破类的双亲委派机制 自定义类加载器</strong></p>
+<p>为什么打破：比如一个Tomcat程序中可以运行多个Web应用，如果两个应用中出现了相同限定名的类，比如Servlet类，Tomcat要保证这两个类都能加载并且它们应该是不同的类。</p>
+<p>ClassLoader的原理：</p>
+<ol>
+<li>loadClass方法是类加载的入口，提供了双亲委派机制，内部会调用findClass。根据全限定名去找到类，并把类的二进制信息加载进来。</li>
+<li>findClass由类加载器子类实现，获取二进制数据调用defineClass，比如URLClassLoader会根据文件路径去获取类文件中的二进制数据。</li>
+<li>defineClass在堆和方法区上创建包含类信息的对象。做一些类名的校验，然后调用虚拟机底层的方法将字节码信息加载到虚拟机内存中。</li>
+<li>resolveClass执行类生命周期中的连接阶段。</li>
+</ol>
+<p>所以打破双亲委派自定义类加载器重写loadClass方法即可。</p>
+<p><strong>打破类的双亲委派机制 线程上下文类加载器</strong></p>
+<p>JDBC使用了DriverManager来管理项目中引入的不同数据库的驱动，比如mysql、oracle驱动。</p>
+<p>DriverManager属于rt.jar是启动类加载器加载的。而用户jar包中的驱动需要由应用类加载器加载，这就违反了双亲委派机制。</p>
+<h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><p>Java虚拟机在运行Java程序过程中管理的内存区域，称之为运行时数据区。</p>
+<ul>
+<li>线程不共享：创建一个线程每个线程里都有一份<strong>程序计数器、Java虚拟机栈、本地方法栈</strong>对应的数据，自己的数据由自己维护，其它线程不能访问对方线程中的数据。</li>
+<li>线程共享：放入任何数据，每个线程都能访问数据，共享。<strong>方法区、堆</strong>。</li>
+</ul>
+<p><strong>程序计数器（Program Counter Register）：</strong>也叫PC寄存器，每个线程会通过程序计数器来记录接下来要执行的字节码指令的地址。程序计数器可以控制程序指令的进行，实现分支、跳转、异常等逻辑。在多线程的情况下，Java虚拟机需要通过程序计数器（线程不共享）记录CPU切换前执行到哪一句指令并继续解释运行。</p>
+<p>因为每个线程只存储一个固定长度的内存地址，程序计数器不会发生内存溢出。程序员无需对程序计数器做任何处理。</p>
+<p><strong>Java虚拟机栈（Java Virtual Machine Stack）：</strong>采用栈的数据结构来管理方法调用中的基本数据。先进后出（First In Last Out），每一个方法的调用使用一个栈帧来保存。当某个方法执行完栈帧就会被弹出。Java虚拟机栈随着线程的创建而创建，而回收则会在线程的销毁时进行。由于方法可能会在不同线程中执行，每个线程都有一个自己的虚拟机栈。</p>
+<p>栈帧的组成：</p>
+<ul>
+<li><p>局部变量表：作用是在运行过程中存放所有的局部变量。</p>
+</li>
+<li><p>操作数栈：是栈帧中虚拟机在执行指令过程中用来存放临时数据的一块区域。</p>
+</li>
+<li><p>帧数据：包含动态链接、方法出口、异常表的引用。</p>
+</li>
+<li><p>局部变量表：作用是在方法执行过程中存放所有的局部变量。编译成字节码文件时就可以确定局部变量表的内容。</p>
+</li>
+</ul>
+<p>栈内存溢出</p>
+<p>Java虚拟机如果栈帧过多，占用内存超过栈内存可以分配的最大大小就会出现内存溢出。Java虚拟机内存溢出时会出现StackOverflowError的错误。</p>
+<p><strong>堆内存</strong></p>
+<p>一般Java程序中堆内存是空间最大的一块的内存区域，创建出来的对象都存在于堆上。栈上的局部变量表中，可以存放堆上对象的引用。静态变量也可以存放堆对象的引用，通过静态变量就可以实现对象在线程之间的共享。堆内存大小具有上限，当一直向堆中放入对象达到上限之后，会抛出OutOfMemory的错误。</p>
+<p><strong>方法区的实现</strong></p>
+<p>方法区是虚拟机中的虚拟概念，每款Java虚拟机在实现上各不相同。方法区是存放基础信息的位置，线程共享，主要包含三部分内容：</p>
+<ul>
+<li><p>类的元信息：保存了所有类的基本信息。方法区是用来存储每个类的基本信息（元信息），一般称为InstanceKlass对象。在类的加载阶段完成。InstanceKlass对象包含：基本信息，常量池，字段，方法，虚方法表。注意常量池和方法在虚拟机中会被单独摘出来，用单独的内存去存放，而在InstanceKlass中仅仅存储的是引用。</p>
+</li>
+<li><p>运行时常量池：保存了字节码文件中的常量池内容。方法区除了存储类的元信息外，还存储了运行时的常量池。常量池中存放的是字节码中的常量池内容。字节码文件通过编号查表的方式找到常量，被称为静态常量池。当常量池加载到内存中后，可以通过内存地址快速定位到常量池的内容，这种叫作运行时常量池。</p>
+</li>
+<li><p>字符串常量池：保存了字符串常量。、</p>
+</li>
+</ul>
+<p><strong>直接内存</strong></p>
+<p>JDK8后方法区的内容存在直接内存的元空间中。直接内存不在虚拟机规范中存在，所以并不属于java运行时的内存区域。在JDK1.4后引入NIO机制，使用直接内存。Java堆中的对象如果不再使用要回收，回收时会影响对象的创建和使用。IO操作比如读文件，需要先把文件读入直接内存（缓冲区）再把数据复制到Java堆中。现在直接放入直接内存即可（减少了一次数据复制的开销），Java堆上维护直接内存的引用，减少数据复制开销。</p>
+<h3 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h3><p><strong>自动垃圾回收</strong></p>
+<p>内存泄露指的是不再使用的对象在系统中未被回收，内存泄露的积累导致内存溢出。Java中为了简化对象的释放，引入了自动的垃圾回收（Garbage Collection简称GC）机制。通过垃圾回收器来对不再使用的对象完成自动的回收，垃圾回收器主要负责对堆上内存进行回收</p>
+<ul>
+<li>优点：降低程序员实现难度，降低对象回收bug的可能性。</li>
+<li>缺点：程序员无法控制内存回收的及时性。</li>
+</ul>
+<p>自动垃圾回收，应用场景：</p>
+<ul>
+<li>解决系统僵死的问题。与频繁的垃圾回收有关。</li>
+<li>性能优化。对垃圾回收器性能优化。</li>
+<li>高频面试题：常见的垃圾回收器</li>
+</ul>
+<p><strong>线程不共享的部分</strong>（程序计数器、Java虚拟机栈、本地方法栈）</p>
+<p>不需要使用垃圾回收机制进行回收。都是伴随线程的创建而创建，线程的销毁而销毁。方法的栈帧在执行完之后会自动弹出栈并释放掉对应的内存。</p>
+<p><strong>方法区回收</strong></p>
+<p>方法区中能回收的内容主要就是不再使用的类。判断一个类可以被卸载，需要同时满足下面三个条件：</p>
+<ol>
+<li>此类所以实例对象都被回收，在堆中不存在任何该类的实例对象和子类对象。</li>
+<li>加载类的类加载器已经被回收。</li>
+<li>该类对应的java.lang.Class对象没有在任何地方被引用。</li>
+</ol>
+<p>如果需要手动触发垃圾回收，可以调用System.gc()方法。调用System.gc()方法并不一定会立即回收垃圾，仅仅向JAVA虚拟机发送一个垃圾回收的请求，具体是否需要执行垃圾回收Java虚拟机会自行判断。</p>
+<p><strong>可达性分析法</strong></p>
+<p>可达性分析将对象分为2类：垃圾回收的根对象（GC Root）和普通对象。对象与对象之间存在引用关系。如果从某个对象到GC Root对象是可达的，对象就不可被回收。可被称为GC Root的对象有</p>
+<ul>
+<li>线程Thread对象（创建线程之后，整个线程对象），引用线程栈帧中的方法参数、局部变量等。</li>
+<li>系统类加载器加载的java.lang.Class对象。</li>
+<li>监视器对象，用来保存同步锁synchronized关键字持有的对象。</li>
+<li>本地方法调用时使用的全局对象。</li>
+</ul>
+<p><strong>常见引用类型</strong></p>
+<p>强引用、软引用、弱引用、虚引用、终结器引用</p>
+<ul>
+<li>强引用：最常见的引用类型，由可达性分析算法来判断</li>
+<li>软引用：对象在没有强引用的情况下，且内存不足时会被GC</li>
+<li>弱引用：不管内存是否充足，都会被GC</li>
+<li>虚引用：用于通知直接内存区谁被回收了</li>
+<li>终结器引用：对象回收时可以自救，不建议使用</li>
+</ul>
+<p><strong>垃圾回收算法的评价标准</strong></p>
+<p>Java垃圾回收过程会通过单独的GC线程来完成，但是不管使用哪一种GC算法，都会有部分阶段需要停止所有的用户线程。这个过程称之为Stop The World简称STW，如果STW时间过长则会影响用户的使用。</p>
+<p>判断GC算法是否优秀，可以从3个方面考虑：</p>
+<ul>
+<li><p>吞吐量。吞吐量指的是CPU用于执行用户代码的时间与CPU总执行时间的比值，即吞吐量&#x3D;执行用户代码时间&#x2F;（执行用户代码时间+GC时间）。吞吐量数值越高，垃圾回收的效率就越高。</p>
+</li>
+<li><p>最大暂停时间。最大暂停指的是所有在垃圾回收过程中的STW时间最大值。最大暂停时间越短，用户使用系统时受到的影响就越短。</p>
+</li>
+<li><p>堆使用的效率。不同的垃圾回收算法，对堆内存的使用方式是不同的。标记清除法，可以使用完整的堆内存。复制算法会将堆内存一分为二，每次只使用一半内存。从堆使用效率上说，标记清除法要优于复制算法。</p>
+</li>
+</ul>
+<p>上面三种评价标准：堆使用效率、吞吐量、最大暂停时间不可兼得。比如堆内存越大，最大暂停时间要越长。想要减少最大暂停时间，就会降低吞吐量。不同的垃圾回收算法，适用于不同的场景。</p>
+<p><strong>垃圾回收算法</strong></p>
+<p><strong>标记清除算法：</strong></p>
+<ol>
+<li>标记阶段：将所有存活的对象进行标记。Java中使用可达性分析算法，从GC Root开始通过引用链遍历出所有存活对象。</li>
+<li>清除阶段：从内存中删除没有被标记的非存活对象。</li>
+</ol>
+<p>优点：实现简单，只需要在第一阶段给每个对象维护标志位，第二阶段删除对象即可。</p>
+<p>缺点：</p>
+<ul>
+<li>碎片化问题。由于内存是连续的，所有对象被删除之后，内存中会出现很多细小可用的内存单元。如果我们需要的是一个比较大的空间，很有可能这些内存单元的大小过小，无法进行分配。</li>
+<li>分配速度慢。由于内存碎片存在，需要维护一个空闲链表，极有可能发生每次需要遍历到链表最后才能获得合适的内存空间。</li>
+</ul>
+<p><strong>复制算法：</strong></p>
+<ol>
+<li>准备2块空间From空间和To空间，每次在对象分配阶段，只能使用其中一块空间（From空间）。</li>
+<li>在垃圾回收GC阶段，将From中存活对象复制到To空间。</li>
+<li>将两块空间的From和To名字互换。</li>
+</ol>
+<p>优点：</p>
+<ul>
+<li>吞吐量高。复制算法只需要遍历一次存活对象复制到To空间即可。比标记-整理算法少了一次遍历的过程，因此性能比较好，但是不如标记-清除算法，因为标记清除算法不需要进行对象的移动。</li>
+<li>不会发生碎片化。复制算法在复制之后就会将对象按顺序存放入To空间，所以对象以外的区域都是可用空间，不存在碎片化内存空间。</li>
+</ul>
+<p>缺点：内存使用效率低。每次只能让一半的内存空间来为创建对象使用。</p>
+<p><strong>标记整理算法：</strong></p>
+<p>标记整理算法也叫标记压缩算法，是对标记清理算法中容易产生内存碎片问题的一种解决方案。</p>
+<ol>
+<li>标记阶段。将所有存活对象进行标记。Java中使用可达性分析算法，从GC Root开始通过引用链遍历出所有存活对象。</li>
+<li>整理阶段。将存活对象移动到堆的一端。清理掉存活对象的内存空间。</li>
+</ol>
+<p>优点：</p>
+<ul>
+<li>内存使用效率高。整个堆内存都可以使用，不会像复制算法只能使用半个堆内存。</li>
+<li>不会发生碎片化。在整理的阶段</li>
+</ul>
+<p>缺点：整理阶段的效率不高。整理算法有很多种，比如Lisp2整理算法需要对整个堆中的对象搜索3次，整体性能不佳。可以通过Two-Finger、表格算法、ImmixGc等高效的整理算法优化此阶段的性能。</p>
+<p><strong>分代GC</strong></p>
+<p>分代垃圾回收算法是现代优秀的垃圾回收算法，会将上述描述的垃圾回收算法组合进行使用，其中应用最广的就是分代垃圾回收算法（Generational GC）。</p>
+<p>分代垃圾回收将整个内存区域划分为年轻代和老年代。在年轻代（新生代）Yong区中会被划分为Eden区（伊甸园区），幸存区（有2块）。分代回收时，创建出来的对象，首先会被放入Eden伊甸园区。随着对象在Eden区越来越多，如果Eden区满，新创建的对象已经无法放入，就会触发年轻代的GC，成为Minor GC或者Young GC。Minor GC会把需要eden和From中需要回收的对象回收，把没有回收的对象放入To区。每次Minor GC中都会为对象记录他的年龄，初始值为0，每次GC完会加1。如果Minor GC后对象的年龄达到阈值（最大15，默认值和垃圾回收器有关），对象就会被晋升至老年代。如果当老年代中空间不足，无法放入新的对象时（可能是由于年轻代被占满，因此有些对象没达到年龄的阈值，就会被放入老年代），先尝试minor gc如果还是不足，就会触发Full GC，Full GC会对整个堆进行垃圾回收。如果Full GC依然无法回收掉老年代的对象，那么当对象继续放入老年代时，就会抛出Out Of Memory异常。</p>
+<p><strong>垃圾回收器</strong></p>
+<ul>
+<li>年轻代：<strong>Serial</strong> 是一种单线程串行回收年轻代的垃圾回收器。如果伊甸园区满了，垃圾回收线程就会回收垃圾，此时用户线程不能访问。单CPU下吞吐量出色，多CPU吞吐量不佳，因为执行时只能但线程，跑在一个CPU上。老年代：<strong>SerialOld</strong> 是Serial垃圾回收器的老年代版本，采用单线程串行回收。</li>
+<li>年轻代：<strong>parNew垃圾回收器</strong>本质上是对Serial在多CPU下的优化，使用多线程进行垃圾回收。老年代：<strong>CMS（Concurrent Mark Sweep）垃圾回收器</strong> 关注的是系统的暂停时间，允许用户线程和垃圾回收线程在某些步骤中同时执行，减少了用户线程的等待时间。</li>
+<li>年轻代：<strong>Parallel Scavenge</strong>垃圾回收器，是JDK8默认的年轻代垃圾回收器，多线程并行回收，关注的是系统的吞吐量，具备自动调整堆内存大小（年轻代、老年代大小，年轻代内每一个组成部分，包括阈值等都会自动调整）的特点。老年代：<strong>Parallel Old</strong>是为Parallel Scavenge收集器设计的老年代版本，利用多线程并发收集。<strong>Parallel Scavenge</strong>允许手动设置最大暂停时间和吞吐量。Oracle官方建议在使用组合时，不要设置堆内存的最大值，垃圾回收器会根据最大暂停时间和吞吐量自动调整内存大小。</li>
+<li><strong>G1回收器</strong>详情看：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_50247953/article/details/135773398?ops_request_misc=%7B%22request_id%22:%224333F05D-938A-46AC-814E-D5ADE7FB3D9C%22,%22scm%22:%2220140713.130102334..%22%7D&request_id=4333F05D-938A-46AC-814E-D5ADE7FB3D9C&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-135773398-null-null.142%5Ev100%5Epc_search_result_base7&utm_term=g1%E5%9B%9E%E6%94%B6%E5%99%A8&spm=1018.2226.3001.4187">G1垃圾回收器_g1垃圾回收器详解-CSDN博客</a></li>
+</ul>
+<h2 id="实战篇"><a href="#实战篇" class="headerlink" title="实战篇"></a>实战篇</h2><h3 id="内存泄漏的原因"><a href="#内存泄漏的原因" class="headerlink" title="内存泄漏的原因"></a>内存泄漏的原因</h3><p><strong>不正确的equals()和hashCode()实现导致内存泄露</strong></p>
+<ol>
+<li><p>以JDK8为例，首先调用hash方法计算key的哈希值（对整个对象进行哈希计算），hash方法中会使用到key的hashcode方法。根据hash方法的结果决定存放数组的数组中的位置。</p>
+</li>
+<li><p>如果没有元素，直接放入。如果有元素，先判断key是否相等，会用到equals方法，如果key相等直接替换value；如果key不相等，走链表或者红黑树查找逻辑，其中也会使用equals比对是否相同。</p>
+</li>
+</ol>
+<p>异常情况：</p>
+<ol>
+<li><p>hashCode方法实现不正确，会导致相同id的学生对象计算出来的hash值不同，可能会被分到不同的槽中。</p>
+</li>
+<li><p>equals方法实现不正确，会导致key在比对时，即便学生对象的id是相同的，也被认为是不同的key。</p>
+</li>
+<li><p>长时间运行之后HashMap中会保存大量相同id的学生数据。</p>
+</li>
+</ol>
+<p>解决方案：</p>
+<ol>
+<li>在定义新实体时，始终重写equals()和hashCode()方法。</li>
+<li>重写时一定要确定使用了唯一标识去区分不同的对象，比如用户的id等。</li>
+<li>hashmap使用时尽量使用编号id等数据作为key，不要将整个实体类对象作为key存放。</li>
+</ol>
+<p><strong>非静态的内部类默认会持有外部类</strong></p>
+<p>尽管代码上不再使用外部类，如果有地方引用了这个非静态的内部类，会导致外部类也被引用，垃圾回收时无法回收这个外部类。</p>
+<p>解决方法：将内部类和外部类的变量改为static</p>
+<p>匿名内部类对象如果在非静态方法中被创建，会持有调用者对象，垃圾回收时无法回收调用者。</p>
+<p>解决方法：使用静态方法，避免匿名内部类持有调用者对象。</p>
+<p><strong>ThreadLocal的使用</strong></p>
+<p>如果仅仅使用手动创建的线程，就算没有调用ThreadLocal的remove方法清理数据，也不会产生内存泄漏。因为当线程被回收时，ThreadLocal也同样被回收。</p>
+<p>通过new方法来创建线程，就算不调用remove也会被回收。</p>
+<p>但是如果使用线程池就不一定了。因为回不回收，什么时候回收取决于线程池的参数。</p>
+<p>解决方案：线程方法执行完，一定要调用ThreadLocal中的remove方法清理对象。</p>
+<p><strong>String的intern方法</strong></p>
+<p>JDK6中字符串常量池位于堆内存中的Perm Gen永久代中，如果不同字符串的intern方法被大量调用，字符串常量池会不停的变大超过永久代内存上限后就会产生内存溢出问题。</p>
+<p><strong>通过静态字段保存对象</strong></p>
+<p>问题：如果大量的数据在静态变量中被长期引用，数据就不会被释放，如果这些数据不再使用，就成为了内存泄露。</p>
+<p>解决方法：</p>
+<ol>
+<li><p>尽量减少将对象长时间的保存在静态变量，如果不再使用，必须将对象删除（或者将静态变量设置为null）</p>
+</li>
+<li><p>使用单例模式时，尽量使用懒加载，而不是立即加载。在使用Spring的时候，在类上加上@Component注解，就可以在sprig容器启动过程中生成一个对象放入容器中。@Lazy注解的作用是让对象的加载变成懒加载。只有当要获取这个对象的时候，才会加载该对象。</p>
+</li>
+<li><p>Spring的Bean中不要长期存放大对象，如果是缓存用于提升性能，尽量设置过期时间定期失效。</p>
+</li>
+</ol>
+<p><strong>资源没有正常关闭</strong></p>
+<p>问题：连接和流这些资源会占用内存，如果使用完之后没有关闭，这部分内存不一定会出现内存泄露，但是会导致close方法不被执行。</p>
+<p>解决方案：</p>
+<ol>
+<li><p>为了防止出现这类的资源对象泄露问题，必须在finally块中关闭不再使用的资源。</p>
+</li>
+<li><p>从Java7开始，使用try-with-resources语法可以用于自动关闭资源。</p>
+</li>
+</ol>
+<p><strong>并发请求</strong></p>
+<p>并发请求问题指的是用户通过发送请求向Java应用获取数据，正常情况下Java应用将数据返回之后，这部分数据就可以在内存中被释放掉。但由于用户的并发请求量有可能很大，同时处理数据的时间很长，导致大量的数据存在于内存中，最终超过了内存的上限，导致内存溢出。这类问题的处理思路和内存泄漏相似，首先要定位到对象产生的根源。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/09/02/JVM/" data-id="cmhkkpc7i0002o4fefzpq4qpv" data-title="JVM" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/12/06/%E7%BD%91%E7%AB%99%E5%9C%B0%E5%9D%80/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          网站集合
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/08/29/MySQL/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MySQL</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">August 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/01/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2025/01/11/Netty/">Netty</a>
+          </li>
+        
+          <li>
+            <a href="/2024/12/06/%E7%BD%91%E7%AB%99%E5%9C%B0%E5%9D%80/">网站集合</a>
+          </li>
+        
+          <li>
+            <a href="/2024/09/02/JVM/">JVM</a>
+          </li>
+        
+          <li>
+            <a href="/2024/08/29/MySQL/">MySQL</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
