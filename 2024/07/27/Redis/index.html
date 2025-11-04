@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <meta name="author" content="John Doe">
+
+
+
+
+
+<title>Redis | Hexo</title>
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/nprogress/nprogress.css">
+
+
+
+<script src="/lib/jquery.min.js"></script>
+
+
+<script src="/lib/iconify-icon.min.js"></script>
+
+
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+  };
+</script>
+
+
+<script src="/lib/nprogress/nprogress.js"></script>
+
+<script>
+  $(document).ready(() => {
+    NProgress.configure({
+      showSpinner: false,
+    });
+    NProgress.start();
+    $("#nprogress .bar").css({
+      background: "#de7441",
+    });
+    $("#nprogress .peg").css({
+      "box-shadow": "0 0 2px #de7441, 0 0 4px #de7441",
+    });
+    $("#nprogress .spinner-icon").css({
+      "border-top-color": "#de7441",
+      "border-left-color": "#de7441",
+    });
+    setTimeout(function () {
+      NProgress.done();
+      $(".fade").removeClass("out");
+    }, 800);
+  });
+</script>
+
+<script>
+  (function () {
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+    if (setting === "dark" || (prefersDark && setting !== "light"))
+      document.documentElement.classList.toggle("dark", true);
+    let isDark = document.documentElement.classList.contains("dark");
+  })();
+
+  $(document).ready(function () {
+    // init icon
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = document.documentElement.classList.contains("dark");
+    $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+
+    function toggleGiscusTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const giscusFrame = document.querySelector("iframe.giscus-frame");
+      if (giscusFrame) {
+        giscusFrame.contentWindow.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: isDark ? "dark" : "light",
+              },
+            },
+          },
+          "https://giscus.app"
+        );
+      }
+    }
+
+    // toggle dark mode
+    function toggleDark() {
+      let isDark = document.documentElement.classList.contains("dark");
+      const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+      isDark = !isDark;
+      document.documentElement.classList.toggle("dark", isDark);
+      $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+      if (prefersDark === isDark) {
+        localStorage.setItem("hexo-color-scheme", "auto");
+      } else {
+        localStorage.setItem("hexo-color-scheme", isDark ? "dark" : "light");
+      }
+      toggleGiscusTheme();
+    }
+
+    // listen dark mode change
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+        if (setting === "auto") {
+          document.documentElement.classList.toggle("dark", e.matches);
+          $("#theme-icon").attr(
+            "icon",
+            e.matches ? "ri:moon-line" : "ri:sun-line"
+          );
+          toggleGiscusTheme();
+        }
+      });
+
+    $("#toggle-dark").click((event) => {
+      const isAppearanceTransition = document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (!isAppearanceTransition) {
+        toggleDark()
+        return
+      }
+      const x = event.clientX
+      const y = event.clientY
+      const endRadius = Math.hypot(
+        Math.max(x, innerWidth - x),
+        Math.max(y, innerHeight - y),
+      )
+      const transition = document.startViewTransition(async () => {
+        toggleDark()
+      })
+
+      transition.ready
+        .then(() => {
+          const isDark = document.documentElement.classList.contains("dark")
+          const clipPath = [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ]
+          document.documentElement.animate(
+            {
+              clipPath: isDark
+                ? [...clipPath].reverse()
+                : clipPath,
+            },
+            {
+              duration: 400,
+              easing: 'ease-out',
+              pseudoElement: isDark
+                ? '::view-transition-old(root)'
+                : '::view-transition-new(root)',
+            },
+          )
+        })
+    });
+  });
+</script>
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="font-sans bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 relative">
+  <header class="fixed w-full px-5 py-1 z-10 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5">
+  <div class="max-auto">
+    <nav class="flex items-center text-base">
+      <a href="/" class="group">
+        <h2 class="font-medium tracking-tighterp text-l p-2">
+          <img class="w-5 mr-2 inline-block transition-transform group-hover:rotate-[30deg]" id="logo" src="/images/logo.svg" alt="Hexo" />
+          Hexo
+        </h2>
+      </a>
+      <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
+        Redis
+      </div>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        
+          <a class="hidden sm:flex" href="/archives">Posts</a>
+        
+        
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Github" target="_blank" rel="noopener" href="https://github.com/qjh04/qjh04.github.io">
+              <iconify-icon width="20" icon="ri:github-line"></iconify-icon>
+            </a>
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Email" href="mailto:3040782516@qq.com">
+              <iconify-icon width="20" icon="ri:email-line"></iconify-icon>
+            </a>
+          
+        
+        <a class="w-5 h-5 hidden sm:flex" title="Email" href="rss2.xml">
+          <iconify-icon width="20" icon="ri:rss-line"></iconify-icon>
+        </a>
+        <a class="w-5 h-5" title="toggle theme" id="toggle-dark">
+          <iconify-icon width="20" icon="" id="theme-icon"></iconify-icon>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-3 ml-3 sm:hidden">
+        <span class="w-5 h-5" aria-hidden="true" role="img" id="open-menu">
+          <iconify-icon width="20" icon="carbon:menu" ></iconify-icon>
+        </span>
+        <span class="w-5 h-5 hidden" aria-hidden="true" role="img" id="close-menu">
+          <iconify-icon  width="20" icon="carbon:close" ></iconify-icon>
+        </span>
+      </div>
+    </nav>
+  </div>
+</header>
+<div id="menu-panel" class="h-0 overflow-hidden sm:hidden fixed left-0 right-0 top-12 bottom-0 z-10">
+  <div id="menu-content" class="relative z-20 bg-white/80 px-6 sm:px-8 py-2 backdrop-blur-xl -translate-y-full transition-transform duration-300">
+    <ul class="nav flex flex-col sm:flex-row text-sm font-medium">
+      
+        <li class="nav-portfolio sm:mx-2 border-b sm:border-0 border-black/5 last:border-0 hover:text-main">
+          <a href="/archives" class="flex h-12 sm:h-auto items-center">Posts</a>
+        </li>
+      
+    </ul>
+  </div>
+  <div class="mask bg-black/20 absolute inset-0"></div>
+</div>
+
+  <main class="pt-14">
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        Redis
+      </h1>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2025-11-04</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>28 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>7.9k words</span>
+          </span>
+          
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <h1 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h1><h2 id="基础篇"><a href="#基础篇" class="headerlink" title="基础篇"></a>基础篇</h2><h3 id="第一章-初始Redis"><a href="#第一章-初始Redis" class="headerlink" title="第一章 初始Redis"></a>第一章 初始Redis</h3><h4 id="1、认识NoSQL"><a href="#1、认识NoSQL" class="headerlink" title="1、认识NoSQL"></a>1、认识NoSQL</h4><p>非关系型数据库，非结构化、非关联、非SQL不固定、无法全部满足ACID事务、存储在内存、数据结构不固定。提高查询性能用这个。</p>
+<h4 id="2、认识Redis"><a href="#2、认识Redis" class="headerlink" title="2、认识Redis"></a>2、认识Redis</h4><p>基于内存的键值型NoSQL数据库，诞生于2009年全称RemoteDictionaryService，远程词典服务器。<br>特点：键值型、单线程、低延迟、速度快（内存、IO复用、良好的编码）、支持数据持久性、支持主从集群、分片集群、支持多语言客户端。</p>
+<h3 id="第二章-Redis常见命令"><a href="#第二章-Redis常见命令" class="headerlink" title="第二章 Redis常见命令"></a>第二章 Redis常见命令</h3><h4 id="1、Redis通用命令"><a href="#1、Redis通用命令" class="headerlink" title="1、Redis通用命令"></a>1、Redis通用命令</h4><p>KEYS:查看符合模板的所有KEY<br>DEL:删除一个指定的KEY<br>EXISTS:判断KEY是否存在<br>EXPIRE:给KEY设置有效期<br>TTL:查看有效期</p>
+<h4 id="2、Redis数据结构"><a href="#2、Redis数据结构" class="headerlink" title="2、Redis数据结构"></a>2、Redis数据结构</h4><p>String类型：字符串类型是Redis中的基本类型，表面是字符串但是有三种格式分为string、int、float。int、float可以自增自减。<br>Hash类型：也叫散列，其value是一个无序字典，类似于java中HashMap。<br>LIst类型：与java中的LinkedList类似，可以看做是一个双向链表，既可以正向检索也可以反向。<br>Set类型：与java中的HashSet类似，多了交集、并集、差集等功能。<br>SortedSet类型：可排序的set集合，与java中的TreeSet类似，底层实现差距巨大。SortedSet底层存储一个score属性，根据此属性进行排序，根据跳表、哈希表实现。</p>
+<h4 id="3、KEY的层级设置"><a href="#3、KEY的层级设置" class="headerlink" title="3、KEY的层级设置"></a>3、KEY的层级设置</h4><p>可以利用多个单词中间用 : 间隔，实现层级隔离效果。</p>
+<h3 id="第三章-Redis的Java客户端"><a href="#第三章-Redis的Java客户端" class="headerlink" title="第三章 Redis的Java客户端"></a>第三章 Redis的Java客户端</h3><h4 id="1、Jedis客户端"><a href="#1、Jedis客户端" class="headerlink" title="1、Jedis客户端"></a>1、Jedis客户端</h4><p><a target="_blank" rel="noopener" href="https://github.com/redis/jedis">https://github.com/redis/jedis</a></p>
+<p>第一步：引入依赖<br>第二步：建立连接，url、密码、库等<br>第三步：测试各种方法<br>第四步：关闭连接</p>
+<p>Jedis连接池：本身是线程不安全，在并发环境下，用连接池的方式代替上方直连方式。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="2、SpringDataRedis"><a href="#2、SpringDataRedis" class="headerlink" title="2、SpringDataRedis"></a>2、SpringDataRedis</h4><ul>
+<li>对不同Redis客户端的整合（Jedis、Lettuce）</li>
+<li>提供了RedisTemplate统一API管理</li>
+<li>支持Redis哨兵、集群</li>
+</ul>
+<p>第一步：引入依赖 Redis依赖和连接池依赖（common-pool2)<br>第二步：配置文件 配置Redis的ip、密码<br>第三步：注入RedisTemplate，进行编码</p>
+<p>SpringDataRedis的序列化方式：默认采用JDK序列化，可读性差、内存占用较大。可以改变序列化工具如下，但是这样会导致存储value为对象时，会自动存储对象的引用地址，方便反序列化。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>还有一种方式，自己手动序列化后再存储到Redis中。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="实战篇"><a href="#实战篇" class="headerlink" title="实战篇"></a>实战篇</h2><h3 id="第一章-短信登录"><a href="#第一章-短信登录" class="headerlink" title="第一章 短信登录"></a>第一章 短信登录</h3><h4 id="1、基于-redis-短信登录"><a href="#1、基于-redis-短信登录" class="headerlink" title="1、基于 redis 短信登录"></a>1、基于 redis 短信登录</h4><p>问题描述：在拦截器中无法注入StringRedisTemplate<br>解决办法：在配置程序中，利用构造函数形式，传参进入拦截器。因为配置类代码被@configuration修饰，也被springboot管理，可以进行依赖注入。</p>
+<h3 id="第二章-商户查询缓存"><a href="#第二章-商户查询缓存" class="headerlink" title="第二章 商户查询缓存"></a>第二章 商户查询缓存</h3><p>缓存就是数据交换的缓冲区，存储数据的临时地方，读写速度高。</p>
+<h4 id="1、缓存穿透"><a href="#1、缓存穿透" class="headerlink" title="1、缓存穿透"></a>1、缓存穿透</h4><p>查询一个不存在的数据时，缓存里没有，数据库查不到，也不会写入缓存，导致每次请求都打到数据库。<br>解决方法：</p>
+<ul>
+<li>缓存空对象，在缓存中存储Null值空数据。</li>
+<li>利用布隆过滤器，布隆过滤器放在缓存之前在请求到来的时候先判断一下缓存中有没有，没有就拦截，有就放行，有一定的误判率。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="2、缓存雪崩"><a href="#2、缓存雪崩" class="headerlink" title="2、缓存雪崩"></a>2、缓存雪崩</h4><p>同一时段内，大部分key同时失效或者Redis服务宕机，导致大量请求打到数据库。<br>解决方法：</p>
+<ul>
+<li>给不同的key的TTL添加随机值</li>
+<li>利用Redis集群提高服务的可靠性</li>
+<li>给缓存业务添加降级限流策略</li>
+<li>给业务参加多级缓存</li>
+</ul>
+<h4 id="3、缓存击穿"><a href="#3、缓存击穿" class="headerlink" title="3、缓存击穿"></a>3、缓存击穿</h4><p>热点key问题，被高并发访问并且缓存重建业务比较复杂的key突然失效，无数的请求会在瞬间给数据库带来压力。<br>解决方法：</p>
+<ul>
+<li>互斥锁：加锁，获得锁以后，才可以进行重建</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<ul>
+<li>逻辑过期 ：取消TTL，加个字段表示逻辑过期时间。<br>实现过程：当一个线程发现逻辑过期了，会去抢锁，抢不到返回过期数据，抢到了会开启新线程重建业务，旧线程返回过期数据。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="第三章-优惠券秒杀"><a href="#第三章-优惠券秒杀" class="headerlink" title="第三章 优惠券秒杀"></a>第三章 优惠券秒杀</h3><h4 id="1、全局唯一ID"><a href="#1、全局唯一ID" class="headerlink" title="1、全局唯一ID"></a>1、全局唯一ID</h4><p>全局ID生成器：在分布式环境下生成全局唯一ID的工具。<br>一般满足五个特点：唯一性、高可用、高性能、递增性、安全性。</p>
+<p>基于Redis的全局唯一ID生成策略：一共64位，1位符号位，31位时间戳，32位自增数</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="2、超卖问题"><a href="#2、超卖问题" class="headerlink" title="2、超卖问题"></a>2、超卖问题</h4><p>高并发场景下，发生优惠券超卖。</p>
+<p>解决方法：</p>
+<ul>
+<li>乐观锁：认为线程安全问题不一定会发生，因此不加锁，只是在更新数据时去判断有没有其他线程修改数据。如果没有修改数据则认为安全，自己更新数据。如果已经被修改，则认为出现了安全问题，可以抛异常或者重新执行。<br>版本号法：新加一个字段版本号，每次修改之前查出版本号，修改时看版本号是否和查的一样。<br>CAS法：compare and switch，把要修改的字段看做版本号</li>
+<li>悲观锁：认为线程安全问题一定会发生，因此在操作数据之前先获取锁，确保线程串行执行。例如synchronized、lock都属于悲观锁。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="3、一人一单问题"><a href="#3、一人一单问题" class="headerlink" title="3、一人一单问题"></a>3、一人一单问题</h4><ul>
+<li>单体结构中：可以给操作数据的部分加锁，根据用户id确保每个用户一把锁，还需要引依赖加配置才能开启spring的事务。</li>
+<li>集群模式中：可以用分布式锁。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="4、分布式锁"><a href="#4、分布式锁" class="headerlink" title="4、分布式锁"></a>4、分布式锁</h4><p>满足分布式系统下多进程可见并且互斥的锁，满足高可用、高性能、高并发、安全性。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>mysql</th>
+<th>redis</th>
+<th>zookeeper</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>互斥</td>
+<td>利用数据库本身的互斥锁机制</td>
+<td>利用setnx互斥命令</td>
+<td>利用节点的唯一性和有序性实现互斥</td>
+</tr>
+<tr>
+<td>高可用</td>
+<td>好</td>
+<td>好</td>
+<td>好</td>
+</tr>
+<tr>
+<td>高性能</td>
+<td>一般</td>
+<td>好</td>
+<td>一般</td>
+</tr>
+<tr>
+<td>安全性</td>
+<td>断开连接自动释放锁</td>
+<td>利用锁超时时间到期释放</td>
+<td>临时节点，断开连接自动释放</td>
+</tr>
+</tbody></table>
+<p>redis实现分布式锁：</p>
+<ul>
+<li><p>获取锁<br>互斥确保只能有一个进程获得锁：set lock thread nx ex 10<br>非阻塞式：获取失败返回false，反之返回true</p>
+</li>
+<li><p>释放锁</p>
+</li>
+</ul>
+<p>手动释放锁：del lock<br>超时释放：获取锁时添加一个过期时间</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>lua脚本：<br>在一个脚本中编写多条redis命令，确保多条命令执行时的原子性</p>
+<h2 id="高级篇"><a href="#高级篇" class="headerlink" title="高级篇"></a>高级篇</h2><h3 id="第一章-分布式缓存"><a href="#第一章-分布式缓存" class="headerlink" title="第一章 分布式缓存"></a>第一章 分布式缓存</h3><h4 id="1、Redis持久化"><a href="#1、Redis持久化" class="headerlink" title="1、Redis持久化"></a>1、Redis持久化</h4><h5 id="RDB持久化"><a href="#RDB持久化" class="headerlink" title="RDB持久化"></a>RDB持久化</h5><p>Redis数据备份文件，也被称作Redis数据快照。把内存中的数据写到磁盘，当Redis发生故障重启，从磁盘读取快照恢复数据。默认开启，在停机那一刻会自动触发，但是意外宕机不会。所以需要在配置文件中配置保存条件，Redis内部有触发RDB的机制,可以在redis.conf文件中找到,格式如下:</p>
+<ul>
+<li>900秒内,如果至少有1个key被修改,则执行bgsave,如果是save ”则表示禁用RDB</li>
+</ul>
+<p>save 900 1</p>
+<p>save 300 10</p>
+<p>save 60 10000</p>
+<ul>
+<li>是否压缩 ,建议不开启,压缩也会消耗cpu,磁盘的话不值钱</li>
+</ul>
+<p>rdbcompression yes</p>
+<ul>
+<li>RDB文件名称</li>
+</ul>
+<p>dbfilename dump.rdb</p>
+<ul>
+<li>文件保存的路径目录</li>
+</ul>
+<p>dir .&#x2F;</p>
+<p>底层原理：</p>
+<ul>
+<li>RDB方式bgsave的基本流程?</li>
+</ul>
+<p>fork主进程得到一个子进程,共享内存空间</p>
+<p> 子进程读取内存数据并写入新的RDB文件</p>
+<p>用新RDB文件替换旧的RDB文件。</p>
+<ul>
+<li>RDB会在什么时候执行?save 60 1000代表什么含义?</li>
+</ul>
+<p>默认是服务停止时。</p>
+<p>代表60秒内至少执行1000次修改则触发RDB</p>
+<ul>
+<li>RDB的缺点?</li>
+</ul>
+<p>RDB执行间隔时间长,两次RDB之间写入数据有丢失的风险</p>
+<p>fork子进程、压缩、写出RDB文件都比较耗时</p>
+<h5 id="AOF持久化"><a href="#AOF持久化" class="headerlink" title="AOF持久化"></a>AOF持久化</h5><p>追加文件，Redis处理的每一个命令都会记录到AOF文件中，可以看作是命令日志文件。默认关闭，打开需要修改配置文件。</p>
+<ul>
+<li>是否开启AOF功能,默认是no</li>
+</ul>
+<p>appendonly yes</p>
+<ul>
+<li>AOF文件的名称</li>
+</ul>
+<p>appendfilename “appendonly.aof”</p>
+<ul>
+<li><p>AOF的命令记录的频率也可以通过redis.conf文件来配:</p>
+</li>
+<li><p>表示每执行一次写命令,立即记录到AOF文件</p>
+</li>
+</ul>
+<p>appendfsync always 效率差但是安全</p>
+<ul>
+<li>写命令执行完先放入AOF缓冲区,然后表示每隔1秒将缓冲区数据写到AOF文件,是默认方案</li>
+</ul>
+<p>appendfsync everysec 效率还行也还安全</p>
+<ul>
+<li>写命令执行完先放入AOF缓冲区,由操作系统决定何时将缓冲区内容写回磁盘</li>
+</ul>
+<p>appendfsync no 效率高但是及不安全</p>
+<p>因为是记录命令,AOF文件会比RDB文件大的多。而且AOF会记录对同一个key的多次写操作,但只有最后一次写操作才有意义。通过执行bgrewriteaof命令,可以让AOF文件执行重写功能,用最少的命令达到相同效果。</p>
+<ul>
+<li>AOF文件比上次文件 增长超过多少百分比则触发重写</li>
+</ul>
+<p>auto-aof-rewrite-percentage 100</p>
+<ul>
+<li>AOF文件体积最小多大以上才触发重写</li>
+</ul>
+<p>auto-aof-rewrite-min-size 64mb</p>
+<h3 id="第二章-Redis主从"><a href="#第二章-Redis主从" class="headerlink" title="第二章 Redis主从"></a>第二章 Redis主从</h3><p>单节点的Redis并发有上限，需要进一步提高Redis的并发能力，就要搭建主从集群，实现读写分离。</p>
+<p>如何搭建：在从节点上输入命令 slaveof ip port</p>
+<p>数据同步原理：</p>
+<p>master如何判断slave是不是第一次来同步数据?这里会用到两个很重要的概念:</p>
+<ul>
+<li>Replication ld:简称replid,是数据集的标记,id一致则说明是同一数据集。每一个master都有唯一的replid,<br>slave则会继承master节点的replid</li>
+<li>offset:偏移量,随着记录在repl_baklog中的数据增多而逐渐增大。slave完成同步时也会记录当前同步的offset。<br>如果slave的offset小于master的offset,说明slave数据落后于master,需要更新。</li>
+</ul>
+<p>因此slave做数据同步,必须向master声明自己的replication id和offset,master才可以判断到底需要同步哪些数据</p>
+<h4 id="1、两种同步方式："><a href="#1、两种同步方式：" class="headerlink" title="1、两种同步方式："></a>1、两种同步方式：</h4><ul>
+<li>全量同步：第一次同步或者宕机实在太久。先判断id和offset，可以同步，将所有数据通过RDB持久化到从节点，还要保存一个命令文件到从节点。以后的主节点每次更新都会发送到从节点 。</li>
+<li>增量同步：根据id确认关系，根据offset确认主节点需要发送哪些命令。</li>
+<li>保存命令的repl_baklog文件有上限，写满后会覆盖前面写的命令，从节点宕机时间太久，就可能无法得到被覆盖的命令，只能去内存找了。</li>
+</ul>
+<h4 id="2、优化主从集群"><a href="#2、优化主从集群" class="headerlink" title="2、优化主从集群"></a>2、优化主从集群</h4><ul>
+<li>在master中配置repl-diskless-sync yes启用无磁盘复制,避免全量同步时的磁盘IO。</li>
+<li>Redis单节点上的内存占用不要太大,减少RDB导致的过多磁盘IO。</li>
+<li>适当提高repl_baklog的大小,发现slave宕机时尽快实现故障恢复,尽可能避免全量同步。</li>
+<li>限制一个master上的slave节点数量,如果实在是太多slave,则可以采用主-从-从链式结构,减少master压力。</li>
+</ul>
+<h3 id="第三章-Redis哨兵"><a href="#第三章-Redis哨兵" class="headerlink" title="第三章 Redis哨兵"></a>第三章 Redis哨兵</h3><p>哨兵（sentinel）实现主从集群的自动故障恢复</p>
+<h4 id="1、作用："><a href="#1、作用：" class="headerlink" title="1、作用："></a>1、作用：</h4><ul>
+<li><p>监控:Sentinel 会不断检查您的master和slave是否按预期工作</p>
+</li>
+<li><p>自动故障恢复:如果master故障,Sentinel会将一个slave提升为master。当故障实例恢复后也以新的master为主</p>
+</li>
+<li><p>通知:Sentinel充当Redis客户端的服务发现来源,当集群发生故障转移时,会将最新信息推送给Redis的客户端</p>
+</li>
+</ul>
+<h4 id="2、服务状态监控："><a href="#2、服务状态监控：" class="headerlink" title="2、服务状态监控："></a>2、服务状态监控：</h4><p>Sentinel基于心跳机制监测服务状态,每隔1秒向集群的每个实例发送ping命令:</p>
+<ul>
+<li><p>主观下线:如果某sentinel节点发现某实例未在规定时间响应,则认为该实例主观下线。</p>
+</li>
+<li><p>客观下线:若超过指定数量(quorum)的sentinel都认为该实例主观下线,则该实例客观下线。quorum值最好超过Sentinel实例数量的一半。</p>
+</li>
+</ul>
+<h4 id="3、选举新的master："><a href="#3、选举新的master：" class="headerlink" title="3、选举新的master："></a>3、选举新的master：</h4><p>一旦发现master故障,sentinel需要在salve中选择一个作为新的master,选择依据是这样的:</p>
+<ul>
+<li>首先会判断slave节点与master节点断开时间长短,如果超过指定值(down-after-milliseconds*10)则会排除slave节点</li>
+<li>然后判断slave节点的slave-priority值,越小优先级越高,如果是0则永不参与选举</li>
+<li>如果slave-prority一样，则判断slave节点的offset值,越大说明数据越新,优先级越高</li>
+<li>最后是判断slave节点的运行id大小,越小优先级越高。</li>
+</ul>
+<h4 id="4、如何实现故障转移"><a href="#4、如何实现故障转移" class="headerlink" title="4、如何实现故障转移"></a>4、如何实现故障转移</h4><p>当选中了其中一个slave为新的master后(例如slave1),故障的转移的步骤如下:</p>
+<ul>
+<li><p>sentinel给备选的slave1节点发送slaveof no one命令,让该节点成为master</p>
+</li>
+<li><p>sentinel给所有其它slave发送slaveof ipadress port命令,让这些slave成为新master的从节点,开始从新的master上同步数据。</p>
+</li>
+<li><p>最后,sentinel将故障节点标记为slave,当故障节点恢复后会自动成为新的master的slave节点</p>
+</li>
+</ul>
+<h3 id="第四章-Redis分片集群"><a href="#第四章-Redis分片集群" class="headerlink" title="第四章 Redis分片集群"></a>第四章 Redis分片集群</h3><h4 id="1、散列插槽"><a href="#1、散列插槽" class="headerlink" title="1、散列插槽"></a>1、散列插槽</h4><p>分片集群会有0-16383共计16384个插槽分给若干个Redis实例用于负载均衡。分配方式如下：</p>
+<ul>
+<li><p>将16384个插槽分配到不同的实例</p>
+</li>
+<li><p>根据key的有效部分计算哈希值,对16384取余</p>
+</li>
+<li><p>余数作为插槽,寻找插槽所在实例即可</p>
+</li>
+</ul>
+<h4 id="2、集群伸缩"><a href="#2、集群伸缩" class="headerlink" title="2、集群伸缩"></a>2、集群伸缩</h4><p>参考命令</p>
+<h4 id="3、故障转移"><a href="#3、故障转移" class="headerlink" title="3、故障转移"></a>3、故障转移</h4><p>参考命令</p>
+<h3 id="第五章-多级缓存"><a href="#第五章-多级缓存" class="headerlink" title="第五章 多级缓存"></a>第五章 多级缓存</h3><p>充分利用请求处理的每个环节，分别添加缓存，缓解Tomcat压力，提升服务性能。</p>
+<h4 id="1、JVM进程缓存"><a href="#1、JVM进程缓存" class="headerlink" title="1、JVM进程缓存"></a>1、JVM进程缓存</h4><p>基于Caffeine做JVM进程缓存</p>
+<h4 id="2、lua语法"><a href="#2、lua语法" class="headerlink" title="2、lua语法"></a>2、lua语法</h4><h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><p>nil：表示无效值，在条件表达式中相当于false</p>
+<ul>
+<li>boolean：只有true和false两种</li>
+<li>number：表示双精度的浮点数</li>
+<li>string：字符串由一对引号来表示</li>
+<li>function：由c或lua编写的函数</li>
+<li>table：接近java中的map，也可以表示数组</li>
+</ul>
+<p>type（）函数可以测试一个变量的类型</p>
+<h5 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h5><p>直接用local声明 不需要变量类型：local str &#x3D; ‘str’ local num &#x3D; 2<br>注意数组从1开始，字符拼接用..，不加lcoal表示全局变量</p>
+<h5 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h5><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h5 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h5><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h5 id="条件控制"><a href="#条件控制" class="headerlink" title="条件控制"></a>条件控制</h5><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="3、多级缓存"><a href="#3、多级缓存" class="headerlink" title="3、多级缓存"></a>3、多级缓存</h4><p>略</p>
+<p>……</p>
+<h4 id="4、缓存同步"><a href="#4、缓存同步" class="headerlink" title="4、缓存同步"></a>4、缓存同步</h4><p>略……</p>
+<h3 id="第六章-Redis最佳实践"><a href="#第六章-Redis最佳实践" class="headerlink" title="第六章 Redis最佳实践"></a>第六章 Redis最佳实践</h3><h4 id="1、Redis键值设计"><a href="#1、Redis键值设计" class="headerlink" title="1、Redis键值设计"></a>1、Redis键值设计</h4><h5 id="Key的设计"><a href="#Key的设计" class="headerlink" title="Key的设计"></a>Key的设计</h5><ul>
+<li>遵循基本的格式：【业务名称】：【数据名】：id</li>
+<li>长度不超过44个字节</li>
+<li>不包含特殊字符</li>
+</ul>
+<h5 id="Value的设计"><a href="#Value的设计" class="headerlink" title="Value的设计"></a>Value的设计</h5><ul>
+<li>存储一个自定义对象可以用hash结构</li>
+<li>假如一个hash类型的key，其中有100万个fielld和对应的value，field是自增的，存在什么问题如何优化：数据量太大，已经超过ziplist可存储的最小值，内存占用高。可以将打哈希打撒成小哈希。</li>
+</ul>
+<h4 id="2、批处理优化"><a href="#2、批处理优化" class="headerlink" title="2、批处理优化"></a>2、批处理优化</h4><h5 id="pipeline"><a href="#pipeline" class="headerlink" title="pipeline"></a>pipeline</h5><ul>
+<li>利用原生m操作存储string类型的数据，利用pipeline传输复杂结构。</li>
+<li>不建议一次携带过多数据，pipeline命令之间不具备原子性</li>
+</ul>
+<h5 id="集群批处理"><a href="#集群批处理" class="headerlink" title="集群批处理"></a>集群批处理</h5><p>当Redis是一个集群的时候，批处理的命令的多个key必须落在一个插槽里，否则报错。</p>
+<h4 id="3、服务端优化"><a href="#3、服务端优化" class="headerlink" title="3、服务端优化"></a>3、服务端优化</h4><h5 id="持久化配置"><a href="#持久化配置" class="headerlink" title="持久化配置"></a>持久化配置</h5><ul>
+<li>用来做缓存的Redis实例没必要做实例化</li>
+<li>建议关闭RDB，使用AOF</li>
+<li>适当手动做RDB，实现数据备份</li>
+<li>设置合理的rewrite阈值,避免频繁的bgrewrite</li>
+<li>配置no-appendfsync-on-rewrite&#x3D;yes,禁止在rewrite期间做aof,避免因AOF引起的阻塞</li>
+</ul>
+<h6 id="部署有关建议"><a href="#部署有关建议" class="headerlink" title="部署有关建议:"></a>部署有关建议:</h6><ul>
+<li>Redis实例的物理机要预留足够内存,应对fork和rewrite</li>
+<li>单个Redis实例内存上限不要太大,例如4G或8G。可以加快fork的速度、减少主从同步、数据迁移压力</li>
+<li>不要与CPU密集型应用部署在一起不要与高硬盘负载应用一起部署。例如:数据库、消息队列</li>
+</ul>
+<h5 id="慢查询"><a href="#慢查询" class="headerlink" title="慢查询"></a>慢查询</h5><p>在Redis中执行命令的时间超过某个阈值，就会被认为是 慢查询</p>
+<h5 id="命令及安全配置"><a href="#命令及安全配置" class="headerlink" title="命令及安全配置"></a>命令及安全配置</h5><p>设置足够复杂的密码</p>
+<h5 id="内存配置"><a href="#内存配置" class="headerlink" title="内存配置"></a>内存配置</h5><p>内存划分：数据内存、进程内存、缓冲区内存</p>
+<ul>
+<li>数据内存：主要部分，存储键值信息，可能是bigkey的问题。</li>
+<li>进程内存 ：Redis主进程运行需要内存，如代码、常量池，可忽略。</li>
+<li>缓冲区内存：一般包括客户端缓冲区、AOF缓冲区、复制缓冲区等，可能是这部分导致。</li>
+</ul>
+<h4 id="4、集群的最佳实践"><a href="#4、集群的最佳实践" class="headerlink" title="4、集群的最佳实践"></a>4、集群的最佳实践</h4><ul>
+<li>完整性问题：默认配置中，如果一个插槽不能用了，整个集群都不服务了</li>
+<li>带宽问题：集群节点间会不断地png来确定集群中其他节点的状态，每次ping会携带大量信息，如果节点变多，携带的信息也会变多，所占的带宽也会变大。</li>
+<li>数据倾斜问题：</li>
+<li>客户端性能问题：</li>
+<li>命令的集群兼容性问题：</li>
+<li>lua和事务的问题：</li>
+</ul>
+<p>单体或者主从能满足的情况下，不推荐使用集群。</p>
+<h2 id="原理篇"><a href="#原理篇" class="headerlink" title="原理篇"></a>原理篇</h2><h3 id="第一章-Redis数据结构"><a href="#第一章-Redis数据结构" class="headerlink" title="第一章 Redis数据结构"></a>第一章 Redis数据结构</h3><h4 id="1、动态字符串SDS"><a href="#1、动态字符串SDS" class="headerlink" title="1、动态字符串SDS"></a>1、动态字符串SDS</h4><p>虽然Redis底层用C语言实现，但是C语言的字符类型存在许多问题，所以自定义了一种类型。SDS具备扩容功能，并且有记录字符长度和申请空间数量，所以不会读到‘\0’结束。</p>
+<p>组成 ：字符个数+分配长度（不带结束标识）+类型+字符串本身</p>
+<p>优势：获取字符串长度的时间为O（1），支持动态扩容，减少内存分配次数，二进制安全。</p>
+<h4 id="2、IntSet"><a href="#2、IntSet" class="headerlink" title="2、IntSet"></a>2、IntSet</h4><p>基于整数数组实现，并且具备长度可变、有序。</p>
+<p>组成：字符编码+元素个数+整数数组</p>
+<p>特点：Redis确保IntSet中的元素唯一、有序，具备类型升级节省空间，底层采用二分查找来查询</p>
+<h4 id="3、Dict"><a href="#3、Dict" class="headerlink" title="3、Dict"></a>3、Dict</h4><p>Dictionary缩写，键值的映射关系通过Dict实现。</p>
+<p>组成：哈希表（两个，一个存储数据，一个rehash用）+哈希节点+字典</p>
+<p>当我们向Dict中添加键值对时，Redis首先根据key计算出hash值，然后利用hash值与长度减一的值做与运算，得到的值就是节点存储索引值。哈希冲突时，同一个hash值的元素用头插法表示成链表。当集合元素过多时，哈希冲突也越来越多，链表过长，查询速度也会变慢，此时需要用到扩容机制。</p>
+<p>Dict在每次新增键值对时都会检查负载因子(LoadFactor&#x3D;used&#x2F;size),满足以下两种情况时会触发哈希表扩容:</p>
+<ul>
+<li>哈希表的LoadFactor&gt;&#x3D;1,并且服务器没有执行BGSAVE或者BGREWRITEAOF等后台进程;</li>
+<li>哈希表的LoadFactor&gt;5;</li>
+</ul>
+<p>除了扩容，当删除元素时，也会判断负载因子是不是小于0.1，小于了则会收缩。</p>
+<ul>
+<li><p>当LoadFactor大于5或者LoadFactor大于1并且没有子进程任务时,Dict扩容</p>
+</li>
+<li><p>当LoadFactor小于0.1时,Dict收缩</p>
+</li>
+<li><p>扩容大小为第一个大于等于used+1的2的n次</p>
+</li>
+<li><p>收缩大小为第一个大于等于used的2的n次</p>
+</li>
+<li><p>Dict采用渐进式rehash,每次访问Dict时执行一次rehash</p>
+</li>
+<li><p>rehash时ht[0]只减不增,新增操作只在ht[1]执行,其它操作在两个哈希表</p>
+</li>
+</ul>
+<h4 id="4、ZipList"><a href="#4、ZipList" class="headerlink" title="4、ZipList"></a>4、ZipList</h4><p>压缩链表，一种特殊的双端列表，可以从任意一段压入或弹出并且该操作的时间复杂度为O（1）</p>
+<p>组成 ：总字节数+尾结点偏移量+实体个数+若干实体+结束标识符</p>
+<p>实体组成 ：前节点长度字节数+Encoding编码属性+内容</p>
+<p>Encoding编码：</p>
+<ul>
+<li>00、01、10开头都表示字符串，00编码长度一个字节，01长度2个字节，10长度5个字节，相对应的内容就是2的编码长度次。</li>
+<li>11开头表示内容是整数，Encoding固定占用一个字节</li>
+</ul>
+<h5 id="ZipList连锁更新问题："><a href="#ZipList连锁更新问题：" class="headerlink" title="ZipList连锁更新问题："></a>ZipList连锁更新问题：</h5><p>ZipList的每个Entry都包含previous_entry_length来记录上一个节点的大小,长度是1个或5个字节:</p>
+<ul>
+<li>如果前一节点的长度小于254字节,则采用1个字节来保存</li>
+<li>这个长度值如果前一节点的长度大于等于254字节,则采用5个字节来保存这个长度值,第一个字节为Oxfe,后四个字节才是真实长度数据</li>
+</ul>
+<p>特殊情况下产生的连续多次空间扩展操作称之为连锁更新，新增删除都可能导致该问题的发生 。</p>
+<h5 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h5><ul>
+<li><p>压缩列表的可以看做一种连续内存空间的“双向链表”</p>
+</li>
+<li><p>列表的节点之间不是通过指针连接,而是记录上一节点和本</p>
+</li>
+<li><p>节点长度来寻址,内存占用较低</p>
+</li>
+<li><p>如果列表数据过多,导致链表过长,可能影响查询性能</p>
+</li>
+<li><p>增或删较大数据时有可能发生连续更新问题</p>
+</li>
+</ul>
+<h4 id="5、QuickList"><a href="#5、QuickList" class="headerlink" title="5、QuickList"></a>5、QuickList</h4><p>本质是一个双端链表，链表中的每个节点都是一个ZipList，控制ZipList大小同时不让其分散。</p>
+<h4 id="6、SkipList"><a href="#6、SkipList" class="headerlink" title="6、SkipList"></a>6、SkipList</h4><p>跳表本身也是链表，元素按照升序排列，节点允许包含多个指针，指针跨度不同。允许有32层，每层按倍数2增加。</p>
+<ul>
+<li><p>跳跃表是一个双向链表,每个节点都包含score和ele值</p>
+</li>
+<li><p>节点按照score值排序,score值一样则按照ele字典排序</p>
+</li>
+<li><p>每个节点都可以包含多层指针,层数是1到32之间的随机数</p>
+</li>
+<li><p>不同层指针到下一个节点的跨度不同,层级越高,跨度越大</p>
+</li>
+<li><p>增删改查效率与红黑树基本一致,实现却更简单</p>
+</li>
+</ul>
+<h4 id="7、RedisObject"><a href="#7、RedisObject" class="headerlink" title="7、RedisObject"></a>7、RedisObject</h4><p>Redis中的任意键值对都会被封装为RedisObject，也叫做Redis对象。</p>
+<p>组成：数据类型+编码+记录最近一次被访问时间+引用计数器+指向对象的指针</p>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>编码方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String</td>
+<td>raw、int、embstr</td>
+</tr>
+<tr>
+<td>List</td>
+<td>LinkedList和Ziplist(3.2以前)、QuickList(3.2以后)</td>
+</tr>
+<tr>
+<td>Hash</td>
+<td>intset、ht</td>
+</tr>
+<tr>
+<td>Set</td>
+<td>ziplist、ht、skiplist</td>
+</tr>
+<tr>
+<td>ZSet</td>
+<td>ziplist、ht+skiplist</td>
+</tr>
+</tbody></table>
+<h3 id="第二章-五种数据类型"><a href="#第二章-五种数据类型" class="headerlink" title="第二章 五种数据类型"></a>第二章 五种数据类型</h3><h4 id="1、String"><a href="#1、String" class="headerlink" title="1、String"></a>1、String</h4><ul>
+<li><p>其基本编码方式是RAW,基于简单动态字符串(SDS)实现,存储上限为512mb。</p>
+</li>
+<li><p>如果存储的SDS长度小于44字节,则会采用EMBSTR编码,此时object head与SDS是一段连续空间。申请内存时只需要调用一次内存分配函数,效率更高。</p>
+</li>
+<li><p>如果存储的字符串是整数值,并且大小在LONG_MAX范围内,则会采用INT编码:直接将数据保存在RedisObject的ptr指针位置(刚好8字节),不再需要SDS了。</p>
+</li>
+</ul>
+<h4 id="2、List"><a href="#2、List" class="headerlink" title="2、List"></a>2、List</h4><ul>
+<li><p>在3.2版本之前,Redis采用ZipList和LinkedList来实现List,当元素数量小于512并且元素大小小于64字节时采用ZipList编码,超过则采用LinkedList编码。</p>
+</li>
+<li><p>在3.2版本之后,Redis统一采用QuickList来实现List:</p>
+</li>
+</ul>
+<h4 id="3、Set"><a href="#3、Set" class="headerlink" title="3、Set"></a>3、Set</h4><ul>
+<li><p>为了查询效率和唯一性,set采用HT编码(Dict)。Dict中的key用来存储元素,value统一为null。</p>
+</li>
+<li><p>当存储的所有数据都是整数,并且元素数量不超过set-max-intset-entries时,Set会采用IntSet编码,以节省内存。</p>
+</li>
+</ul>
+<h4 id="4、ZSet"><a href="#4、ZSet" class="headerlink" title="4、ZSet"></a>4、ZSet</h4><ul>
+<li><p>SkipList:可以排序,并且可以同时存储score和ele值(member)</p>
+</li>
+<li><p>HT(Dict):可以键值存储,并且可以根据key找value</p>
+</li>
+</ul>
+<p>当元素数量不多时,HT和SkipList的优势不明显,而且更耗内存。因此zset还会采用ZipList结构来节省内存,不过需要同时满足两个条件:</p>
+<ul>
+<li><p>元素数量小于zset_max_ziplist_entries,默认值128</p>
+</li>
+<li><p>每个元素都小于zset_max_ziplist_value字节,默认值64</p>
+</li>
+</ul>
+<p>ziplist本身没有排序功能,而且没有键值对的概念,因此需要有zset通过编码实现:</p>
+<p>ZipList是连续内存,因此score和element是紧挨在一起的两个entry,element在前,score在后score越小越接近队首,score越大越接近队尾,按照score值升序排列</p>
+<h4 id="5、Hash"><a href="#5、Hash" class="headerlink" title="5、Hash"></a>5、Hash</h4><ul>
+<li><p>Hash结构默认采用ZipList编码,用以节省内存。ZipList中相邻的两个entry分别保存field和value</p>
+</li>
+<li><p>当数据量较大时,Hash结构会转为HT编码,也就是Dict,触发条件有两个:</p>
+</li>
+</ul>
+<p>1 ZipList中的元素数量超过了hash-max-ziplist-entries(默认512)</p>
+<p>2 ZipList中的任意entry大小超过了hash-max-ziplist-value(默认64字节)</p>
+<h3 id="第三章-Redis网络模型"><a href="#第三章-Redis网络模型" class="headerlink" title="第三章 Redis网络模型"></a>第三章 Redis网络模型</h3><p>主要是优化用户调用内核API和内核缓冲区向用户缓冲区发送数据两种行为所花费的时间</p>
+<h4 id="1、阻塞IO"><a href="#1、阻塞IO" class="headerlink" title="1、阻塞IO"></a>1、阻塞IO</h4><p>顾名思义，阻塞IO就是在用户调用内核API和内核缓冲区向用户缓冲区发送数据的时候等待，等到有数据为止。</p>
+<h4 id="2、非阻塞IO"><a href="#2、非阻塞IO" class="headerlink" title="2、非阻塞IO"></a>2、非阻塞IO</h4><p>会在两种情况下立即返回结果，不等待。</p>
+<h4 id="3、IO多路复用"><a href="#3、IO多路复用" class="headerlink" title="3、IO多路复用"></a>3、IO多路复用</h4><p>文件描述符(File Descriptor):简称FD,是一个从0开始递增的无符号整数,用来关联Linux中的一个文件。在Linux<br>中,一切皆文件,例如常规文件、视频、硬件设备等,当然也包括网络套接字(Socket)。</p>
+<p>IO多路复用:是利用单个线程来同时监听多个FD,并在某个FD可读、可写时得到通知,从而避免无效的等待,充分利用CPU资源。实现方式有三种：select、poll、epoll</p>
+<p>差异:</p>
+<ul>
+<li><p>select和poll只会通知用户进程有FD就绪,但不确定具体是哪个FD,需要用户进程逐个遍历FD来确认</p>
+</li>
+<li><p>epoll则会在通知用户进程FD就绪的同时,把已就绪的FD写入用户空间</p>
+</li>
+</ul>
+<h5 id="select"><a href="#select" class="headerlink" title="select"></a>select</h5><p>最早的实现方案，存在若干问题，需要用户态和内核态频繁转换，只能监听1024个FD。</p>
+<h5 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h5><p>和select差不多，增加了监听数量，理论无上限，但是消耗时间就等多了，性能下降。</p>
+<h5 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h5><ul>
+<li><p>基于epoll实例中的红黑树保存要监听的FD,理论上无上限,而且增删改查效率都非常高,性能不会随监听的FD数量增多而下降</p>
+</li>
+<li><p>每个FD只需要执行一次epoll_ctl添加到红黑树,以后每次epol_wait无需传递任何参数,无需重复拷贝FD到内核空间</p>
+</li>
+<li><p>内核会将就绪的FD直接拷贝到用户空间的指定位置,用户进程无需遍历所有FD就能知道就绪的FD是谁</p>
+</li>
+</ul>
+<h5 id="时间通知机制"><a href="#时间通知机制" class="headerlink" title="时间通知机制"></a>时间通知机制</h5><ul>
+<li><p>LevelTriggered:简称LT。当FD有数据可读时,会重复通知多次,直至数据处理完成。是Epoll的默认模式。</p>
+</li>
+<li><p>EdgeTriggered:简称ET。当FD有数据可读时,只会被通知一次,不管数据是否处理完成。</p>
+</li>
+</ul>
+<p>结论</p>
+<ul>
+<li><p>ET模式避免了LT模式可能出现的惊群现象</p>
+</li>
+<li><p>ET模式最好结合非阻塞I0读取FD数据,相比LT会复杂一些</p>
+</li>
+</ul>
+<h4 id="4、信号驱动IO"><a href="#4、信号驱动IO" class="headerlink" title="4、信号驱动IO"></a>4、信号驱动IO</h4><p>创建一个信号处理程序，有请求时向内核发送请求信号然后去干别的，内核准备好后会发给信息处理程序一个准备好的信号，再去从内核拷贝到用户。</p>
+<h4 id="5、异步IO"><a href="#5、异步IO" class="headerlink" title="5、异步IO"></a>5、异步IO</h4><p>只需告诉内核需要哪个FD，内核把所有过程完成后，再告诉用户。</p>
+<h4 id="6、Redis网络模型"><a href="#6、Redis网络模型" class="headerlink" title="6、Redis网络模型"></a>6、Redis网络模型</h4><h5 id="Redis到底是单线程还是多线程"><a href="#Redis到底是单线程还是多线程" class="headerlink" title="Redis到底是单线程还是多线程?"></a>Redis到底是单线程还是多线程?</h5><ul>
+<li><p>如果仅仅聊Redis的核心业务部分(命令处理),答案是单线程</p>
+</li>
+<li><p>如果是聊整个Redis,那么答案就是多线程</p>
+</li>
+</ul>
+<p>在Redis版本迭代过程中,在两个重要的时间节点上引入了多线程的支持:</p>
+<ul>
+<li><p>Redis v4.0:引入多线程异步处理一些耗时较长的任务,例如异步删除命令unlink</p>
+</li>
+<li><p>Redis v6.0:在核心网络模型中引入 多线程,进一步提高对于多核CPU的利用率</p>
+</li>
+</ul>
+<h5 id="为什么Redis要选择单线程"><a href="#为什么Redis要选择单线程" class="headerlink" title="为什么Redis要选择单线程?"></a>为什么Redis要选择单线程?</h5><ul>
+<li><p>抛开持久化不谈,Redis是纯内存操作,执行速度非常快,它的性能瓶颈是网络延迟而不是执行速度,因此多线程并不会带来巨大的性能提升。</p>
+</li>
+<li><p>多线程会导致过多的上下文切换,带来不必要的开销</p>
+</li>
+<li><p>引入多线程会面临线程安全问题,必然要引入线程锁这样的安全手段,实现复杂度增高,而且性能也会大打折扣</p>
+</li>
+</ul>
+<p>重点 没听懂……回来再说</p>
+<h3 id="第四章-Redis通信协议"><a href="#第四章-Redis通信协议" class="headerlink" title="第四章 Redis通信协议"></a>第四章 Redis通信协议</h3><h4 id="1、RESP协议"><a href="#1、RESP协议" class="headerlink" title="1、RESP协议"></a>1、RESP协议</h4><h5 id="数据类型-1"><a href="#数据类型-1" class="headerlink" title="数据类型"></a>数据类型</h5><ul>
+<li><p>单行字符串:首字节是‘+’,后面跟上单行字符串,以CRLF(“\r\n”)结尾。例如返回”OK”:”+OK\r\n”</p>
+</li>
+<li><p>错误(Errors):首字节是‘-’,与单行字符串格式一样,只是字符串是异常信息,例如:”-Error message\r\n”</p>
+</li>
+<li><p>数值:首字节是‘:’,后面跟上数字格式的字符串,以CRLF结尾。例如:”:10\r\n”</p>
+</li>
+<li><p>多行字符串:首字节是‘$’,表示二进制安全的字符串,最大支持512MB:</p>
+<ul>
+<li>如果大小为0,则代表空字符串:”$0\r\n\r\n”</li>
+<li>如果大小为-1,则代表不存在:”$-1\r\n”</li>
+</ul>
+</li>
+<li><p>数组:首字节是‘*’,后面跟上数组元素个数,再跟上元素,元素数据类型不限</p>
+</li>
+</ul>
+<p>一般请求都是数组，回复会是其他类型</p>
+<h3 id="第五章-Redis内存策略"><a href="#第五章-Redis内存策略" class="headerlink" title="第五章 Redis内存策略"></a>第五章 Redis内存策略</h3><h4 id="过期策略"><a href="#过期策略" class="headerlink" title="过期策略"></a>过期策略</h4><p>expire命令设置TTL过期时间</p>
+<p>Redis是如何知道一个key是否过期呢?</p>
+<ul>
+<li>利用两个Dict分别记录key-value对及key-ttl对</li>
+</ul>
+<p>是不是TTL到期就立即删除了呢?</p>
+<ul>
+<li>惰性删除<ul>
+<li>不立即删除，而是在访问一个key的时候，检查该key的存活时间，如果已经过期才删除</li>
+<li>如果很多key都过期，但是没有人访问，则会产生堆积问题</li>
+</ul>
+</li>
+<li>周期删除<ul>
+<li>周期性的抽样部分过期的key，然后执行删除<ul>
+<li>Redis会在初始化时设置一个定时任务serverCron(),按照server.hz的频率来执行过期key清理,模式为SLOW，默认执行频率为10，不超过25ms</li>
+<li>Redis的每个事件循环前会调用beforeSleep()函数,执行过期key清理,模式为FAST，频率不固定，但每次间隔不超过2ms，耗时不超过1ms</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="淘汰策略"><a href="#淘汰策略" class="headerlink" title="淘汰策略"></a>淘汰策略</h4><p>当Redis内存使用达到阈值时，Redis主动挑选部分Key删除以释放更多内存。Redis在执行任何命令之前都检查内存是否满足，不满足会拒绝。</p>
+<h5 id="八种淘汰策略"><a href="#八种淘汰策略" class="headerlink" title="八种淘汰策略"></a>八种淘汰策略</h5><ul>
+<li><p>noeviction:不淘汰任何key,但是内存满时不允许写入新数据,默认就是这种策略。</p>
+</li>
+<li><p>volatile-ttl:对设置了TTL的key,比较key的剩余TTL值,TTL越小越先被淘汰</p>
+</li>
+<li><p>allkeys-random:对全体key,随机进行淘汰。也就是直接从db-&gt;dict中随机挑选</p>
+</li>
+<li><p>volatile-random:对设置了TTL的key,随机进行淘汰。也就是从db-&gt;expires中随机挑选。</p>
+</li>
+<li><p>allkeys-lru: 对全体key,基于LRU算法进行淘汰</p>
+</li>
+<li><p>volatile-lru:对设置了TTL的key,基于LRU算法进行淘汰</p>
+</li>
+<li><p>allkeys-lfu: 对全体key,基于LFU算法进行淘汰</p>
+</li>
+<li><p>volatile-lfu:对设置了TTL的key,基于LFI算法进行淘汰</p>
+</li>
+</ul>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
+    
+  </div>
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+        <a href="/2024/07/28/Linux/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          Linux
+        </a>
+      
+    </div>
+    <div>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
+    
+
+  </div>
+</section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "default",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
+
+  </main>
+  <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
+  <!-- busuanzi -->
+  
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- Busuanzi Analytics -->
+<div class="flex items-center gap-2">
+  <span>Visitors</span>
+  <span id="busuanzi_value_site_uv"></span>
+  <span>Page Views</span>
+  <span id="busuanzi_value_site_pv"></span>
+</div>
+<!-- End Busuanzi Analytics -->
+
+
+  <!-- copyright -->
+  <div class="flex items-center gap-2">
+    <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: inherit;">CC BY-NC-SA 4.0</a>
+    <span>© 2022</span>
+    <iconify-icon width="18" icon="emojione-monotone:maple-leaf" ></iconify-icon>
+    <a href="https://github.com/xbmlz" target="_blank" rel="noopener noreferrer">xbmlz</a>
+  </div>
+  <!-- powered by -->
+  <div class="flex items-center gap-2">
+    <span>Powered by</span>
+    <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+    <span>&</span>
+    <a href="https://github.com/xbmlz/hexo-theme-maple" target="_blank" rel="noopener noreferrer">Maple</a>
+  </div>
+
+</footer>
+
+  <div class="back-to-top box-border fixed right-6 z-1024 -bottom-20 rounded py-1 px-1 bg-slate-900 opacity-60 text-white cursor-pointer text-center dark:bg-slate-600">
+    <span class="flex justify-center items-center text-sm">
+      <iconify-icon width="18" icon="ion:arrow-up-c" id="go-top"></iconify-icon>
+      <span id="scrollpercent"><span>0</span> %</span>
+    </span>
+  </div>
+  
+<script src="/js/main.js"></script>
+
+
+  <script>
+    $(document).ready(function () {
+      const mapleCount = "10";
+      const speed = "0.5";
+      const mapleEl = document.getElementById("maple");
+      const maples = Array.from({ length: mapleCount }).map(() => {
+        const maple = document.createElement("div");
+        const scale = Math.random() * 0.5 + 0.5;
+        const offset = Math.random() * 2 - 1;
+        const x = Math.random() * mapleEl.clientWidth;
+        const y = -Math.random() * mapleEl.clientHeight;
+        const duration = 10 / speed;
+        const delay = -duration;
+        maple.className = "maple";
+        maple.style.width = `${24 * scale}px`;
+        maple.style.height = `${24 * scale}px`;
+        maple.style.left = `${x}px`;
+        maple.style.top = `${y}px`;
+        maple.style.setProperty("--maple-fall-offset", offset);
+        maple.style.setProperty("--maple-fall-height", `${Math.abs(y) + mapleEl.clientHeight}px`);
+        maple.style.animation = `fall ${duration}s linear infinite`;
+        maple.style.animationDelay = `${delay}s`;
+        mapleEl.appendChild(maple)
+        return maple
+      })
+    });
+  </script>
+  
+
+
+  <div class="fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden" id="maple"></div>
+</body>
+
+</html>
