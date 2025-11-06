@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <meta name="author" content="JiaHe Qi">
+
+
+  <meta name="subtitle" content="她在丛中笑">
+
+
+
+  <meta name="keywords" content="齐嘉和">
+
+
+<title>待到山花烂漫时</title>
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/nprogress/nprogress.css">
+
+
+
+<script src="/lib/jquery.min.js"></script>
+
+
+<script src="/lib/iconify-icon.min.js"></script>
+
+
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+  };
+</script>
+
+
+<script src="/lib/nprogress/nprogress.js"></script>
+
+<script>
+  $(document).ready(() => {
+    NProgress.configure({
+      showSpinner: false,
+    });
+    NProgress.start();
+    $("#nprogress .bar").css({
+      background: "#de7441",
+    });
+    $("#nprogress .peg").css({
+      "box-shadow": "0 0 2px #de7441, 0 0 4px #de7441",
+    });
+    $("#nprogress .spinner-icon").css({
+      "border-top-color": "#de7441",
+      "border-left-color": "#de7441",
+    });
+    setTimeout(function () {
+      NProgress.done();
+      $(".fade").removeClass("out");
+    }, 800);
+  });
+</script>
+
+<script>
+  (function () {
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+    if (setting === "dark" || (prefersDark && setting !== "light"))
+      document.documentElement.classList.toggle("dark", true);
+    let isDark = document.documentElement.classList.contains("dark");
+  })();
+
+  $(document).ready(function () {
+    // init icon
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = document.documentElement.classList.contains("dark");
+    $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+
+    function toggleGiscusTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const giscusFrame = document.querySelector("iframe.giscus-frame");
+      if (giscusFrame) {
+        giscusFrame.contentWindow.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: isDark ? "dark" : "light",
+              },
+            },
+          },
+          "https://giscus.app"
+        );
+      }
+    }
+
+    // toggle dark mode
+    function toggleDark() {
+      let isDark = document.documentElement.classList.contains("dark");
+      const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+      isDark = !isDark;
+      document.documentElement.classList.toggle("dark", isDark);
+      $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+      if (prefersDark === isDark) {
+        localStorage.setItem("hexo-color-scheme", "auto");
+      } else {
+        localStorage.setItem("hexo-color-scheme", isDark ? "dark" : "light");
+      }
+      toggleGiscusTheme();
+    }
+
+    // listen dark mode change
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+        if (setting === "auto") {
+          document.documentElement.classList.toggle("dark", e.matches);
+          $("#theme-icon").attr(
+            "icon",
+            e.matches ? "ri:moon-line" : "ri:sun-line"
+          );
+          toggleGiscusTheme();
+        }
+      });
+
+    $("#toggle-dark").click((event) => {
+      const isAppearanceTransition = document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (!isAppearanceTransition) {
+        toggleDark()
+        return
+      }
+      const x = event.clientX
+      const y = event.clientY
+      const endRadius = Math.hypot(
+        Math.max(x, innerWidth - x),
+        Math.max(y, innerHeight - y),
+      )
+      const transition = document.startViewTransition(async () => {
+        toggleDark()
+      })
+
+      transition.ready
+        .then(() => {
+          const isDark = document.documentElement.classList.contains("dark")
+          const clipPath = [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ]
+          document.documentElement.animate(
+            {
+              clipPath: isDark
+                ? [...clipPath].reverse()
+                : clipPath,
+            },
+            {
+              duration: 400,
+              easing: 'ease-out',
+              pseudoElement: isDark
+                ? '::view-transition-old(root)'
+                : '::view-transition-new(root)',
+            },
+          )
+        })
+    });
+  });
+</script>
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="font-sans bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 relative">
+  <header class="fixed w-full px-5 py-1 z-10 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5">
+  <div class="max-auto">
+    <nav class="flex items-center text-base">
+      <a href="/" class="group">
+        <h2 class="font-medium tracking-tighterp text-l p-2">
+          <img class="w-5 mr-2 inline-block transition-transform group-hover:rotate-[30deg]" id="logo" src="/images/logo.svg" alt="待到山花烂漫时" />
+          待到山花烂漫时
+        </h2>
+      </a>
+      <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
+        
+      </div>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        
+          <a class="hidden sm:flex" href="/archives">Posts</a>
+        
+        
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Github" target="_blank" rel="noopener" href="https://github.com/qjh04/qjh04.github.io">
+              <iconify-icon width="20" icon="ri:github-line"></iconify-icon>
+            </a>
+          
+            <a class="w-5 h-5 hidden sm:flex" title="ZhiHu" target="_blank" rel="noopener" href="https://www.zhihu.com/people/south--75">
+              <iconify-icon width="20" icon="ri:zhihu-line"></iconify-icon>
+            </a>
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Twitter" target="_blank" rel="noopener" href="https://x.com/JsnvH33028">
+              <iconify-icon width="20" icon="ri:twitter-line"></iconify-icon>
+            </a>
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Weibo" target="_blank" rel="noopener" href="https://weibo.com/u/6366074219">
+              <iconify-icon width="20" icon="ri:weibo-line"></iconify-icon>
+            </a>
+          
+        
+        <a class="w-5 h-5 hidden sm:flex" title="Weibo" href="rss2.xml">
+          <iconify-icon width="20" icon="ri:rss-line"></iconify-icon>
+        </a>
+        <a class="w-5 h-5" title="toggle theme" id="toggle-dark">
+          <iconify-icon width="20" icon="" id="theme-icon"></iconify-icon>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-3 ml-3 sm:hidden">
+        <span class="w-5 h-5" aria-hidden="true" role="img" id="open-menu">
+          <iconify-icon width="20" icon="carbon:menu" ></iconify-icon>
+        </span>
+        <span class="w-5 h-5 hidden" aria-hidden="true" role="img" id="close-menu">
+          <iconify-icon  width="20" icon="carbon:close" ></iconify-icon>
+        </span>
+      </div>
+    </nav>
+  </div>
+</header>
+<div id="menu-panel" class="h-0 overflow-hidden sm:hidden fixed left-0 right-0 top-12 bottom-0 z-10">
+  <div id="menu-content" class="relative z-20 bg-white/80 px-6 sm:px-8 py-2 backdrop-blur-xl -translate-y-full transition-transform duration-300">
+    <ul class="nav flex flex-col sm:flex-row text-sm font-medium">
+      
+        <li class="nav-portfolio sm:mx-2 border-b sm:border-0 border-black/5 last:border-0 hover:text-main">
+          <a href="/archives" class="flex h-12 sm:h-auto items-center">Posts</a>
+        </li>
+      
+    </ul>
+  </div>
+  <div class="mask bg-black/20 absolute inset-0"></div>
+</div>
+
+  <main class="pt-14">
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        
+      </h1>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2025-11-06</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>9 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>2.2k words</span>
+          </span>
+          
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <h1 id="交易数据流转完整示例"><a href="#交易数据流转完整示例" class="headerlink" title="交易数据流转完整示例"></a>交易数据流转完整示例</h1><h2 id="场景设定"><a href="#场景设定" class="headerlink" title="场景设定"></a>场景设定</h2><p>假设有三家企业：</p>
+<ul>
+<li><strong>回收企业A</strong>：绿源回收有限公司（统一社会信用代码：91110000MA0012345X）</li>
+<li><strong>再生企业B</strong>：再生塑料科技有限公司（统一社会信用代码：91110000MA0056789Y）</li>
+<li><strong>利用企业C</strong>：塑料制品制造有限公司（统一社会信用代码：91110000MA0098765Z）</li>
+</ul>
+<hr>
+<h2 id="第一阶段：回收企业A-→-再生企业B"><a href="#第一阶段：回收企业A-→-再生企业B" class="headerlink" title="第一阶段：回收企业A → 再生企业B"></a>第一阶段：回收企业A → 再生企业B</h2><h3 id="1-1-回收企业A填报交易数据"><a href="#1-1-回收企业A填报交易数据" class="headerlink" title="1.1 回收企业A填报交易数据"></a>1.1 回收企业A填报交易数据</h3><p><strong>接口：</strong> <code>POST /business/recycleInfo</code></p>
+<p><strong>请求数据：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;enterpriseId&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;91110000MA0056789Y&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span>  <span class="comment">// 客户：再生企业B的统一社会信用代码</span></span><br><span class="line">  <span class="attr">&quot;outboundNumber&quot;</span><span class="punctuation">:</span> <span class="string">&quot;HS20250101001&quot;</span><span class="punctuation">,</span>       <span class="comment">// 出货单号</span></span><br><span class="line">  <span class="attr">&quot;materialWeight&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;materialId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;MAT001&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;materialCode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;PLA-PET-001&quot;</span><span class="punctuation">,</span>       <span class="comment">// 物料编码：PET塑料瓶</span></span><br><span class="line">      <span class="attr">&quot;weight&quot;</span><span class="punctuation">:</span> <span class="string">&quot;5000&quot;</span>                     <span class="comment">// 重量：5000千克</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;materialId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;MAT002&quot;</span><span class="punctuation">,</span> </span><br><span class="line">      <span class="attr">&quot;materialCode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;PLA-PP-002&quot;</span><span class="punctuation">,</span>        <span class="comment">// 物料编码：PP塑料</span></span><br><span class="line">      <span class="attr">&quot;weight&quot;</span><span class="punctuation">:</span> <span class="string">&quot;3000&quot;</span>                     <span class="comment">// 重量：3000千克</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;carHeadNumber&quot;</span><span class="punctuation">:</span> <span class="string">&quot;京A12345&quot;</span><span class="punctuation">,</span>             <span class="comment">// 车头号</span></span><br><span class="line">  <span class="attr">&quot;carEndNumber&quot;</span><span class="punctuation">:</span> <span class="string">&quot;京A12345&quot;</span><span class="punctuation">,</span>              <span class="comment">// 车尾号</span></span><br><span class="line">  <span class="attr">&quot;longitude&quot;</span><span class="punctuation">:</span> <span class="string">&quot;116.397128&quot;</span><span class="punctuation">,</span>              <span class="comment">// 经度</span></span><br><span class="line">  <span class="attr">&quot;latitude&quot;</span><span class="punctuation">:</span> <span class="string">&quot;39.916527&quot;</span><span class="punctuation">,</span>                 <span class="comment">// 纬度</span></span><br><span class="line">  <span class="attr">&quot;outboundWeightPic&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;https://example.com/pics/weight001.jpg&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;outboundNumberPic&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;https://example.com/pics/outbound001.jpg&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;invoicePic&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;https://example.com/pics/invoice001.jpg&quot;</span> </span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>系统处理：</strong></p>
+<ol>
+<li>系统自动生成<strong>对应码（识别码）</strong>：<code>CTI123456789</code>（格式：CTI + 9位随机字符）</li>
+<li>创建交易记录：<ul>
+<li>主表：<code>transaction_data_recycle</code></li>
+<li>详情表：<code>transaction_data_detail</code>（记录每个物料的详细信息）</li>
+</ul>
+</li>
+<li>状态：已创建，等待再生企业B接收</li>
+</ol>
+<p><strong>数据库记录：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- transaction_data_recycle 表</span></span><br><span class="line">id: &quot;REC001&quot;</span><br><span class="line">dept_id: 回收企业A的部门ID</span><br><span class="line">enterprise_id: [&quot;91110000MA0056789Y&quot;]</span><br><span class="line">outbound_number: &quot;HS20250101001&quot;</span><br><span class="line">material_code: [&quot;PLA-PET-001&quot;, &quot;PLA-PP-002&quot;]</span><br><span class="line">weight: &quot;8000&quot;  <span class="comment">-- 总重量</span></span><br><span class="line">id_code: &quot;CTI123456789&quot;  <span class="comment">-- 对应码（识别码）</span></span><br><span class="line">create_time: &quot;2025-01-01 10:00:00&quot;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="1-2-再生企业B接收并审核"><a href="#1-2-再生企业B接收并审核" class="headerlink" title="1.2 再生企业B接收并审核"></a>1.2 再生企业B接收并审核</h3><p><strong>再生企业B登录系统，查看待接收的交易：</strong></p>
+<p><strong>接口：</strong> <code>GET /business/main/list</code></p>
+<p><strong>查询到交易记录：</strong></p>
+<ul>
+<li>出货单号：HS20250101001</li>
+<li>供应商：绿源回收有限公司</li>
+<li>物料编码：PLA-PET-001, PLA-PP-002</li>
+<li>总重量：8000千克</li>
+<li>对应码：CTI123456789</li>
+</ul>
+<p><strong>再生企业B审核通过：</strong></p>
+<p><strong>接口：</strong> <code>POST /business/main/passed</code></p>
+<p><strong>请求数据：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;企业B的ID&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;idsValue&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;CTI123456789&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span>  <span class="comment">// 对应码列表</span></span><br><span class="line">  <span class="attr">&quot;passed&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2&quot;</span>                  <span class="comment">// 2=通过，1=不通过</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>系统处理：</strong></p>
+<ol>
+<li>创建交易主表记录（<code>transaction_data_main</code>）</li>
+<li>生成<strong>追溯码</strong>：<code>TRACE64位随机字符串</code>（例如：<code>a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2</code>）</li>
+<li>状态更新：<ul>
+<li><code>apply_for_state</code>: 1（已接收）</li>
+<li><code>check_state</code>: 2（已通过）</li>
+<li><code>traceability_code</code>: 生成的追溯码</li>
+</ul>
+</li>
+</ol>
+<p><strong>数据库记录：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- transaction_data_main 表（再生企业B）</span></span><br><span class="line">id: &quot;MAIN001&quot;</span><br><span class="line">dept_id: 再生企业B的部门ID</span><br><span class="line">enterprise_type: &quot;1&quot;  <span class="comment">-- 再生企业</span></span><br><span class="line">enterprise_name: [&quot;绿源回收有限公司&quot;]</span><br><span class="line">outbound_number: &quot;HS20250101001&quot;</span><br><span class="line">material_code: [&quot;CTI123456789&quot;]  <span class="comment">-- 回收企业的对应码</span></span><br><span class="line">traceability_code: &quot;a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2&quot;</span><br><span class="line">apply_for_state: <span class="number">1</span>  <span class="comment">-- 已接收</span></span><br><span class="line">check_state: <span class="number">2</span>      <span class="comment">-- 已通过</span></span><br><span class="line">create_time: &quot;2025-01-01 14:00:00&quot;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="第二阶段：再生企业B-→-利用企业C"><a href="#第二阶段：再生企业B-→-利用企业C" class="headerlink" title="第二阶段：再生企业B → 利用企业C"></a>第二阶段：再生企业B → 利用企业C</h2><h3 id="2-1-再生企业B填报交易数据（向利用企业C销售）"><a href="#2-1-再生企业B填报交易数据（向利用企业C销售）" class="headerlink" title="2.1 再生企业B填报交易数据（向利用企业C销售）"></a>2.1 再生企业B填报交易数据（向利用企业C销售）</h3><p><strong>方式一：Web界面填报</strong></p>
+<p><strong>接口：</strong> <code>POST /business/main</code></p>
+<p><strong>请求数据：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;outboundNumber&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ZS20250102001&quot;</span><span class="punctuation">,</span>           <span class="comment">// 出货单号</span></span><br><span class="line">  <span class="attr">&quot;materialCode&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span>  <span class="comment">// 使用上一环节生成的追溯码作为物料编码</span></span><br><span class="line">  <span class="attr">&quot;productCode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;RP-PET-001&quot;</span><span class="punctuation">,</span>                 <span class="comment">// 成品编码</span></span><br><span class="line">  <span class="attr">&quot;weight&quot;</span><span class="punctuation">:</span> <span class="string">&quot;7500&quot;</span><span class="punctuation">,</span>                            <span class="comment">// 重量（经过加工后）</span></span><br><span class="line">  <span class="attr">&quot;weightRatio&quot;</span><span class="punctuation">:</span> <span class="string">&quot;85&quot;</span><span class="punctuation">,</span>                         <span class="comment">// 再生重量比例85%</span></span><br><span class="line">  <span class="attr">&quot;carNumber&quot;</span><span class="punctuation">:</span> <span class="string">&quot;京B67890&quot;</span><span class="punctuation">,</span>                     <span class="comment">// 运输车辆</span></span><br><span class="line">  <span class="attr">&quot;longitude&quot;</span><span class="punctuation">:</span> <span class="string">&quot;116.407526&quot;</span><span class="punctuation">,</span>                   <span class="comment">// 经度</span></span><br><span class="line">  <span class="attr">&quot;latitude&quot;</span><span class="punctuation">:</span> <span class="string">&quot;39.904030&quot;</span><span class="punctuation">,</span>                     <span class="comment">// 纬度</span></span><br><span class="line">  <span class="attr">&quot;outboundWeightPic&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;https://example.com/pics/weight002.jpg&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;outboundNumberPic&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;https://example.com/pics/outbound002.jpg&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>方式二：API接口填报（企业自有系统对接）</strong></p>
+<p><strong>接口：</strong> <code>POST /web/api/v1/transactionData/cargoInfo</code></p>
+<p><strong>请求头：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">API_KEY: 再生企业B的API密钥</span><br></pre></td></tr></table></figure>
+
+<p><strong>请求数据：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;enterprisesType&quot;</span><span class="punctuation">:</span> <span class="string">&quot;RegenerativeEnterprises&quot;</span><span class="punctuation">,</span>  <span class="comment">// 再生企业</span></span><br><span class="line">  <span class="attr">&quot;purchaseInbound&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;supplierTransactionCode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;CTI123456789&quot;</span><span class="punctuation">,</span>  <span class="comment">// 供应商交易追溯码（回收企业的对应码）</span></span><br><span class="line">      <span class="attr">&quot;weight&quot;</span><span class="punctuation">:</span> <span class="string">&quot;8000&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;documentDate&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2025-01-01&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;productionWorkOrder&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;productionOrderNumber&quot;</span><span class="punctuation">:</span> <span class="string">&quot;PO20250101001&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;weight&quot;</span><span class="punctuation">:</span> <span class="string">&quot;8000&quot;</span><span class="punctuation">,</span>                    <span class="comment">// 投料重量</span></span><br><span class="line">      <span class="attr">&quot;regenerationContent&quot;</span><span class="punctuation">:</span> <span class="number">0.85</span><span class="punctuation">,</span>         <span class="comment">// 再生含量85%</span></span><br><span class="line">      <span class="attr">&quot;attritionRate&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.05&quot;</span><span class="punctuation">,</span>             <span class="comment">// 损耗率5%</span></span><br><span class="line">      <span class="attr">&quot;productOutputWeight&quot;</span><span class="punctuation">:</span> <span class="number">7600</span><span class="punctuation">,</span>         <span class="comment">// 产出重量</span></span><br><span class="line">      <span class="attr">&quot;modificationAdditives&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;finishedGoodsInbound&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;weight&quot;</span><span class="punctuation">:</span> <span class="string">&quot;7500&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;gpsOutboundLocation&quot;</span><span class="punctuation">:</span> <span class="string">&quot;116.407526,39.904030&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;finishedProductProduction&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;productionOrderNumber&quot;</span><span class="punctuation">:</span> <span class="string">&quot;PO20250101001&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;rawMaterialInputWeight&quot;</span><span class="punctuation">:</span> <span class="string">&quot;8000&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;semiFinishedInputWeight&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;finishedProductOutputWeight&quot;</span><span class="punctuation">:</span> <span class="string">&quot;7500&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;finishedProductRecycledContent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.85&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;attritionRate&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.05&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;modificationAdditives&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;finishedGoodsOutbound&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;gpsOutboundLocation&quot;</span><span class="punctuation">:</span> <span class="string">&quot;116.407526,39.904030&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;recycleTransactionCode&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;transactionDataCode&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>系统处理：</strong></p>
+<ol>
+<li>校验API_KEY有效性</li>
+<li>校验业务流程数据：<ul>
+<li>采购入库重量校验</li>
+<li>生产工单再生含量比例校验</li>
+<li>成品生产重量校验</li>
+<li>GPS位置校验</li>
+</ul>
+</li>
+<li>更新库存（入库&#x2F;出库）</li>
+<li>创建交易记录：<ul>
+<li>主表：<code>transaction_data_main</code></li>
+<li>详情表：<code>transaction_data_main_detail</code></li>
+<li>校验表：<code>transaction_data_main_check</code></li>
+</ul>
+</li>
+<li>状态：已申请，等待利用企业C接收</li>
+</ol>
+<p><strong>数据库记录：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- transaction_data_main 表（再生企业B）</span></span><br><span class="line">id: &quot;MAIN002&quot;</span><br><span class="line">dept_id: 再生企业B的部门ID</span><br><span class="line">enterprise_type: &quot;1&quot;</span><br><span class="line">enterprise_name: [&quot;塑料制品制造有限公司&quot;]  <span class="comment">-- 客户：利用企业C</span></span><br><span class="line">outbound_number: &quot;ZS20250102001&quot;</span><br><span class="line">material_code: [&quot;a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2&quot;]</span><br><span class="line">product_code: &quot;RP-PET-001&quot;</span><br><span class="line">weight: &quot;7500&quot;</span><br><span class="line">weight_ratio: &quot;85&quot;</span><br><span class="line">apply_for_state: <span class="number">0</span>  <span class="comment">-- 已申请</span></span><br><span class="line">check_state: <span class="number">0</span>      <span class="comment">-- 未校验</span></span><br><span class="line">create_time: &quot;2025-01-02 09:00:00&quot;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-2-利用企业C接收并审核"><a href="#2-2-利用企业C接收并审核" class="headerlink" title="2.2 利用企业C接收并审核"></a>2.2 利用企业C接收并审核</h3><p><strong>利用企业C登录系统，查看待接收的交易：</strong></p>
+<p><strong>接口：</strong> <code>GET /business/main/list</code></p>
+<p><strong>查询到交易记录：</strong></p>
+<ul>
+<li>出货单号：ZS20250102001</li>
+<li>供应商：再生塑料科技有限公司</li>
+<li>物料编码：a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2</li>
+<li>总重量：7500千克</li>
+<li>再生含量：85%</li>
+</ul>
+<p><strong>利用企业C审核通过：</strong></p>
+<p><strong>接口：</strong> <code>POST /business/main/passed</code></p>
+<p><strong>请求数据：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;企业C的ID&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;idsValue&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span>  <span class="comment">// 再生企业的追溯码</span></span><br><span class="line">  <span class="attr">&quot;passed&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2&quot;</span>  <span class="comment">// 2=通过</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>系统处理：</strong></p>
+<ol>
+<li>更新交易记录状态</li>
+<li>生成新的<strong>追溯码</strong>：<code>TRACE64位新随机字符串</code>（例如：<code>z9y8x7w6v5u4t3s2r1q0p9o8n7m6l5k4j3i2h1g0f9e8d7c6b5a4z3y2x1w0v9u8t7s6</code>）</li>
+<li>状态更新：<ul>
+<li><code>apply_for_state</code>: 1（已接收）</li>
+<li><code>check_state</code>: 2（已通过）</li>
+<li><code>traceability_code</code>: 新生成的追溯码</li>
+</ul>
+</li>
+</ol>
+<p><strong>数据库记录：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- transaction_data_main 表（利用企业C）</span></span><br><span class="line">id: &quot;MAIN003&quot;</span><br><span class="line">dept_id: 利用企业C的部门ID</span><br><span class="line">enterprise_type: &quot;3&quot;  <span class="comment">-- 利用企业</span></span><br><span class="line">enterprise_name: [&quot;再生塑料科技有限公司&quot;]</span><br><span class="line">outbound_number: &quot;ZS20250102001&quot;</span><br><span class="line">material_code: [&quot;a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2&quot;]</span><br><span class="line">traceability_code: &quot;z9y8x7w6v5u4t3s2r1q0p9o8n7m6l5k4j3i2h1g0f9e8d7c6b5a4z3y2x1w0v9u8t7s6&quot;</span><br><span class="line">apply_for_state: <span class="number">1</span>  <span class="comment">-- 已接收</span></span><br><span class="line">check_state: <span class="number">2</span>      <span class="comment">-- 已通过</span></span><br><span class="line">create_time: &quot;2025-01-02 15:00:00&quot;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="第三阶段：追溯查询"><a href="#第三阶段：追溯查询" class="headerlink" title="第三阶段：追溯查询"></a>第三阶段：追溯查询</h2><h3 id="3-1-通过追溯码查询交易数据"><a href="#3-1-通过追溯码查询交易数据" class="headerlink" title="3.1 通过追溯码查询交易数据"></a>3.1 通过追溯码查询交易数据</h3><p><strong>查询利用企业的追溯码：</strong></p>
+<p><strong>接口：</strong> <code>POST /business/main/getByTraceabilityCode</code></p>
+<p><strong>请求数据：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;traceabilityCode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;z9y8x7w6v5u4t3s2r1q0p9o8n7m6l5k4j3i2h1g0f9e8d7c6b5a4z3y2x1w0v9u8t7s6&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>返回数据：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="number">200</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;MAIN003&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;deptId&quot;</span><span class="punctuation">:</span> 利用企业C的部门ID<span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;deptName&quot;</span><span class="punctuation">:</span> <span class="string">&quot;塑料制品制造有限公司&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;enterpriseType&quot;</span><span class="punctuation">:</span> <span class="string">&quot;3&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;enterpriseName&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;再生塑料科技有限公司&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;outboundNumber&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ZS20250102001&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;materialCode&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;traceabilityCode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;z9y8x7w6v5u4t3s2r1q0p9o8n7m6l5k4j3i2h1g0f9e8d7c6b5a4z3y2x1w0v9u8t7s6&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;weight&quot;</span><span class="punctuation">:</span> <span class="string">&quot;7500&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;weightRatio&quot;</span><span class="punctuation">:</span> <span class="string">&quot;85&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;checkState&quot;</span><span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;applyForState&quot;</span><span class="punctuation">:</span> <span class="number">1</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>查询再生企业的追溯码（通过物料编码）：</strong></p>
+<p><strong>接口：</strong> <code>POST /business/main/getByTraceabilityCode</code></p>
+<p><strong>请求数据：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;materialCode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>返回数据：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="number">200</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;MAIN001&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;deptId&quot;</span><span class="punctuation">:</span> 再生企业B的部门ID<span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;deptName&quot;</span><span class="punctuation">:</span> <span class="string">&quot;再生塑料科技有限公司&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;enterpriseType&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;enterpriseName&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;绿源回收有限公司&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;outboundNumber&quot;</span><span class="punctuation">:</span> <span class="string">&quot;HS20250101001&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;materialCode&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;CTI123456789&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;traceabilityCode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;checkState&quot;</span><span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;applyForState&quot;</span><span class="punctuation">:</span> <span class="number">1</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>查询回收企业的对应码：</strong></p>
+<p><strong>接口：</strong> <code>GET /business/recycleInfo/&#123;id&#125;</code></p>
+<p><strong>返回数据：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="number">200</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;REC001&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;deptId&quot;</span><span class="punctuation">:</span> 回收企业A的部门ID<span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;enterpriseId&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;91110000MA0056789Y&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;outboundNumber&quot;</span><span class="punctuation">:</span> <span class="string">&quot;HS20250101001&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;materialCode&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;PLA-PET-001&quot;</span><span class="punctuation">,</span> <span class="string">&quot;PLA-PP-002&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idCode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;CTI123456789&quot;</span><span class="punctuation">,</span>  <span class="comment">// 对应码（识别码）</span></span><br><span class="line">    <span class="attr">&quot;weight&quot;</span><span class="punctuation">:</span> <span class="string">&quot;8000&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="完整追溯链"><a href="#完整追溯链" class="headerlink" title="完整追溯链"></a>完整追溯链</h2><p>通过追溯码可以形成完整的追溯链：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">回收企业A</span><br><span class="line">  ↓</span><br><span class="line">对应码：CTI123456789</span><br><span class="line">  ↓</span><br><span class="line">再生企业B</span><br><span class="line">  ↓</span><br><span class="line">追溯码：a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2</span><br><span class="line">  ↓</span><br><span class="line">利用企业C</span><br><span class="line">  ↓</span><br><span class="line">追溯码：z9y8x7w6v5u4t3s2r1q0p9o8n7m6l5k4j3i2h1g0f9e8d7c6b5a4z3y2x1w0v9u8t7s6</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="关键点总结"><a href="#关键点总结" class="headerlink" title="关键点总结"></a>关键点总结</h2><ol>
+<li><p><strong>回收企业</strong>：</p>
+<ul>
+<li>生成<strong>对应码（识别码）</strong>：格式 <code>CTI + 9位随机字符</code></li>
+<li>存储表：<code>transaction_data_recycle</code></li>
+</ul>
+</li>
+<li><p><strong>再生企业</strong>：</p>
+<ul>
+<li>接收回收企业的对应码</li>
+<li>生成<strong>追溯码</strong>：64位随机字符串</li>
+<li>存储表：<code>transaction_data_main</code>（企业类型&#x3D;1）</li>
+</ul>
+</li>
+<li><p><strong>利用企业</strong>：</p>
+<ul>
+<li>接收再生企业的追溯码</li>
+<li>生成新的<strong>追溯码</strong>：64位随机字符串</li>
+<li>存储表：<code>transaction_data_main</code>（企业类型&#x3D;3）</li>
+</ul>
+</li>
+<li><p><strong>追溯查询</strong>：</p>
+<ul>
+<li>利用企业：使用 <code>traceabilityCode</code> 查询</li>
+<li>再生企业：使用 <code>materialCode</code>（实际是追溯码）查询</li>
+<li>回收企业：使用 <code>idCode</code>（对应码）查询</li>
+</ul>
+</li>
+<li><p><strong>数据流转</strong>：</p>
+<ul>
+<li>回收企业 → 再生企业：通过对应码关联</li>
+<li>再生企业 → 利用企业：通过追溯码关联</li>
+<li>每个环节都可以向上追溯完整的交易链</li>
+</ul>
+</li>
+</ol>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
+    
+  </div>
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+    </div>
+    <div>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
+    
+
+  </div>
+</section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "default",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
+
+  </main>
+  <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
+  <!-- busuanzi -->
+  
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- Busuanzi Analytics -->
+<div class="flex items-center gap-2">
+  <span>Visitors</span>
+  <span id="busuanzi_value_site_uv"></span>
+  <span>Page Views</span>
+  <span id="busuanzi_value_site_pv"></span>
+</div>
+<!-- End Busuanzi Analytics -->
+
+
+  <!-- copyright -->
+  <div class="flex items-center gap-2">
+    <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: inherit;">CC BY-NC-SA 4.0</a>
+    <span>© 2022</span>
+    <iconify-icon width="18" icon="emojione-monotone:maple-leaf" ></iconify-icon>
+    <a href="https://github.com/xbmlz" target="_blank" rel="noopener noreferrer">xbmlz</a>
+  </div>
+  <!-- powered by -->
+  <div class="flex items-center gap-2">
+    <span>Powered by</span>
+    <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+    <span>&</span>
+    <a href="https://github.com/xbmlz/hexo-theme-maple" target="_blank" rel="noopener noreferrer">Maple</a>
+  </div>
+
+</footer>
+
+  <div class="back-to-top box-border fixed right-6 z-1024 -bottom-20 rounded py-1 px-1 bg-slate-900 opacity-60 text-white cursor-pointer text-center dark:bg-slate-600">
+    <span class="flex justify-center items-center text-sm">
+      <iconify-icon width="18" icon="ion:arrow-up-c" id="go-top"></iconify-icon>
+      <span id="scrollpercent"><span>0</span> %</span>
+    </span>
+  </div>
+  
+<script src="/js/main.js"></script>
+
+
+  <script>
+    $(document).ready(function () {
+      const mapleCount = "10";
+      const speed = "0.5";
+      const mapleEl = document.getElementById("maple");
+      const maples = Array.from({ length: mapleCount }).map(() => {
+        const maple = document.createElement("div");
+        const scale = Math.random() * 0.5 + 0.5;
+        const offset = Math.random() * 2 - 1;
+        const x = Math.random() * mapleEl.clientWidth;
+        const y = -Math.random() * mapleEl.clientHeight;
+        const duration = 10 / speed;
+        const delay = -duration;
+        maple.className = "maple";
+        maple.style.width = `${24 * scale}px`;
+        maple.style.height = `${24 * scale}px`;
+        maple.style.left = `${x}px`;
+        maple.style.top = `${y}px`;
+        maple.style.setProperty("--maple-fall-offset", offset);
+        maple.style.setProperty("--maple-fall-height", `${Math.abs(y) + mapleEl.clientHeight}px`);
+        maple.style.animation = `fall ${duration}s linear infinite`;
+        maple.style.animationDelay = `${delay}s`;
+        mapleEl.appendChild(maple)
+        return maple
+      })
+    });
+  </script>
+  
+
+
+  <div class="fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden" id="maple"></div>
+</body>
+
+</html>
