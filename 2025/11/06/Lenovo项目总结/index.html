@@ -19,7 +19,7 @@
   <meta name="keywords" content="齐嘉和">
 
 
-<title>待到山花烂漫时</title>
+<title>Lenovo项目总结 | 待到山花烂漫时</title>
 
 
 
@@ -196,7 +196,7 @@
         </h2>
       </a>
       <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
-        
+        Lenovo项目总结
       </div>
       <div class="flex-1"></div>
       <div class="flex items-center gap-3">
@@ -272,7 +272,7 @@
   <header class="overflow-hidden pt-6 pb-6 md:pt-12">
     <div class="pt-4 md:pt-6">
       <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
-        
+        Lenovo项目总结
       </h1>
       <div>
         <section class="flex items-center gap-3 text-sm">
@@ -283,12 +283,12 @@
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>9 min</span>
+            <span>16 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>2.2k words</span>
+            <span>4.1k words</span>
           </span>
           
         </section>
@@ -297,7 +297,142 @@
   </header>
   <!-- content -->
   <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
-    <h1 id="交易数据流转完整示例"><a href="#交易数据流转完整示例" class="headerlink" title="交易数据流转完整示例"></a>交易数据流转完整示例</h1><h2 id="场景设定"><a href="#场景设定" class="headerlink" title="场景设定"></a>场景设定</h2><p>假设有三家企业：</p>
+    <h1 id="项目复盘："><a href="#项目复盘：" class="headerlink" title="项目复盘："></a>项目复盘：</h1><h1 id="一、项目亮点总结"><a href="#一、项目亮点总结" class="headerlink" title="一、项目亮点总结"></a>一、项目亮点总结</h1><h2 id="亮点1：企业-认证机构一体化注册流程"><a href="#亮点1：企业-认证机构一体化注册流程" class="headerlink" title="亮点1：企业&amp;认证机构一体化注册流程"></a>亮点1：企业&amp;认证机构一体化注册流程</h2><h3 id="1-业务背景与问题"><a href="#1-业务背景与问题" class="headerlink" title="1. 业务背景与问题"></a>1. 业务背景与问题</h3><p><strong>问题：</strong></p>
+<ul>
+<li>企业注册流程复杂，需要填写大量信息，用户容易出错</li>
+<li>信息填写过程中没有保存机制，一旦出错需要重新填写，用户体验差</li>
+<li>因信息错误导致的提交失败率高，影响业务效率</li>
+<li>企业用户和认证机构用户需要访问不同的数据，缺乏权限隔离机制</li>
+</ul>
+<h3 id="2-解决方案与技术实现"><a href="#2-解决方案与技术实现" class="headerlink" title="2. 解决方案与技术实现"></a>2. 解决方案与技术实现</h3><p><strong>技术方案：</strong></p>
+<ul>
+<li><strong>草稿保存机制</strong>：设计并实现了信息草稿多次保存功能，支持用户随时保存填写进度</li>
+<li><strong>信息校验机制</strong>：在提交前进行多维度信息校验，提前发现并提示错误</li>
+<li><strong>权限隔离</strong>：集成Spring Security框架，实现基于角色的权限控制（RBAC），确保企业用户和认证机构用户只能访问各自权限范围内的数据</li>
+</ul>
+<p><strong>技术栈：</strong> Spring Security、Spring Boot、PostgreSQL</p>
+<h3 id="3-解决效果与结果"><a href="#3-解决效果与结果" class="headerlink" title="3. 解决效果与结果"></a>3. 解决效果与结果</h3><p><strong>结果：</strong></p>
+<ul>
+<li>将因信息错误导致的提交失败率降低30%</li>
+<li>提升了用户填写体验，减少重复填写工作</li>
+<li>实现了不同端用户数据访问的安全隔离，保障了数据安全</li>
+</ul>
+<hr>
+<h2 id="亮点2：回收-再生-利用三企业全链条交易数据追溯系统"><a href="#亮点2：回收-再生-利用三企业全链条交易数据追溯系统" class="headerlink" title="亮点2：回收-再生-利用三企业全链条交易数据追溯系统"></a>亮点2：回收-再生-利用三企业全链条交易数据追溯系统</h2><h3 id="1-业务背景与问题-1"><a href="#1-业务背景与问题-1" class="headerlink" title="1. 业务背景与问题"></a>1. 业务背景与问题</h3><p><strong>问题：</strong></p>
+<ul>
+<li>需要实现从原料回收到成品利用的完整数据链路追溯</li>
+<li>回收企业、再生企业、利用企业之间的交易数据缺乏关联机制</li>
+<li>无法快速定位任意环节的交易数据，追溯效率低</li>
+<li>需要支持企业自有系统与平台的数据对接</li>
+</ul>
+<h3 id="2-解决方案与技术实现-1"><a href="#2-解决方案与技术实现-1" class="headerlink" title="2. 解决方案与技术实现"></a>2. 解决方案与技术实现</h3><p><strong>技术方案：</strong></p>
+<ul>
+<li><strong>双重标识机制</strong>：创新性地设计了”对应码+追溯码”双重标识机制<ul>
+<li>回收企业生成对应码（CTI开头+9位随机字符）</li>
+<li>再生企业生成追溯码（64位随机字符串）</li>
+<li>利用企业生成新的追溯码（64位随机字符串）</li>
+</ul>
+</li>
+<li><strong>API接口设计</strong>：基于Spring Boot构建了RESTful API接口，支持企业自有系统对接</li>
+<li><strong>Web界面填报</strong>：开发了Web界面填报功能，支持双模式数据录入</li>
+<li><strong>数据校验引擎</strong>：设计了包含重量校验、GPS位置验证、再生含量公式计算等10+项业务规则的数据校验引擎</li>
+<li><strong>数据安全</strong>：集成SM4国密算法，对敏感数据进行加密存储</li>
+</ul>
+<p><strong>技术栈：</strong> Spring Boot、PostgreSQL、SM4加密算法、MyBatis-Plus</p>
+<h3 id="3-解决效果与结果-1"><a href="#3-解决效果与结果-1" class="headerlink" title="3. 解决效果与结果"></a>3. 解决效果与结果</h3><p><strong>结果：</strong></p>
+<ul>
+<li>实现了从原料回收到成品利用的完整数据链路追溯</li>
+<li>通过追溯码可以快速定位任意环节的交易数据，追溯效率提升60%以上</li>
+<li>支持企业自有系统无缝对接，提升了数据录入效率</li>
+<li>通过多维度数据校验，确保了交易数据的准确性与合规性</li>
+</ul>
+<hr>
+<h2 id="亮点3：运营端首页数据看板"><a href="#亮点3：运营端首页数据看板" class="headerlink" title="亮点3：运营端首页数据看板"></a>亮点3：运营端首页数据看板</h2><h3 id="1-业务背景与问题-2"><a href="#1-业务背景与问题-2" class="headerlink" title="1. 业务背景与问题"></a>1. 业务背景与问题</h3><p><strong>问题：</strong></p>
+<ul>
+<li>运营人员需要实时了解业务运营情况，缺乏数据支撑</li>
+<li>关键业务指标分散在各个模块，无法集中查看</li>
+<li>数据查询效率低，影响运营决策效率</li>
+<li>缺乏数据可视化展示，数据理解困难</li>
+</ul>
+<h3 id="2-解决方案与技术实现-2"><a href="#2-解决方案与技术实现-2" class="headerlink" title="2. 解决方案与技术实现"></a>2. 解决方案与技术实现</h3><p><strong>技术方案：</strong></p>
+<ul>
+<li><strong>数据聚合</strong>：基于MyBatis-Plus与PostgreSQL，设计并实现了数据聚合查询</li>
+<li><strong>实时数据展示</strong>：开发了9个关键业务指标的实时数据查询接口<ul>
+<li>交易总量</li>
+<li>认证企业数</li>
+<li>用户总量</li>
+<li>材料回收情况</li>
+<li>等其他5个指标</li>
+</ul>
+</li>
+<li><strong>可视化展示</strong>：通过前端图表组件实现数据的可视化展示</li>
+<li><strong>性能优化</strong>：通过数据库索引优化和查询优化，提升数据查询效率</li>
+</ul>
+<p><strong>技术栈：</strong> MyBatis-Plus、PostgreSQL、Spring Boot、前端图表组件</p>
+<h3 id="3-解决效果与结果-2"><a href="#3-解决效果与结果-2" class="headerlink" title="3. 解决效果与结果"></a>3. 解决效果与结果</h3><p><strong>结果：</strong></p>
+<ul>
+<li>提供了9个关键业务指标的实时可视化展示</li>
+<li>运营人员可以快速了解业务运营情况，提升了决策效率</li>
+<li>数据集中展示，减少了数据查询时间</li>
+<li>通过数据可视化，提升了数据的可理解性</li>
+</ul>
+<hr>
+<h2 id="亮点4：企业范围认证模块"><a href="#亮点4：企业范围认证模块" class="headerlink" title="亮点4：企业范围认证模块"></a>亮点4：企业范围认证模块</h2><h3 id="1-业务背景与问题-3"><a href="#1-业务背景与问题-3" class="headerlink" title="1. 业务背景与问题"></a>1. 业务背景与问题</h3><p><strong>问题：</strong></p>
+<ul>
+<li>企业认证流程复杂，涉及多个环节和角色</li>
+<li>需要支持多级材料提交，材料管理困难</li>
+<li>认证机构需要审核企业提交的材料，缺乏审核流程</li>
+<li>认证状态变更需要及时通知相关用户，缺乏消息通知机制</li>
+</ul>
+<h3 id="2-解决方案与技术实现-3"><a href="#2-解决方案与技术实现-3" class="headerlink" title="2. 解决方案与技术实现"></a>2. 解决方案与技术实现</h3><p><strong>技术方案：</strong></p>
+<ul>
+<li><strong>认证申请功能</strong>：设计并实现了企业认证申请功能，支持企业提交认证申请</li>
+<li><strong>多级材料提交</strong>：实现了多级材料提交功能，支持企业分批次提交认证材料</li>
+<li><strong>认证机构审核</strong>：开发了认证机构审核功能，支持审核人员审核企业提交的材料</li>
+<li><strong>消息通知机制</strong>：实现了消息通知功能，当认证状态变更时，自动通知相关用户</li>
+<li><strong>全流程管理</strong>：实现了从申请到审核到通知的完整流程管理</li>
+</ul>
+<p><strong>技术栈：</strong> Spring Boot、PostgreSQL、MyBatis-Plus、消息通知机制</p>
+<h3 id="3-解决效果与结果-3"><a href="#3-解决效果与结果-3" class="headerlink" title="3. 解决效果与结果"></a>3. 解决效果与结果</h3><p><strong>结果：</strong></p>
+<ul>
+<li>完成了企业范围认证模块的全流程开发</li>
+<li>支持企业多级材料提交，提升了材料管理效率</li>
+<li>实现了认证机构审核功能，规范了认证流程</li>
+<li>通过消息通知机制，及时通知用户认证状态变更，提升了用户体验</li>
+</ul>
+<hr>
+<h2 id="亮点5：原料信息变更的多级审批工作流"><a href="#亮点5：原料信息变更的多级审批工作流" class="headerlink" title="亮点5：原料信息变更的多级审批工作流"></a>亮点5：原料信息变更的多级审批工作流</h2><h3 id="1-业务背景与问题-4"><a href="#1-业务背景与问题-4" class="headerlink" title="1. 业务背景与问题"></a>1. 业务背景与问题</h3><p><strong>问题：</strong></p>
+<ul>
+<li>原料信息是关键数据，变更需要严格审批</li>
+<li>需要支持多级审批流程，确保数据变更的合规性</li>
+<li>需要支持依次审批机制，确保每个审批环节都经过审核</li>
+<li>需要支持”一票否决”机制，任何一级审批不通过，整个流程终止</li>
+</ul>
+<h3 id="2-解决方案与技术实现-4"><a href="#2-解决方案与技术实现-4" class="headerlink" title="2. 解决方案与技术实现"></a>2. 解决方案与技术实现</h3><p><strong>技术方案：</strong></p>
+<ul>
+<li><strong>多级审批工作流设计</strong>：设计并实现了多级审批工作流引擎</li>
+<li><strong>依次审批机制</strong>：实现了依次审批功能，确保审批流程按顺序进行</li>
+<li><strong>一票否决机制</strong>：实现了”一票否决”功能，任何一级审批不通过，整个流程终止</li>
+<li><strong>审批状态管理</strong>：实现了审批状态的管理和跟踪，支持审批流程的实时查询</li>
+<li><strong>审批通知机制</strong>：实现了审批通知功能，及时通知相关人员审批状态变更</li>
+</ul>
+<p><strong>技术栈：</strong> Spring Boot、PostgreSQL、工作流引擎、状态机设计</p>
+<h3 id="3-解决效果与结果-4"><a href="#3-解决效果与结果-4" class="headerlink" title="3. 解决效果与结果"></a>3. 解决效果与结果</h3><p><strong>结果：</strong></p>
+<ul>
+<li>实现了原料信息变更的多级审批工作流</li>
+<li>通过依次审批机制，确保了每个审批环节都经过审核</li>
+<li>通过”一票否决”机制，确保了关键数据变更的合规性</li>
+<li>规范了数据变更流程，降低了数据错误风险</li>
+</ul>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上5个亮点都遵循了”问题-解决方案-结果”的结构，清晰地展示了：</p>
+<ol>
+<li><strong>业务理解能力</strong>：能够识别业务问题</li>
+<li><strong>技术实现能力</strong>：能够用技术解决业务问题</li>
+<li><strong>结果导向思维</strong>：关注解决方案带来的实际效果</li>
+</ol>
+<p>这种表达方式在面试中更容易被理解，也更能体现你的问题解决能力和业务理解能力。</p>
+<h1 id="二、交易数据流转示例"><a href="#二、交易数据流转示例" class="headerlink" title="二、交易数据流转示例"></a>二、交易数据流转示例</h1><p>假设有三家企业：</p>
 <ul>
 <li><strong>回收企业A</strong>：绿源回收有限公司（统一社会信用代码：91110000MA0012345X）</li>
 <li><strong>再生企业B</strong>：再生塑料科技有限公司（统一社会信用代码：91110000MA0056789Y）</li>
@@ -492,6 +627,11 @@
       
     </div>
     <div>
+      
+        <a href="/2025/11/05/9%E4%B8%AA%E5%B8%B8%E7%94%A8%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          九个常用设计模式
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
       
     </div>
   </div>
