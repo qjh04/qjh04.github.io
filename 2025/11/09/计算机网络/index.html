@@ -19,7 +19,7 @@
   <meta name="keywords" content="齐嘉和个人博客">
 
 
-<title>归档: 2025 | 待到山花烂漫时</title>
+<title>计算机网络 | 待到山花烂漫时</title>
 
 
 
@@ -196,7 +196,7 @@
         </h2>
       </a>
       <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
-        
+        计算机网络
       </div>
       <div class="flex-1"></div>
       <div class="flex items-center gap-3">
@@ -254,124 +254,187 @@
 </div>
 
   <main class="pt-14">
-    <section class="px-6 max-w-prose mx-auto gap-12 grid grid-cols-1">
-  <div class="flex flex-col h-48 items-center justify-center">
-    
-      <h1 class="site-title text-4xl leading-relaxed">
-        待到山花烂漫时
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        计算机网络
       </h1>
-      <p class="text-gray-500 mt-2">
-        她在丛中笑
-      </p>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2025-11-08</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>3 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>1.1k words</span>
+          </span>
+          
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <h1 id="网络基础"><a href="#网络基础" class="headerlink" title="网络基础"></a>网络基础</h1><h1 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h1><h2 id="一、什么是HTTP"><a href="#一、什么是HTTP" class="headerlink" title="一、什么是HTTP"></a>一、什么是HTTP</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>HTTP 是超文本传输协议，也就是<strong>H</strong>yperText <strong>T</strong>ransfer <strong>P</strong>rotocol。</p>
+<p>协议：多个计算机之间通信、控制的规约。<br>传输：从A到B<br>超文本：文本、图片、视频、音频的复杂组合</p>
+<h3 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h3><p>2XX成功<br>301:永久重定向	302:临时重定向<br>400:用户请求有问题	403:用户权限不足	404:服务器没有该资源	405:请求方法出错<br>500:服务器报错	502:服务器作为网关访问后端服务器出错	503:服务器暂忙	504：超时</p>
+<h2 id="二、各版本HTTP特点"><a href="#二、各版本HTTP特点" class="headerlink" title="二、各版本HTTP特点"></a>二、各版本HTTP特点</h2><h3 id="HTTP1-0"><a href="#HTTP1-0" class="headerlink" title="HTTP1.0"></a>HTTP1.0</h3><p>基础版本，没有长连接复用TCP，优点简单。可拓展、跨平台、应用广泛</p>
+<h3 id="HTTP1-1"><a href="#HTTP1-1" class="headerlink" title="HTTP1.1"></a>HTTP1.1</h3><p>在1.0的基础上增加长连接可复用TCP，且拥有以上优点，缺点就是无状态、明文传输不安全、队头阻塞</p>
+<p>队头阻塞：虽然HTTP1.1有管道网络传输即请求发送后不用等待响应可以继续发，但没有应用，所以在HTTP1.1的情况下，发送一个请求后，必须等服务端响应后才嫩发送第二个请求，如果服务端存在阻塞，也会连带阻塞第二个请求。</p>
+<h3 id="HTTP2"><a href="#HTTP2" class="headerlink" title="HTTP2"></a>HTTP2</h3><p>相较于版本1引入了相同请求头可压缩，数据以二进制流传输虽然不利于人类阅读但利于计算机运算，服务器可主动推送资源，但其中最牛的还属在同一个TCP连接中引入多个Stream。每一个Stream可以作为一个请求发送，在服务端接收请求的时候可以按Stream处理并响应，可以做到按不同Stream顺序发送响应在宏观层面达到一种并发传输的效果。这虽然解决了HTTP层面的队头阻塞即请求智能一个一个发，但引来了TCP层的队头阻塞，因为TCP层是按顺序等待包到来的，如果1 2 3 4同时发送，1到了，3 4到了，但是2没有到，还是需要2重传到达之后才能读取3 4导致TCP队头阻塞，即使数据到了，也不能读取。</p>
+<h3 id="HTTP3"><a href="#HTTP3" class="headerlink" title="HTTP3"></a>HTTP3</h3><p>HTTP3将传输层协议从TCP改成了UDP，彻底解决队头阻塞问题，不再需要按顺序等待数据到达在读取，其中如果有数据丢失也是按相应的Stream进行重传，并不会影响其他流。更快的连接建立，其他两个版本的TCP与TLS是分别建立连接，而HTTP3只需要一个RTT就能建立连接判断双方的StreanID即可。高效的连接迁移，其他两个版本需要两个ip两个端口号的四元组才能标识一条连接，而QUIC只需要StreamID即可。</p>
+<h2 id="三、HTTP与HTTPS"><a href="#三、HTTP与HTTPS" class="headerlink" title="三、HTTP与HTTPS"></a>三、HTTP与HTTPS</h2><h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p>1、HTTPS在HTTP与TCP之间加入TLS&#x2F;SSL层加密<br>2、HTTPS可以防范监听、篡改、伪造<br>3、HTTP端口号为80, HTTPS端口号为443</p>
+<h3 id="HTTPS的连接过程"><a href="#HTTPS的连接过程" class="headerlink" title="HTTPS的连接过程"></a>HTTPS的连接过程</h3><p>首先进行TCP三次握手，然后进行TLS&#x2F;SSL层的四次握手</p>
+<p>1、客户端（生成随机数、确定TLS&#x2F;SSL版本、加密算法）<br>2、服务端（生成随机数、确定TLS&#x2F;SSL版本、加密算法、发送CA证书）<br>3、客户端（生成随机数，验证CA证书合法性、根据CA中的公钥加密三个随机数）<br>4、服务端（根据私钥解密客户端发送的加密后的三个随机数、后续都拿这个加密后的串作为密钥）</p>
+<p>整个过程对称加密、非对称加密都用到了，因为非对称加密性能较差且如果私钥泄密后果不堪设想，对称加密性能高且需要仅双方知道。</p>
+<h2 id="四、与其他协议的关系"><a href="#四、与其他协议的关系" class="headerlink" title="四、与其他协议的关系"></a>四、与其他协议的关系</h2><h3 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h3><p>RPC（远程过程调用）并不是协议是一种思想，类似gRpc才是一种协议，并且RPC出的比HTTP还要早。在早期的CS架构中，一个客户端只需要连接自家公司的服务器即可只用rpc，到后来browse兴盛BS架构逐渐成为主流，且HTTP、RPC逐渐趋于同化，HTTP用户前端到后端通信，RPC用于后端内部服务间通信</p>
+<h3 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h3><p>WebSocket支持服务器主动推送资源，而不需要长轮询或者不断轮询。</p>
+<p>loading…</p>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
     
   </div>
-  
-  
-    
-    
-      <div class="relative pointer-events-none">
-        <span class="text-9xl opacity-10 absolute -left-11 -top-6 font-bold">2025</span>
-      </div>
-    
-    <a style="--stagger:0" href="/2025/11/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          计算机网络
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          11月 09
-          ·
-          3 min
-        </p>
-      </section>
-    </a>
-  
-    
-    
-    <a style="--stagger:1" href="/2025/11/06/Lenovo%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+    </div>
+    <div>
+      
+        <a href="/2025/11/06/Lenovo%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
           Lenovo项目总结
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          11月 06
-          ·
-          16 min
-        </p>
-      </section>
-    </a>
-  
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
     
-    
-    <a style="--stagger:2" href="/2025/11/05/9%E4%B8%AA%E5%B8%B8%E7%94%A8%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          九个常用设计模式
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          11月 05
-          ·
-          4 min
-        </p>
-      </section>
-    </a>
-  
-    
-    
-    <a style="--stagger:3" href="/2025/01/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          设计模式
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          1月 12
-          ·
-          56 min
-        </p>
-      </section>
-    </a>
-  
-    
-    
-    <a style="--stagger:4" href="/2025/01/11/Netty/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          Netty
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          1月 11
-          ·
-          33 min
-        </p>
-      </section>
-    </a>
-  
+
+  </div>
 </section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "default",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
 
   </main>
   <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
