@@ -278,17 +278,17 @@
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2025-11-08</time>
+            <time>2025-11-11</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>3 min</span>
+            <span>9 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>1.1k words</span>
+            <span>2.7k words</span>
           </span>
           
         </section>
@@ -311,8 +311,24 @@
 <p>整个过程对称加密、非对称加密都用到了，因为非对称加密性能较差且如果私钥泄密后果不堪设想，对称加密性能高且需要仅双方知道。</p>
 <h2 id="四、与其他协议的关系"><a href="#四、与其他协议的关系" class="headerlink" title="四、与其他协议的关系"></a>四、与其他协议的关系</h2><h3 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h3><p>RPC（远程过程调用）并不是协议是一种思想，类似gRpc才是一种协议，并且RPC出的比HTTP还要早。在早期的CS架构中，一个客户端只需要连接自家公司的服务器即可只用rpc，到后来browse兴盛BS架构逐渐成为主流，且HTTP、RPC逐渐趋于同化，HTTP用户前端到后端通信，RPC用于后端内部服务间通信</p>
 <h3 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h3><p>WebSocket支持服务器主动推送资源，而不需要长轮询或者不断轮询。</p>
-<p>loading…</p>
-
+<h1 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h1><h2 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h2><p>TCP是位于传输层的面向连接的、可靠的、基于字节流的传输协议，位于同层的UDP是无连接、不可靠、基于数据包交付的传输方式。</p>
+<p>而TCP为了实现这些特点具有以下几个特有的功能，比如连接管理（三次握手、四次挥手）、重传、差错检验、流量控制、拥塞控制等。</p>
+<h3 id="与UDP的不同"><a href="#与UDP的不同" class="headerlink" title="与UDP的不同"></a>与UDP的不同</h3><p>1、TCP只支持一对一，UDP支持一对一、一对多、多对多<br>2、TCP有连接管理保障双方连接正常，UDP没有<br>3、TCP基于字节流传输有丢包、半包现象，UDP基于数据报传输，一个报文即一段数据<br>4、TCP有流量控制、拥塞控制根据网络及接收方接收能力控制发送快慢， UDP没有<br>5、TCP头部最低20个字节，UDP只用8个</p>
+<p>TCP和UDP可以监听同一个端口，因为底层使用的接收程序不同，会根据包的不同使用不同的接收处理程序。</p>
+<h2 id="二、连接管理"><a href="#二、连接管理" class="headerlink" title="二、连接管理"></a>二、连接管理</h2><h3 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h3><h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h4><p>1、客户端发送一个带有syn的包且序列号是x           客户端状态：syn_sent  服务端状态：listen<br>2、服务端接收该包并响应一个syn+ack的序列号为y且确认应答号为x+1的包  客户端状态：syn_sent 服务端状态：synrecv<br>3、客户端接收并响应一个带有ack的序列号为x+1确认应答号为y+1的包，至此连接建立成功。 客户端：established 服务端接收后进入established</p>
+<p>在服务端第一次发包的时候会将该次连接加入半连接队列，使用一个哈希表（在加入全连接的时候以o1的时间复杂度获得该连接），在客户端发送的最后一次ack到达时，将连接加入全连接队列（使用列表，当调用accept的时候，将链表给内核程序进行处理）。</p>
+<h4 id="为什么是三次"><a href="#为什么是三次" class="headerlink" title="为什么是三次"></a>为什么是三次</h4><p>三次是最少的确定双方都有发送和接收能力的连接次数且三次握手可以组织历史连接重复初始化导致的资源浪费。</p>
+<h4 id="连接报文丢失问题"><a href="#连接报文丢失问题" class="headerlink" title="连接报文丢失问题"></a>连接报文丢失问题</h4><p>第一次丢失：客户端因没有接收到服务端返回的ack报文会超时重传，重传到一定数量会关闭连接<br>第二次丢失：客户端会重传第一次的syn报文原因跟上面一致。服务端也会重传第二次，因为第二次会携带一个syn报文需要客户端进行ack，没有客户端的ack，所以服务端也会重传。<br>第三次丢失：服务端会重传，因没有收到客户端返回的ack，顾认为第二次丢失，而客户端的ack没办法确定是否重传。</p>
+<h4 id="SYN攻击"><a href="#SYN攻击" class="headerlink" title="SYN攻击"></a>SYN攻击</h4><p>上文提到过半连接队列。在服务端第一次接收到客户端发送的syn报文时，会将该连接放入半连接队列，而四元组（发送ip，发送端口，接收ip，接收端口）确认一条连接。当有人利用重复变换的发送ip进行syn洪范攻击时，半连接队列会因为客户端持续的发送syn报文而不应答服务端发送的syn报文被撑爆，后续的正常连接会被拒绝。如何解决？增大半连接队列，减少syn+ack重传次数去释放掉一些连接，跳过半连接直接进入到全连接队列。</p>
+<h3 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h3><h4 id="过程-1"><a href="#过程-1" class="headerlink" title="过程"></a>过程</h4><p>1、主动方发送fin报文，关闭发送功能接收仍然正常  主动方状态：fin_wait1 被动方状态：established<br>2、被动方发送ack对其进行确认 主动方状态：fin_wait1 被动方状态：close_wait<br>3、被动方数据全部发送完毕，发送fin报文 主动方状态fin_wait2 被动方状态：last_ack<br>4、主动方接收后发送ack报文 主动方状态：time_wait 被动方状态：last_ack</p>
+<h4 id="为什么需要四次"><a href="#为什么需要四次" class="headerlink" title="为什么需要四次"></a>为什么需要四次</h4><p>因为服务端在收到客户端发送的fin报文时不能立刻关闭，可能还有数据待发送，如果没有数据发送，是可以压缩成三次的。</p>
+<h4 id="关闭报文丢失问题"><a href="#关闭报文丢失问题" class="headerlink" title="关闭报文丢失问题"></a>关闭报文丢失问题</h4><p>第一次丢失：客户端因为没有收到服务端返回的ack报文导致超时重传，到一定数量后直接关闭连接<br>第二次丢失：同上<br>第三次丢失：服务端因为没有收到客户端返回的第四次挥手导致超时重传，到一定数量后关闭<br>第四次丢失：第四次主动发送端会进入2msl的time_wait阶段在该阶段如果没有收到被动方发送的第三次握手，会关闭连接，如果收到了，会重置time_wait阶段并发送第四次握手</p>
+<h4 id="为什么会有time-wait阶段"><a href="#为什么会有time-wait阶段" class="headerlink" title="为什么会有time_wait阶段"></a>为什么会有time_wait阶段</h4><p>1、保证双方都优雅关闭<br>2、防止历史中的数据对后面相同四元组进行干扰，这个时间足以让双方的数据都自然消失，之后的数据必定是新连接建立的数据</p>
+<h4 id="time-wait过多有什么问题"><a href="#time-wait过多有什么问题" class="headerlink" title="time_wait过多有什么问题"></a>time_wait过多有什么问题</h4><p>1、占用端口资源<br>2、占用系统资源</p>
+<h4 id="服务端出现大量time-wait"><a href="#服务端出现大量time-wait" class="headerlink" title="服务端出现大量time_wait"></a>服务端出现大量time_wait</h4><p>出现该状态证明服务端是主动关闭方，可以概括为以下三个原因：<br>1、双方未使用长连接<br>2、长连接不再发送数据导致超时关闭<br>3、长连接上的请求数量达到上限</p>
+<h4 id="服务端出现大量close-wait"><a href="#服务端出现大量close-wait" class="headerlink" title="服务端出现大量close_wait"></a>服务端出现大量close_wait</h4><p>出现该状态证明服务端是被动关闭方且服务端没有调用close函数进行关闭，该状态一般是网络编程编码问题，导致没有处理关闭请求，而这些连接一直在close_wait状态下进行堆积。</p>
+<h4 id="已经建立连接的情况下出现故障"><a href="#已经建立连接的情况下出现故障" class="headerlink" title="已经建立连接的情况下出现故障"></a>已经建立连接的情况下出现故障</h4><p>客户端故障：<br>    有数据传输：一直超时重传，导致连接关闭<br>    无数据传输：可以开启保活机制，达到一定时间发送类似ping的消息检测客户端是否存在，不存早连接关闭<br>服务端故障：<br>    会自动发送fin报文进行主动关闭</p>
+<h3 id="Socket编程"><a href="#Socket编程" class="headerlink" title="Socket编程"></a>Socket编程</h3>
   </article>
   <!-- tag -->
   <div class="mt-12 pt-6 border-t border-gray-200">
