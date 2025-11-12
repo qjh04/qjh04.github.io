@@ -278,17 +278,17 @@
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2025-11-11</time>
+            <time>2025-11-12</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>9 min</span>
+            <span>12 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>2.7k words</span>
+            <span>3.5k words</span>
           </span>
           
         </section>
@@ -328,7 +328,21 @@
 <h4 id="服务端出现大量time-wait"><a href="#服务端出现大量time-wait" class="headerlink" title="服务端出现大量time_wait"></a>服务端出现大量time_wait</h4><p>出现该状态证明服务端是主动关闭方，可以概括为以下三个原因：<br>1、双方未使用长连接<br>2、长连接不再发送数据导致超时关闭<br>3、长连接上的请求数量达到上限</p>
 <h4 id="服务端出现大量close-wait"><a href="#服务端出现大量close-wait" class="headerlink" title="服务端出现大量close_wait"></a>服务端出现大量close_wait</h4><p>出现该状态证明服务端是被动关闭方且服务端没有调用close函数进行关闭，该状态一般是网络编程编码问题，导致没有处理关闭请求，而这些连接一直在close_wait状态下进行堆积。</p>
 <h4 id="已经建立连接的情况下出现故障"><a href="#已经建立连接的情况下出现故障" class="headerlink" title="已经建立连接的情况下出现故障"></a>已经建立连接的情况下出现故障</h4><p>客户端故障：<br>    有数据传输：一直超时重传，导致连接关闭<br>    无数据传输：可以开启保活机制，达到一定时间发送类似ping的消息检测客户端是否存在，不存早连接关闭<br>服务端故障：<br>    会自动发送fin报文进行主动关闭</p>
-<h3 id="Socket编程"><a href="#Socket编程" class="headerlink" title="Socket编程"></a>Socket编程</h3>
+<h4 id="Socket编程"><a href="#Socket编程" class="headerlink" title="Socket编程"></a>Socket编程</h4><p>服务端调用bind绑定IP端口，调用listen监听端口连接信息，调用accept接收已经进行TCP三次握手的连接。客户端直接用connect连接对应的端口然后传输数据。</p>
+<h2 id="三、可靠特性"><a href="#三、可靠特性" class="headerlink" title="三、可靠特性"></a>三、可靠特性</h2><h3 id="重传"><a href="#重传" class="headerlink" title="重传"></a>重传</h3><h4 id="超时重传"><a href="#超时重传" class="headerlink" title="超时重传"></a>超时重传</h4><p>数据包丢失、应答ACK丢失启动超时重传。</p>
+<h4 id="快速重传"><a href="#快速重传" class="headerlink" title="快速重传"></a>快速重传</h4><p>收到三次一样的ACK重传那一次丢失数据包。</p>
+<h4 id="SACK"><a href="#SACK" class="headerlink" title="SACK"></a>SACK</h4><p>发送确认ACK时将自己已经收到的包传过去，告诉发送者哪些不用再发哪些需要重传，解决ACK丢失问题</p>
+<h4 id="Duplicate-SACK"><a href="#Duplicate-SACK" class="headerlink" title="Duplicate SACK"></a>Duplicate SACK</h4><p>使用了 SACK 来告诉「发送方」有哪些数据被重复接收了</p>
+<h3 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h3><p>双方约定一个窗口用来规范发送接收数据的频率，比如发送方的窗口前是已经接收成功的，窗口中前半部分是已经发送还未接收，后半部分是待发送，窗口后是超过发送窗口大小的数据。接收方窗口前是迎接接收的数据，窗口中是待接收的数据，窗口后是待发送的数据。</p>
+<h3 id="流量控制"><a href="#流量控制" class="headerlink" title="流量控制"></a>流量控制</h3><p>流量控制在于发送速率，发送速率在于接收方的接收能力，所以发送方的发送窗口大小取决于接收方的窗口大小，当窗口中连续的前半部分都被接收端接收也返回了ack确认，即认为该数据发送接收成功，窗口可以向后移动，从而控制发送速率。</p>
+<p>发送窗口大小还取决于下方拥塞窗口，所以发送窗口大小等于min（接收窗口，拥塞窗口）</p>
+<h3 id="拥塞控制"><a href="#拥塞控制" class="headerlink" title="拥塞控制"></a>拥塞控制</h3><p>拥塞控制主要在于几个算法分别是慢开始、拥塞避免、拥塞发生、快恢复</p>
+<p>慢开始：一开始窗口大小从1开始，收到1个ack窗口大小加1，所以会看到发送次序为1 2 4 8，我们把8作为一个阈值，窗口大小超过8启动拥塞避免算法。<br>拥塞避免：当收到所有发出的包的ack时会将窗口大小加1，当发生同时收到三个相同的ack时判定发生了拥塞启动拥塞发生算法。<br>拥塞发生：将上文提到的阈值设为当前窗口的一半，当这种方法太激进反应太强烈，所以就有了快恢复算法。<br>快恢复：即发送拥塞后将窗口设为当前阈值的一半，阈值也设为当前的一半，然后连续发送三个包如果收到相同的ack在加一个窗口目的是将丢失的包赶紧发送给对方，当收到不一样的ack，证明对方已经收到多次发送的包，将窗口退回到阈值的状态进行拥塞避免算法。</p>
+<h2 id="四、其他问题"><a href="#四、其他问题" class="headerlink" title="四、其他问题"></a>四、其他问题</h2><p>1、SYN何时被丢弃<br>半连接队列满了，全连接队列满了</p>
+<p>2、已建立的TCP收到SYN会如何</p>
+<p>客户端重发SYN可能是突然掉电又恢复，如果在这个过程中，服务端发送或者开启保活发现客户端挂了，会断开连接。如果双方没有通信，客户端发送SYN服务端在Established状态，会返回一个正常的ack包，客户端发现与自己预期的不一样会断开连接。</p>
+<p>3、</p>
+
   </article>
   <!-- tag -->
   <div class="mt-12 pt-6 border-t border-gray-200">
@@ -337,6 +351,11 @@
   <!-- prev and next -->
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
+      
+        <a href="/2025/11/12/%E8%BD%AC%E8%BD%AC-Java%E5%BC%80%E5%8F%91-%E5%88%9D%E8%AF%95/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          Java面经
+        </a>
       
     </div>
     <div>

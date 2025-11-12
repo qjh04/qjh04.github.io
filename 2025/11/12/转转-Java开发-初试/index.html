@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <meta name="author" content="JiaHe Qi">
+
+
+  <meta name="subtitle" content="她在丛中笑">
+
+
+
+  <meta name="keywords" content="齐嘉和个人博客">
+
+
+<title>Java面经 | 待到山花烂漫时</title>
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/nprogress/nprogress.css">
+
+
+
+<script src="/lib/jquery.min.js"></script>
+
+
+<script src="/lib/iconify-icon.min.js"></script>
+
+
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+  };
+</script>
+
+
+<script src="/lib/nprogress/nprogress.js"></script>
+
+<script>
+  $(document).ready(() => {
+    NProgress.configure({
+      showSpinner: false,
+    });
+    NProgress.start();
+    $("#nprogress .bar").css({
+      background: "#de7441",
+    });
+    $("#nprogress .peg").css({
+      "box-shadow": "0 0 2px #de7441, 0 0 4px #de7441",
+    });
+    $("#nprogress .spinner-icon").css({
+      "border-top-color": "#de7441",
+      "border-left-color": "#de7441",
+    });
+    setTimeout(function () {
+      NProgress.done();
+      $(".fade").removeClass("out");
+    }, 800);
+  });
+</script>
+
+<script>
+  (function () {
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+    if (setting === "dark" || (prefersDark && setting !== "light"))
+      document.documentElement.classList.toggle("dark", true);
+    let isDark = document.documentElement.classList.contains("dark");
+  })();
+
+  $(document).ready(function () {
+    // init icon
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = document.documentElement.classList.contains("dark");
+    $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+
+    function toggleGiscusTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const giscusFrame = document.querySelector("iframe.giscus-frame");
+      if (giscusFrame) {
+        giscusFrame.contentWindow.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: isDark ? "dark" : "light",
+              },
+            },
+          },
+          "https://giscus.app"
+        );
+      }
+    }
+
+    // toggle dark mode
+    function toggleDark() {
+      let isDark = document.documentElement.classList.contains("dark");
+      const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+      isDark = !isDark;
+      document.documentElement.classList.toggle("dark", isDark);
+      $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+      if (prefersDark === isDark) {
+        localStorage.setItem("hexo-color-scheme", "auto");
+      } else {
+        localStorage.setItem("hexo-color-scheme", isDark ? "dark" : "light");
+      }
+      toggleGiscusTheme();
+    }
+
+    // listen dark mode change
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+        if (setting === "auto") {
+          document.documentElement.classList.toggle("dark", e.matches);
+          $("#theme-icon").attr(
+            "icon",
+            e.matches ? "ri:moon-line" : "ri:sun-line"
+          );
+          toggleGiscusTheme();
+        }
+      });
+
+    $("#toggle-dark").click((event) => {
+      const isAppearanceTransition = document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (!isAppearanceTransition) {
+        toggleDark()
+        return
+      }
+      const x = event.clientX
+      const y = event.clientY
+      const endRadius = Math.hypot(
+        Math.max(x, innerWidth - x),
+        Math.max(y, innerHeight - y),
+      )
+      const transition = document.startViewTransition(async () => {
+        toggleDark()
+      })
+
+      transition.ready
+        .then(() => {
+          const isDark = document.documentElement.classList.contains("dark")
+          const clipPath = [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ]
+          document.documentElement.animate(
+            {
+              clipPath: isDark
+                ? [...clipPath].reverse()
+                : clipPath,
+            },
+            {
+              duration: 400,
+              easing: 'ease-out',
+              pseudoElement: isDark
+                ? '::view-transition-old(root)'
+                : '::view-transition-new(root)',
+            },
+          )
+        })
+    });
+  });
+</script>
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="font-sans bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 relative">
+  <header class="fixed w-full px-5 py-1 z-10 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5">
+  <div class="max-auto">
+    <nav class="flex items-center text-base">
+      <a href="/" class="group">
+        <h2 class="font-medium tracking-tighterp text-l p-2">
+          <img class="w-5 mr-2 inline-block transition-transform group-hover:rotate-[30deg]" id="logo" src="/images/logo.svg" alt="待到山花烂漫时" />
+          待到山花烂漫时
+        </h2>
+      </a>
+      <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
+        Java面经
+      </div>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        
+          <a class="hidden sm:flex" href="/archives">Posts</a>
+        
+        
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Github" target="_blank" rel="noopener" href="https://github.com/qjh04/qjh04.github.io">
+              <iconify-icon width="20" icon="ri:github-line"></iconify-icon>
+            </a>
+          
+            <a class="w-5 h-5 hidden sm:flex" title="ZhiHu" target="_blank" rel="noopener" href="https://www.zhihu.com/people/south--75">
+              <iconify-icon width="20" icon="ri:zhihu-line"></iconify-icon>
+            </a>
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Twitter" target="_blank" rel="noopener" href="https://x.com/JsnvH33028">
+              <iconify-icon width="20" icon="ri:twitter-line"></iconify-icon>
+            </a>
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Weibo" target="_blank" rel="noopener" href="https://weibo.com/u/6366074219">
+              <iconify-icon width="20" icon="ri:weibo-line"></iconify-icon>
+            </a>
+          
+        
+        <a class="w-5 h-5 hidden sm:flex" title="Weibo" href="rss2.xml">
+          <iconify-icon width="20" icon="ri:rss-line"></iconify-icon>
+        </a>
+        <a class="w-5 h-5" title="toggle theme" id="toggle-dark">
+          <iconify-icon width="20" icon="" id="theme-icon"></iconify-icon>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-3 ml-3 sm:hidden">
+        <span class="w-5 h-5" aria-hidden="true" role="img" id="open-menu">
+          <iconify-icon width="20" icon="carbon:menu" ></iconify-icon>
+        </span>
+        <span class="w-5 h-5 hidden" aria-hidden="true" role="img" id="close-menu">
+          <iconify-icon  width="20" icon="carbon:close" ></iconify-icon>
+        </span>
+      </div>
+    </nav>
+  </div>
+</header>
+<div id="menu-panel" class="h-0 overflow-hidden sm:hidden fixed left-0 right-0 top-12 bottom-0 z-10">
+  <div id="menu-content" class="relative z-20 bg-white/80 px-6 sm:px-8 py-2 backdrop-blur-xl -translate-y-full transition-transform duration-300">
+    <ul class="nav flex flex-col sm:flex-row text-sm font-medium">
+      
+        <li class="nav-portfolio sm:mx-2 border-b sm:border-0 border-black/5 last:border-0 hover:text-main">
+          <a href="/archives" class="flex h-12 sm:h-auto items-center">Posts</a>
+        </li>
+      
+    </ul>
+  </div>
+  <div class="mask bg-black/20 absolute inset-0"></div>
+</div>
+
+  <main class="pt-14">
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        Java面经
+      </h1>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2025-11-12</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>9 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>2.6k words</span>
+          </span>
+          
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <p><strong>1. 技术与语言对比</strong></p>
+<ul>
+<li>Go和Java对比，优缺点有哪些<ul>
+<li><strong>语言范式与设计哲学</strong><ul>
+<li><strong>Java</strong> 是强面向对象语言，设计严谨而略显繁重，生态成熟庞大。</li>
+<li><strong>Go</strong> 是命令式&#x2F;过程式语言，设计极致简洁，强调“简单即复杂”和开发效率。</li>
+</ul>
+</li>
+<li><strong>并发模型（最核心区别）</strong><ul>
+<li><strong>Java</strong> 采用基于<strong>线程和锁</strong>的共享内存模型，功能强大但容易引入复杂度（如死锁）。</li>
+<li><strong>Go</strong> 内置基于 <strong>Goroutine和Channel</strong> 的CSP模型，通过通信来共享内存，而非通过共享内存来通信，极大地简化了高并发程序的开发。</li>
+</ul>
+</li>
+<li><strong>性能与部署</strong><ul>
+<li><strong>Java</strong> 运行于JVM，通过JIT实现高性能，但启动慢、耗内存，需打包成JAR&#x2F;WAR。</li>
+<li><strong>Go</strong> 直接编译为静态的本地机器码，<strong>启动极快</strong>，内存开销小，生成单一可执行文件，部署极为简单。</li>
+</ul>
+</li>
+<li><strong>类型系统与语法特性</strong><ul>
+<li><strong>Java</strong> 使用显式接口实现和强大的泛型，语法相对冗长。</li>
+<li><strong>Go</strong> 使用隐式接口实现（鸭子类型），语法简洁（无分号、无类），内置多返回值、错误处理机制，但其泛型支持较弱且较新。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. 项目经验与难点</strong></p>
+<ul>
+<li><strong>视频进度提交项目</strong>: 解决方案涉及Redis作为缓存及消息队列机制，通过对比消息队列中旧的消息与Redis中的最新数据，决定是否持久化，以避免频繁的数据库操作。</li>
+<li><strong>骑手路线记录场景</strong>: 针对高频次上报的GPS坐标，建议采用Redis的List结构进行滑动窗口处理，以记录一段时间内的数据流。写多读少的数据放入Redis中，结构可以用Zset，score记录时间，filed记录经纬度，按时间进行排序push、pop等</li>
+</ul>
+<p><strong>4. WebSocket与HTTPS</strong></p>
+<ul>
+<li><p><strong>WebSocket</strong>: 回答中提及通过二次封装和定义消息边界来解决粘包&#x2F;半包问题，但未详细论述票据丢失和完整性校验的实现细节。</p>
+<ul>
+<li>WebSocket 协议通过其帧结构定义了清晰的消息边界，使用 FIN 位、操作码和负载长度字段，使得接收方可以正确地从 TCP 流中拆解出完整的消息，从而在协议层面根本性地解决了粘包和半包问题。而对于丢包问题，WebSocket 首先依赖于底层 TCP 的可靠传输；其次，为了应对网络中断等导致连接失效的情况，我们需要在应用层通过 Ping&#x2F;Pong 心跳机制来保活和探测连接，并对关键业务消息实现确认与重传机制，同时客户端必须实现健全的断线重连逻辑来保证用户体验。</li>
+</ul>
+</li>
+<li><p><strong>HTTPS</strong>: 清晰地解释了其与HTTP的区别及通过数据加密解决安全问题。</p>
+</li>
+</ul>
+<p><strong>5. 数据结构与JVM</strong></p>
+<ul>
+<li><p><strong>ArrayList vs LinkedList</strong>: 列出了两者在增删改查方面的性能区别，并对其应用场景（如栈、队列）进行了分析。</p>
+<ul>
+<li>总的来说，<code>LinkedList</code> 的用武之地在于<strong>对列表结构本身有频繁、复杂操作的场景</strong>，而不是简单的数据存储和遍历。当我们的业务核心是‘频繁地在中间插入删除’、‘需要实现队列&#x2F;栈’、‘频繁合并拆分列表’时，<code>LinkedList</code> 就是最佳选择。而在我们后端开发中，最常见的可能就是用它来实现各种队列（如阻塞队列 <code>LinkedBlockingQueue</code> 就是基于链表），用于解耦和异步处理任务。除此之外，绝大多数情况下，由于 CPU缓存友好性和更低的访问时间复杂度，<code>ArrayList</code> 都是更通用、性能更好的默认选择。</li>
+</ul>
+</li>
+<li><p><strong>Spring</strong>：三级缓存，如何打一个start</p>
+<ul>
+<li>Spring的三级缓存主要是为了<strong>优雅地解决单例Bean的循环依赖问题</strong>。它的设计非常精巧：一级缓存存放完全成熟的Bean；二级缓存存放早期的裸对象；而最关键的是三级缓存，它存放的是一个工厂对象。这个工厂不仅能在循环依赖时提供早期引用，更重要的是，它统一了AOP代理的创建时机——保证在循环依赖发生时，无论是返回原始对象还是代理对象，这个逻辑只被执行一次，从而确保了Bean的完整性和容器的正确性。可以说，三级缓存是在支持循环依赖和保证Spring AOP等高级特性之间取得的一个完美平衡。</li>
+<li>打包步骤：<ul>
+<li><strong>规划依赖</strong>：确定 Starter 需要引入哪些库。</li>
+<li><strong>定义配置属性</strong>：使用 <code>@ConfigurationProperties</code> 绑定外部配置。</li>
+<li><strong>编写业务服务</strong>：提供核心功能的 Bean。</li>
+<li><strong>核心步骤：编写自动配置类</strong>：使用 <code>@Configuration</code> 和一系列 <code>@ConditionalOn...</code> 注解（如 <code>@ConditionalOnClass</code>, <code>@ConditionalOnMissingBean</code>）来控制 Bean 的创建条件。</li>
+<li><strong>注册配置</strong>：在 <code>META-INF/spring.factories</code>（旧）或 <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code>（新）文件中注册自动配置类，让 Spring Boot 能够发现它。</li>
+<li><strong>打包发布</strong>：最后用 Maven 或 Gradle 打包安装。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>HashMap扩容</strong>: 曾提及哈希表扩容机制，当元素超出现定容量时，会发生一次扩容。</p>
+<ul>
+<li><strong>初始容量</strong>：由 300 被规范化为 <strong>512</strong>。</li>
+<li><strong>扩容次数</strong>：<strong>1 次</strong>（发生在第一次 put 操作时，用于初始化哈希表）。</li>
+<li><strong>最终容量</strong>：初始化后容量即为 <strong>512</strong>，之后未再扩容。</li>
+</ul>
+</li>
+<li><p><strong>JVM对象生命周期</strong>: 解释了对象的内存分配、新生代与老年代的晋升机制（大对象、对象年龄达到阈值）、Survivor区域的设计目的，以及新生代GC与老年代GC（Full GC）的触发场景。</p>
+<ul>
+<li>第一，也是最常见的，是<strong>长期存活的对象</strong>，当它的年龄计数器超过 <code>MaxTenuringThreshold</code> 设定的阈值时，就会在下次GC时晋升。第二，是<strong>大对象</strong>，为了避免在Survivor区之间频繁复制，JVM会通过参数 <code>PretenureSizeThreshold</code> 控制，让超过阈值的大对象直接在老年代分配。第三，是<strong>动态对象年龄判定</strong>，为了优化内存使用，如果某一年龄的所有对象大小总和超过了Survivor空间的一半，年龄大于等于该年龄的对象会直接晋升。第四，当发生Minor GC时，如果<strong>Survivor区空间不足</strong>以容纳所有存活对象，多出的对象会直接进入老年代。最后，在Minor GC之前，JVM会进行<strong>老年代空间分配担保</strong>，如果判断当前老年代空间无法担保本次GC，那么可能会直接触发一次Full GC来腾挪空间。其中，前四种是导致对象<strong>进入</strong>老年代的直接原因，而第五种是一种在GC前进行的风险预测和保障机制。</li>
+<li>第一，也是最重要的，是<strong>作为一个缓冲地带，减少不必要的对象过早晋升到老年代</strong>。它通过让对象在Survivor区之间来回拷贝，并利用年龄计数器，有效地筛选出真正长期存活的对象，只有这些‘佼佼者’才能进入老年代。这大大减轻了老年代的压力，从而减少了昂贵的Full GC发生频率。第二，Survivor区采用了<strong>复制算法来管理内存</strong>，每次GC后存活对象被集中复制到另一个Survivor区，这使得垃圾回收非常高效，并且<strong>完全避免了内存碎片</strong>的产生。第三，它为JVM提供了一个<strong>判定对象年龄的场所</strong>，是实现分代收集理论中‘朝生夕死’对象假设的关键基础设施。没有Survivor区，分代收集的优势会大打折扣。</li>
+<li>Survivor区使用复制算法，是一个基于其特定场景下的最优设计。主要原因有三点：第一，也是最重要的，<strong>复制算法的性能优势与Survivor区‘存活对象极少’的特点完美匹配</strong>。复制算法的开销只与存活对象的数量成正比，而在Minor GC后，Survivor区的存活对象占比通常非常低，这使得复制操作的成本降到最低，回收速度极快。第二，<strong>复制算法能完全避免内存碎片问题</strong>。每次GC后，存活对象被紧凑地排列在另一个Survivor区，为新晋升的对象提供了连续的内存空间，使得内存分配效率极高（使用指针碰撞），避免了标记-清除算法带来的碎片化问题。第三，<strong>这是一个用空间换时间的合理权衡</strong>。虽然复制算法会浪费一半的内存空间，但由于Survivor区本身不大，且存活对象很少，这个空间代价是可接受的。换来的是更短的GC停顿时间和更简单可靠的内存管理，这对于追求低延迟的Java应用来说至关重要。相比之下，标记-清除会产生碎片，标记-整理虽有紧凑但移动成本高。因此，在存活率低的新生代Survivor区，复制算法是无可争议的最佳选择。</li>
+<li>Full GC的触发场景比较复杂，但总结下来主要有以下几类：<ol>
+<li><strong>老年代空间不足</strong>：这是最核心的场景。具体包括对象正常晋升后老年代满了、大对象直接分配失败、或者年轻代 Survivor 区空间不足导致对象提前涌入老年代。其背后是JVM的‘空间分配担保’机制在起作用。</li>
+<li><strong>元空间耗尽</strong>：当加载的类太多，元空间被占满时，会触发Full GC来尝试卸载无用的类。</li>
+<li>**显式调用 System.gc()**：虽然只是建议，但通常都会执行Full GC，生产环境应避免。</li>
+<li><strong>垃圾收集器自身的策略</strong>：<ul>
+<li>对于 <strong>CMS</strong>，主要是‘并发模式失败’和‘晋升失败’，因为并发清理时产生了新的浮动垃圾或内存碎片过多。</li>
+<li>对于 <strong>G1</strong>，主要是‘疏散失败’，即回收速度跟不上对象分配速度。</li>
+</ul>
+</li>
+<li><strong>堆外内存分配</strong>：使用NIO时，堆外内存的回收机制可能会间接导致Full GC。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<p>问题：<br>语言组织不清，逻辑混乱，只指导表层不能深入。</p>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
+    
+  </div>
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+    </div>
+    <div>
+      
+        <a href="/2025/11/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          计算机网络
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
+    
+
+  </div>
+</section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "default",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
+
+  </main>
+  <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
+  <!-- busuanzi -->
+  
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- Busuanzi Analytics -->
+<div class="flex items-center gap-2">
+  <span>Visitors</span>
+  <span id="busuanzi_value_site_uv"></span>
+  <span>Page Views</span>
+  <span id="busuanzi_value_site_pv"></span>
+</div>
+<!-- End Busuanzi Analytics -->
+
+
+  <!-- copyright -->
+  <div class="flex items-center gap-2">
+    <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: inherit;">CC BY-NC-SA 4.0</a>
+    <span>© 2022</span>
+    <iconify-icon width="18" icon="emojione-monotone:maple-leaf" ></iconify-icon>
+    <a href="https://github.com/xbmlz" target="_blank" rel="noopener noreferrer">xbmlz</a>
+  </div>
+  <!-- powered by -->
+  <div class="flex items-center gap-2">
+    <span>Powered by</span>
+    <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+    <span>&</span>
+    <a href="https://github.com/xbmlz/hexo-theme-maple" target="_blank" rel="noopener noreferrer">Maple</a>
+  </div>
+
+</footer>
+
+  <div class="back-to-top box-border fixed right-6 z-1024 -bottom-20 rounded py-1 px-1 bg-slate-900 opacity-60 text-white cursor-pointer text-center dark:bg-slate-600">
+    <span class="flex justify-center items-center text-sm">
+      <iconify-icon width="18" icon="ion:arrow-up-c" id="go-top"></iconify-icon>
+      <span id="scrollpercent"><span>0</span> %</span>
+    </span>
+  </div>
+  
+<script src="/js/main.js"></script>
+
+
+  <script>
+    $(document).ready(function () {
+      const mapleCount = "10";
+      const speed = "0.5";
+      const mapleEl = document.getElementById("maple");
+      const maples = Array.from({ length: mapleCount }).map(() => {
+        const maple = document.createElement("div");
+        const scale = Math.random() * 0.5 + 0.5;
+        const offset = Math.random() * 2 - 1;
+        const x = Math.random() * mapleEl.clientWidth;
+        const y = -Math.random() * mapleEl.clientHeight;
+        const duration = 10 / speed;
+        const delay = -duration;
+        maple.className = "maple";
+        maple.style.width = `${24 * scale}px`;
+        maple.style.height = `${24 * scale}px`;
+        maple.style.left = `${x}px`;
+        maple.style.top = `${y}px`;
+        maple.style.setProperty("--maple-fall-offset", offset);
+        maple.style.setProperty("--maple-fall-height", `${Math.abs(y) + mapleEl.clientHeight}px`);
+        maple.style.animation = `fall ${duration}s linear infinite`;
+        maple.style.animationDelay = `${delay}s`;
+        mapleEl.appendChild(maple)
+        return maple
+      })
+    });
+  </script>
+  
+
+
+  <div class="fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden" id="maple"></div>
+</body>
+
+</html>
