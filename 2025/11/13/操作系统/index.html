@@ -19,7 +19,7 @@
   <meta name="keywords" content="齐嘉和个人博客">
 
 
-<title>Java面经 | 待到山花烂漫时</title>
+<title>操作系统 | 待到山花烂漫时</title>
 
 
 
@@ -196,7 +196,7 @@
         </h2>
       </a>
       <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
-        Java面经
+        操作系统
       </div>
       <div class="flex-1"></div>
       <div class="flex items-center gap-3">
@@ -263,28 +263,32 @@
 
 <!-- toc -->
 
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
 <section class="px-6 max-w-prose mx-auto md:px-0">
   <!-- header -->
   <header class="overflow-hidden pt-6 pb-6 md:pt-12">
     <div class="pt-4 md:pt-6">
       <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
-        Java面经
+        操作系统
       </h1>
       <div>
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2025-11-12</time>
+            <time>2025-11-13</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>9 min</span>
+            <span>4 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>2.6k words</span>
+            <span>1.4k words</span>
           </span>
           
         </section>
@@ -293,97 +297,17 @@
   </header>
   <!-- content -->
   <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
-    <p><strong>1. 技术与语言对比</strong></p>
-<ul>
-<li>Go和Java对比，优缺点有哪些<ul>
-<li><strong>语言范式与设计哲学</strong><ul>
-<li><strong>Java</strong> 是强面向对象语言，设计严谨而略显繁重，生态成熟庞大。</li>
-<li><strong>Go</strong> 是命令式&#x2F;过程式语言，设计极致简洁，强调“简单即复杂”和开发效率。</li>
-</ul>
-</li>
-<li><strong>并发模型（最核心区别）</strong><ul>
-<li><strong>Java</strong> 采用基于<strong>线程和锁</strong>的共享内存模型，功能强大但容易引入复杂度（如死锁）。</li>
-<li><strong>Go</strong> 内置基于 <strong>Goroutine和Channel</strong> 的CSP模型，通过通信来共享内存，而非通过共享内存来通信，极大地简化了高并发程序的开发。</li>
-</ul>
-</li>
-<li><strong>性能与部署</strong><ul>
-<li><strong>Java</strong> 运行于JVM，通过JIT实现高性能，但启动慢、耗内存，需打包成JAR&#x2F;WAR。</li>
-<li><strong>Go</strong> 直接编译为静态的本地机器码，<strong>启动极快</strong>，内存开销小，生成单一可执行文件，部署极为简单。</li>
-</ul>
-</li>
-<li><strong>类型系统与语法特性</strong><ul>
-<li><strong>Java</strong> 使用显式接口实现和强大的泛型，语法相对冗长。</li>
-<li><strong>Go</strong> 使用隐式接口实现（鸭子类型），语法简洁（无分号、无类），内置多返回值、错误处理机制，但其泛型支持较弱且较新。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><strong>3. 项目经验与难点</strong></p>
-<ul>
-<li><strong>视频进度提交项目</strong>: 解决方案涉及Redis作为缓存及消息队列机制，通过对比消息队列中旧的消息与Redis中的最新数据，决定是否持久化，以避免频繁的数据库操作。</li>
-<li><strong>骑手路线记录场景</strong>: 针对高频次上报的GPS坐标，建议采用Redis的List结构进行滑动窗口处理，以记录一段时间内的数据流。写多读少的数据放入Redis中，结构可以用Zset，score记录时间，filed记录经纬度，按时间进行排序push、pop等</li>
-</ul>
-<p><strong>4. WebSocket与HTTPS</strong></p>
-<ul>
-<li><p><strong>WebSocket</strong>: 回答中提及通过二次封装和定义消息边界来解决粘包&#x2F;半包问题，但未详细论述票据丢失和完整性校验的实现细节。</p>
-<ul>
-<li>WebSocket 协议通过其帧结构定义了清晰的消息边界，使用 FIN 位、操作码和负载长度字段，使得接收方可以正确地从 TCP 流中拆解出完整的消息，从而在协议层面根本性地解决了粘包和半包问题。而对于丢包问题，WebSocket 首先依赖于底层 TCP 的可靠传输；其次，为了应对网络中断等导致连接失效的情况，我们需要在应用层通过 Ping&#x2F;Pong 心跳机制来保活和探测连接，并对关键业务消息实现确认与重传机制，同时客户端必须实现健全的断线重连逻辑来保证用户体验。</li>
-</ul>
-</li>
-<li><p><strong>HTTPS</strong>: 清晰地解释了其与HTTP的区别及通过数据加密解决安全问题。</p>
-</li>
-</ul>
-<p><strong>5. 数据结构与JVM</strong></p>
-<ul>
-<li><p><strong>ArrayList vs LinkedList</strong>: 列出了两者在增删改查方面的性能区别，并对其应用场景（如栈、队列）进行了分析。</p>
-<ul>
-<li>总的来说，<code>LinkedList</code> 的用武之地在于<strong>对列表结构本身有频繁、复杂操作的场景</strong>，而不是简单的数据存储和遍历。当我们的业务核心是‘频繁地在中间插入删除’、‘需要实现队列&#x2F;栈’、‘频繁合并拆分列表’时，<code>LinkedList</code> 就是最佳选择。而在我们后端开发中，最常见的可能就是用它来实现各种队列（如阻塞队列 <code>LinkedBlockingQueue</code> 就是基于链表），用于解耦和异步处理任务。除此之外，绝大多数情况下，由于 CPU缓存友好性和更低的访问时间复杂度，<code>ArrayList</code> 都是更通用、性能更好的默认选择。</li>
-</ul>
-</li>
-<li><p><strong>Spring</strong>：三级缓存，如何打一个start</p>
-<ul>
-<li>Spring的三级缓存主要是为了<strong>优雅地解决单例Bean的循环依赖问题</strong>。它的设计非常精巧：一级缓存存放完全成熟的Bean；二级缓存存放早期的裸对象；而最关键的是三级缓存，它存放的是一个工厂对象。这个工厂不仅能在循环依赖时提供早期引用，更重要的是，它统一了AOP代理的创建时机——保证在循环依赖发生时，无论是返回原始对象还是代理对象，这个逻辑只被执行一次，从而确保了Bean的完整性和容器的正确性。可以说，三级缓存是在支持循环依赖和保证Spring AOP等高级特性之间取得的一个完美平衡。</li>
-<li>打包步骤：<ul>
-<li><strong>规划依赖</strong>：确定 Starter 需要引入哪些库。</li>
-<li><strong>定义配置属性</strong>：使用 <code>@ConfigurationProperties</code> 绑定外部配置。</li>
-<li><strong>编写业务服务</strong>：提供核心功能的 Bean。</li>
-<li><strong>核心步骤：编写自动配置类</strong>：使用 <code>@Configuration</code> 和一系列 <code>@ConditionalOn...</code> 注解（如 <code>@ConditionalOnClass</code>, <code>@ConditionalOnMissingBean</code>）来控制 Bean 的创建条件。</li>
-<li><strong>注册配置</strong>：在 <code>META-INF/spring.factories</code>（旧）或 <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code>（新）文件中注册自动配置类，让 Spring Boot 能够发现它。</li>
-<li><strong>打包发布</strong>：最后用 Maven 或 Gradle 打包安装。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>HashMap扩容</strong>: 曾提及哈希表扩容机制，当元素超出现定容量时，会发生一次扩容。</p>
-<ul>
-<li><strong>初始容量</strong>：由 300 被规范化为 <strong>512</strong>。</li>
-<li><strong>扩容次数</strong>：<strong>1 次</strong>（发生在第一次 put 操作时，用于初始化哈希表）。</li>
-<li><strong>最终容量</strong>：初始化后容量即为 <strong>512</strong>，之后未再扩容。</li>
-</ul>
-</li>
-<li><p><strong>JVM对象生命周期</strong>: 解释了对象的内存分配、新生代与老年代的晋升机制（大对象、对象年龄达到阈值）、Survivor区域的设计目的，以及新生代GC与老年代GC（Full GC）的触发场景。</p>
-<ul>
-<li>第一，也是最常见的，是<strong>长期存活的对象</strong>，当它的年龄计数器超过 <code>MaxTenuringThreshold</code> 设定的阈值时，就会在下次GC时晋升。第二，是<strong>大对象</strong>，为了避免在Survivor区之间频繁复制，JVM会通过参数 <code>PretenureSizeThreshold</code> 控制，让超过阈值的大对象直接在老年代分配。第三，是<strong>动态对象年龄判定</strong>，为了优化内存使用，如果某一年龄的所有对象大小总和超过了Survivor空间的一半，年龄大于等于该年龄的对象会直接晋升。第四，当发生Minor GC时，如果<strong>Survivor区空间不足</strong>以容纳所有存活对象，多出的对象会直接进入老年代。最后，在Minor GC之前，JVM会进行<strong>老年代空间分配担保</strong>，如果判断当前老年代空间无法担保本次GC，那么可能会直接触发一次Full GC来腾挪空间。其中，前四种是导致对象<strong>进入</strong>老年代的直接原因，而第五种是一种在GC前进行的风险预测和保障机制。</li>
-<li>第一，也是最重要的，是<strong>作为一个缓冲地带，减少不必要的对象过早晋升到老年代</strong>。它通过让对象在Survivor区之间来回拷贝，并利用年龄计数器，有效地筛选出真正长期存活的对象，只有这些‘佼佼者’才能进入老年代。这大大减轻了老年代的压力，从而减少了昂贵的Full GC发生频率。第二，Survivor区采用了<strong>复制算法来管理内存</strong>，每次GC后存活对象被集中复制到另一个Survivor区，这使得垃圾回收非常高效，并且<strong>完全避免了内存碎片</strong>的产生。第三，它为JVM提供了一个<strong>判定对象年龄的场所</strong>，是实现分代收集理论中‘朝生夕死’对象假设的关键基础设施。没有Survivor区，分代收集的优势会大打折扣。</li>
-<li>Survivor区使用复制算法，是一个基于其特定场景下的最优设计。主要原因有三点：第一，也是最重要的，<strong>复制算法的性能优势与Survivor区‘存活对象极少’的特点完美匹配</strong>。复制算法的开销只与存活对象的数量成正比，而在Minor GC后，Survivor区的存活对象占比通常非常低，这使得复制操作的成本降到最低，回收速度极快。第二，<strong>复制算法能完全避免内存碎片问题</strong>。每次GC后，存活对象被紧凑地排列在另一个Survivor区，为新晋升的对象提供了连续的内存空间，使得内存分配效率极高（使用指针碰撞），避免了标记-清除算法带来的碎片化问题。第三，<strong>这是一个用空间换时间的合理权衡</strong>。虽然复制算法会浪费一半的内存空间，但由于Survivor区本身不大，且存活对象很少，这个空间代价是可接受的。换来的是更短的GC停顿时间和更简单可靠的内存管理，这对于追求低延迟的Java应用来说至关重要。相比之下，标记-清除会产生碎片，标记-整理虽有紧凑但移动成本高。因此，在存活率低的新生代Survivor区，复制算法是无可争议的最佳选择。</li>
-<li>Full GC的触发场景比较复杂，但总结下来主要有以下几类：<ol>
-<li><strong>老年代空间不足</strong>：这是最核心的场景。具体包括对象正常晋升后老年代满了、大对象直接分配失败、或者年轻代 Survivor 区空间不足导致对象提前涌入老年代。其背后是JVM的‘空间分配担保’机制在起作用。</li>
-<li><strong>元空间耗尽</strong>：当加载的类太多，元空间被占满时，会触发Full GC来尝试卸载无用的类。</li>
-<li>**显式调用 System.gc()**：虽然只是建议，但通常都会执行Full GC，生产环境应避免。</li>
-<li><strong>垃圾收集器自身的策略</strong>：<ul>
-<li>对于 <strong>CMS</strong>，主要是‘并发模式失败’和‘晋升失败’，因为并发清理时产生了新的浮动垃圾或内存碎片过多。</li>
-<li>对于 <strong>G1</strong>，主要是‘疏散失败’，即回收速度跟不上对象分配速度。</li>
-</ul>
-</li>
-<li><strong>堆外内存分配</strong>：使用NIO时，堆外内存的回收机制可能会间接导致Full GC。</li>
-</ol>
-</li>
-</ul>
-</li>
-</ul>
-<p>问题：<br>语言组织不清，逻辑混乱，只指导表层不能深入。</p>
-
+    <h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><h2 id="一、为什么要有虚拟内存"><a href="#一、为什么要有虚拟内存" class="headerlink" title="一、为什么要有虚拟内存"></a>一、为什么要有虚拟内存</h2><p>先说结论：<br>1、可以给每个进程赋予超过真实物理内存大小的空间，根据段页的换入换出让上层进程感觉到真实有这么多内存。<br>2、每个进程间的页表是独立的，映射到的真实物理内存也是独立的，所以不会有数据安全问题，进程崩溃不会影响其他进程。<br>3、页表中除了记录页的真实物理位置，还记录该文件的读写权限进行权限隔离</p>
+<h3 id="内存分段"><a href="#内存分段" class="headerlink" title="内存分段"></a>内存分段</h3><p>将真实内存分为互不相同大小的一段一段的分块，虚拟内存根据其段因子中的段表id去段表中查真实段位置再加偏移量即可找到真实物理存储位置。但这种方式有两个缺点，一是大量不同大小的段分块势必会导致大量的外部内存碎片，且后续分配的内存大小超过碎片中的最大值会将其他已分配的内存进行一个整理，效率更低。</p>
+<h3 id="内存分页"><a href="#内存分页" class="headerlink" title="内存分页"></a>内存分页</h3><p>为了解决内存分段导致的外部碎片以及效率底下的问题，引入内存分页，将物理内存分为若干个相同大小的页。根据虚拟内存中的页表id去页表中查找真实物理位置加偏移量即可找到真实位置。但是因为物理内存中的分页极其多导致页表项也极其多，如果一个进程的页表项就已经超过若干MB，那多个进程所消耗的资源是不可避免的。于是，引入多级分页，将整个大空间分为若干个小项，在从项里去找真实位置，且如果二级页表没有存储数据是不用开辟的。同时为了兼顾局部性原理引入TLB缓存加快页表的计算效率，因为多级页表会导致计算时间增长。	</p>
+<h3 id="段页式管理"><a href="#段页式管理" class="headerlink" title="段页式管理"></a>段页式管理</h3><p>分段中管理页表，页表中管理真实物理内存地址。即拿虚拟内存中的段表id从段表中找到页表，再拿页表id从页表中找到真实物理地址。</p>
+<h2 id="二、内存满了会怎样"><a href="#二、内存满了会怎样" class="headerlink" title="二、内存满了会怎样"></a>二、内存满了会怎样</h2><p>当调用内存的时候会去页表中检查是否有该项，如果没有产生一个缺页中断，然后中断处理程序会去开辟内存将映射关系添加到页表中，如果物理内存空间不够会去先进行异步内存回收，会去检查一些文件页，干净页直接回收，脏页落盘后再回收，如果下次访问这些数据在换入这个过程不会阻塞当前进程。异步内存回收完后还不够分配会进行同步回收，会阻塞当前进程。如果回收后还是不够会出发OOM机制，选取那些占用空间较大的进程将其杀死。</p>
+<h2 id="三、申请大于真实内存大小内存"><a href="#三、申请大于真实内存大小内存" class="headerlink" title="三、申请大于真实内存大小内存"></a>三、申请大于真实内存大小内存</h2><p>比如机器内存大小是4G申请8G，首先会判断系统是32位还是64位，因为32位机器支持用户分配虚拟内存大小只有3G，如果大于这个大小会直接申请失败。如果是64位会看是否支持swap，如果支持可以申请成功，如果不支持，因为物理空间只有4G，也会失败。</p>
+<h2 id="四、预读失效和缓存污染"><a href="#四、预读失效和缓存污染" class="headerlink" title="四、预读失效和缓存污染"></a>四、预读失效和缓存污染</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>当缺页中断处理程序去将要加载的页加载入内存的时候，不会只加载缺的那一页，还将缺页的周围几页一同加载入内存，这符合局部性原理。但是如果多余加载的这几页后续没有被用到也就白加载了，也就是预读失败。如果多加载进来的这几页把热数据挤出了页表中，后续读的时候还需要重新加载，这就是缓存污染。</p>
+<h3 id="如何避免"><a href="#如何避免" class="headerlink" title="如何避免"></a>如何避免</h3><p>Redis用LFU来避免预读失败问题。MySQL和Linux用升级版的LRU来避免预读失败和缓存污染问题。下面主要讲MySQL和Linux。</p>
+<p>MySQL讲一个LRU队列分为了young和old两个区域，大概是73分。正常缺失的那一页会被加载入young区域，连同预加载的页会放入old区域，如果有用到了old区域中会晋升到young区域，相应的young区域中会有一个掉入old区域中。从而避免预读失败但如果只读一次就加入young区域还是会造成缓存污染将热数据换入了old甚至换出需要在读入。只需要增大old进入young的门槛即可解决这个问题。</p>
+<p>Linux是用的两个LRU队列来实现的，我感觉像冷热数据分离，即一个活跃链表，一个非活跃链表。活跃链表中存储的是那些真正缺页读入的，非活跃中是缓存预加载的。当非活跃中的页被读了就换入到活跃链表中，同时活跃链表最后一个会调入非活跃链表中。这样来避免预读失效问题。缓存污染问题同样也是来增大加入活跃链表门槛来解决。</p>
+<h1 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h1><h1 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a>调度算法</h1><h1 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h1><h1 id="网络系统"><a href="#网络系统" class="headerlink" title="网络系统"></a>网络系统</h1><h1 id="Linux命令"><a href="#Linux命令" class="headerlink" title="Linux命令"></a>Linux命令</h1>
   </article>
   <!-- tag -->
   <div class="mt-12 pt-6 border-t border-gray-200">
@@ -393,16 +317,11 @@
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
       
-        <a href="/2025/11/13/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
-          计算机网络
-        </a>
-      
     </div>
     <div>
       
-        <a href="/2025/11/06/Lenovo%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          Lenovo项目总结
+        <a href="/2025/11/13/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          计算机网络
           <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
         </a>
       
