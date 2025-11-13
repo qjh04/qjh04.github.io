@@ -278,17 +278,17 @@
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2025-11-12</time>
+            <time>2025-11-13</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>12 min</span>
+            <span>13 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>3.5k words</span>
+            <span>3.8k words</span>
           </span>
           
         </section>
@@ -338,10 +338,26 @@
 <p>发送窗口大小还取决于下方拥塞窗口，所以发送窗口大小等于min（接收窗口，拥塞窗口）</p>
 <h3 id="拥塞控制"><a href="#拥塞控制" class="headerlink" title="拥塞控制"></a>拥塞控制</h3><p>拥塞控制主要在于几个算法分别是慢开始、拥塞避免、拥塞发生、快恢复</p>
 <p>慢开始：一开始窗口大小从1开始，收到1个ack窗口大小加1，所以会看到发送次序为1 2 4 8，我们把8作为一个阈值，窗口大小超过8启动拥塞避免算法。<br>拥塞避免：当收到所有发出的包的ack时会将窗口大小加1，当发生同时收到三个相同的ack时判定发生了拥塞启动拥塞发生算法。<br>拥塞发生：将上文提到的阈值设为当前窗口的一半，当这种方法太激进反应太强烈，所以就有了快恢复算法。<br>快恢复：即发送拥塞后将窗口设为当前阈值的一半，阈值也设为当前的一半，然后连续发送三个包如果收到相同的ack在加一个窗口目的是将丢失的包赶紧发送给对方，当收到不一样的ack，证明对方已经收到多次发送的包，将窗口退回到阈值的状态进行拥塞避免算法。</p>
-<h2 id="四、其他问题"><a href="#四、其他问题" class="headerlink" title="四、其他问题"></a>四、其他问题</h2><p>1、SYN何时被丢弃<br>半连接队列满了，全连接队列满了</p>
+<h2 id="四、其他问题"><a href="#四、其他问题" class="headerlink" title="四、其他问题"></a>四、其他问题</h2><p>1、SYN何时被丢弃</p>
+<p>半连接队列满了，全连接队列满了</p>
 <p>2、已建立的TCP收到SYN会如何</p>
 <p>客户端重发SYN可能是突然掉电又恢复，如果在这个过程中，服务端发送或者开启保活发现客户端挂了，会断开连接。如果双方没有通信，客户端发送SYN服务端在Established状态，会返回一个正常的ack包，客户端发现与自己预期的不一样会断开连接。</p>
-<p>3、</p>
+<p>3、进行TCP连接之后，如果一方掉电或进程崩溃会怎么办</p>
+<p>进程崩溃：</p>
+<p>​	会发fin报文进行四次挥手</p>
+<p>掉电：</p>
+<p>​	有数据传输，经过多次超时重传会断开</p>
+<p>​	无数据传输：</p>
+<p>​		有保活机制：探测报文不回复导致断连</p>
+<p>​		没有保活机制：会一直保持连接</p>
+<p>4、拔掉网线后会如何</p>
+<p>有数据传输：经过多次重传后断连，在没有到达上限的时候接上还可以继续用</p>
+<p>无数据传输：是否有保活机制，没有会一直存在</p>
+<p>5、TCP的缺点</p>
+<p>因为实现在底层，所以对TCP进行升级比较困难；队头阻塞问题；进行网络迁移需要重复连接</p>
+<p>6、服务端不使用Listen，客户端还能建立连接吗</p>
+<p>跟服务端不行， 但可以和别的客户端进行自连接</p>
+<h1 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h1><p>ping命令利用的icmp协议中的一个类型</p>
 
   </article>
   <!-- tag -->
