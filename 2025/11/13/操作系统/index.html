@@ -278,17 +278,17 @@
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2025-11-13</time>
+            <time>2025-11-15</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>4 min</span>
+            <span>10 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>1.4k words</span>
+            <span>3.2k words</span>
           </span>
           
         </section>
@@ -307,7 +307,29 @@
 <h3 id="如何避免"><a href="#如何避免" class="headerlink" title="如何避免"></a>如何避免</h3><p>Redis用LFU来避免预读失败问题。MySQL和Linux用升级版的LRU来避免预读失败和缓存污染问题。下面主要讲MySQL和Linux。</p>
 <p>MySQL讲一个LRU队列分为了young和old两个区域，大概是73分。正常缺失的那一页会被加载入young区域，连同预加载的页会放入old区域，如果有用到了old区域中会晋升到young区域，相应的young区域中会有一个掉入old区域中。从而避免预读失败但如果只读一次就加入young区域还是会造成缓存污染将热数据换入了old甚至换出需要在读入。只需要增大old进入young的门槛即可解决这个问题。</p>
 <p>Linux是用的两个LRU队列来实现的，我感觉像冷热数据分离，即一个活跃链表，一个非活跃链表。活跃链表中存储的是那些真正缺页读入的，非活跃中是缓存预加载的。当非活跃中的页被读了就换入到活跃链表中，同时活跃链表最后一个会调入非活跃链表中。这样来避免预读失效问题。缓存污染问题同样也是来增大加入活跃链表门槛来解决。</p>
-<h1 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h1><h1 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a>调度算法</h1><h1 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h1><h1 id="网络系统"><a href="#网络系统" class="headerlink" title="网络系统"></a>网络系统</h1><h1 id="Linux命令"><a href="#Linux命令" class="headerlink" title="Linux命令"></a>Linux命令</h1>
+<h1 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h1><h2 id="一、基础"><a href="#一、基础" class="headerlink" title="一、基础"></a>一、基础</h2><h3 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h3><h4 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h4><p>进程的最基础状态分为就绪、运行、阻塞。其转换条件，从就绪到运行为调度器调度执行，从运行到就绪为时间片用完，从运行到阻塞等待某一事件执行，从阻塞到运行该事件完成。在运行之前可以有创建，在运行完后有结束，这就是五态图。当进程过多，不希望阻塞的进程在内存中占用过多的空间时，可将其换出至磁盘，等要用的时候在换入内存。在阻塞时换出的是阻塞挂起，在就绪换出的是阻塞就绪，当阻塞挂起的时候事件完成可转化为就绪阻塞。</p>
+<h4 id="控制信息"><a href="#控制信息" class="headerlink" title="控制信息"></a>控制信息</h4><p>进程的所有信息保存在PCB进程控制块中，包括进程的ID，状态，用户标识符，用到的资源等信息。PCB通过链表组织，比如在就绪链表中的就是处于就绪态的进程，在阻塞同理。当cpu有空会从就绪链表中取出一个进行执行。</p>
+<h4 id="控制"><a href="#控制" class="headerlink" title="控制"></a>控制</h4><p>进程的控制信息包括新建，终止，阻塞，唤醒。</p>
+<p>新建：申请一个空白PCB写入元信息，分配所必需的资源，将其加入就绪队列<br>终止：查找需要终止的PCB，如果在执行需要停止执行将cpu让给其他进程，如果还有子进程将其交给1号进程，回收该进程资源还给操作系统，将其从所在队列中删除<br>阻塞：找到需要阻塞的PCB，如果在执行，保护现场将其cpu资源给到其他进程，修改其PCB状态加入阻塞队列<br>唤醒：找到需要唤醒的PCB，将其状态修改为就绪态，加入就绪队列中</p>
+<h4 id="上下文切换"><a href="#上下文切换" class="headerlink" title="上下文切换"></a>上下文切换</h4><p>从宏观来讲，上下文切换就是一个进程停止执行将cpu资源让给另一个进程执行。其中包括要保存现场信息入寄存器、程序计数器等，需要保证下一次在切换回来会按原程序顺序执行。每个进程的信息还包括内存信息，堆栈，全局变量等。</p>
+<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>线程是CPU调度的基本单位，比进程的开销更小同时会有共享内存，线程与线程之间通信数据交互效率也更高。</p>
+<h4 id="上下文切换-1"><a href="#上下文切换-1" class="headerlink" title="上下文切换"></a>上下文切换</h4><p>因为线程共享进程的内存空间，所以其进行上下文切换时候不用频繁切换页表、堆等大量耗时资源，只需要切换线程的程序计数器、栈信息即可。</p>
+<h3 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a>调度算法</h3><h4 id="先来先服务"><a href="#先来先服务" class="headerlink" title="先来先服务"></a>先来先服务</h4><p>最简单，看似最公平，其实不利于短作业。如果在多个短作业前有一个频繁IO的长作业，会导致短作业持久得不到运行</p>
+<h4 id="多作业优先"><a href="#多作业优先" class="headerlink" title="多作业优先"></a>多作业优先</h4><p>不利于长作业，如果一直有多作业到达，长作业得不到运行</p>
+<h4 id="最佳响应比优先"><a href="#最佳响应比优先" class="headerlink" title="最佳响应比优先"></a>最佳响应比优先</h4><p>根据等待时间加运行时间的和除以运行时间得到一个响应比，响应比最高先执行。即等待时间相同运行时间越短级别越高，运行时间相同，等待时间越长越先执行。看似兼顾先来先服务和短作业优先，其实该方法太理想化不好实现，执行时间并不能提前预测。</p>
+<h4 id="时间片轮转"><a href="#时间片轮转" class="headerlink" title="时间片轮转"></a>时间片轮转</h4><p>该算法好实现也较公平，但需要注意时间片时间不能过短导致短作业需要切换好几次，也不能过长导致等待时间过长。</p>
+<h4 id="最高优先级调度"><a href="#最高优先级调度" class="headerlink" title="最高优先级调度"></a>最高优先级调度</h4><p>在抢占式调度中如果一个高优先级的进程进入了就绪队列可以将当前运行的进程切换到就绪态，先运行级别高的进程</p>
+<h4 id="多级反馈队列"><a href="#多级反馈队列" class="headerlink" title="多级反馈队列"></a>多级反馈队列</h4><p>通过多个进程队列排序，每个队列代表一个等级，等级越高时间片越少。在第一个等级的时间片中没有执行完会放入第二个队列中等待执行，如果在执行过程中，第一级队列有新进程加入，先去执行新进程。对于短作业可以通过首次进入高级别队列进行执行，如果第一次没有完成如长作业可以进入后续队列中接续执行，获得时间片时间也更长</p>
+<h2 id="二、通信方式"><a href="#二、通信方式" class="headerlink" title="二、通信方式"></a>二、通信方式</h2><h3 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h3><p>分为匿名管道和有名管道，匿名管道用于父子进程间通信，例如ps -ef | grep java，这里管道符左右两侧可以看作两个进程，左侧将进程信息通过管道符输入到右侧进行信息过滤。有名管道可以在两个不相关的进程间通信，因为双方可以同时发送接收，所以可能导致消息错乱。</p>
+<h3 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h3><p>消息队列两侧被称为生产者、消费者，生产者生产完消息后将其放入队列后就可以做其他事不用等待同步执行，消费者同理，只有接收到消息采取做处理。但消息其实也是保存在内存缓冲区中，这样内核态，用户态之间进行数据复制会降低效率。</p>
+<h3 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h3><p>双方拥有同一份页表，所映射的物理内存也是同一份，双方可以在该内存上进行读写，少去过多的复制开销。但同时引入了数据安全问题，双方都对同一份内存中的数据进行更改，很难保证数据会按双方操作顺序执行。</p>
+<h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h3><p>为了解决多个进程在同一份内存进行数据读写导致的数据安全问题，设置一个整形变量n，如果在对数据进行get的时候会对该n进行p操作，如果大于0则可以得到，如果小于0则会被阻塞。在put的时候会对该n进行v操作。</p>
+<h3 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h3><p>跟信号量没有任何关系，信号是一种异步通知机制，有硬件信号、软件信号两种，当有信号发出时候，cpu会做出决定是否执行对应的信号处理程序。</p>
+<h3 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h3><p>上方说的全是在本机进行通信，而socket可以在两台机器上进行通信，即socket编程。</p>
+<h2 id="三、其他"><a href="#三、其他" class="headerlink" title="三、其他"></a>三、其他</h2><p>如果线程崩溃了进程一定崩溃吗？</p>
+<p>其实不一定，杀掉进程的底层也是发送信号，通过信号处理程序去实现进程停止。所以线程崩溃是否会让进程崩溃看程序如何处理。</p>
+<p>而JVM中是看该线程是否对共享内存做出了破坏，是否会导致其他线程对内存的读写出现问题，比如OOM，stackoverflow等。如果是类似NPE等并不会直接杀掉整个进程。</p>
+<h1 id="调度算法-1"><a href="#调度算法-1" class="headerlink" title="调度算法"></a>调度算法</h1><h1 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h1><h1 id="网络系统"><a href="#网络系统" class="headerlink" title="网络系统"></a>网络系统</h1><h1 id="Linux命令"><a href="#Linux命令" class="headerlink" title="Linux命令"></a>Linux命令</h1>
   </article>
   <!-- tag -->
   <div class="mt-12 pt-6 border-t border-gray-200">
