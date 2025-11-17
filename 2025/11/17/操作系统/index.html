@@ -278,17 +278,17 @@
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2025-11-15</time>
+            <time>2025-11-17</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>10 min</span>
+            <span>14 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>3.2k words</span>
+            <span>4.3k words</span>
           </span>
           
         </section>
@@ -329,7 +329,19 @@
 <h2 id="三、其他"><a href="#三、其他" class="headerlink" title="三、其他"></a>三、其他</h2><p>如果线程崩溃了进程一定崩溃吗？</p>
 <p>其实不一定，杀掉进程的底层也是发送信号，通过信号处理程序去实现进程停止。所以线程崩溃是否会让进程崩溃看程序如何处理。</p>
 <p>而JVM中是看该线程是否对共享内存做出了破坏，是否会导致其他线程对内存的读写出现问题，比如OOM，stackoverflow等。如果是类似NPE等并不会直接杀掉整个进程。</p>
-<h1 id="调度算法-1"><a href="#调度算法-1" class="headerlink" title="调度算法"></a>调度算法</h1><h1 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h1><h1 id="网络系统"><a href="#网络系统" class="headerlink" title="网络系统"></a>网络系统</h1><h1 id="Linux命令"><a href="#Linux命令" class="headerlink" title="Linux命令"></a>Linux命令</h1>
+<h1 id="调度算法-1"><a href="#调度算法-1" class="headerlink" title="调度算法"></a>调度算法</h1><h2 id="一、进程调度算法"><a href="#一、进程调度算法" class="headerlink" title="一、进程调度算法"></a>一、进程调度算法</h2><p>先来先服务（不利于短作业）、短作业优先（不利于长作业）、最佳响应比优先（太理想）、时间片轮转（需注意时间片大小分配）、最高优先级（适合抢占式）、多级反馈队列（将短作业与长作业的运行时间片做了一个合理化分配）</p>
+<h2 id="二、页面置换算法"><a href="#二、页面置换算法" class="headerlink" title="二、页面置换算法"></a>二、页面置换算法</h2><p>最佳页面置换（太理想）、先进先出（会造成热点数据重复换出）、LRU（效率低）、时钟算法（改进后的FIFO还可以）、LFU（效率低）</p>
+<h2 id="三、磁盘访问算法"><a href="#三、磁盘访问算法" class="headerlink" title="三、磁盘访问算法"></a>三、磁盘访问算法</h2><p>先来先服务（效率低）、最短寻道路径优先（产生饥饿问题）、scan（磁道频率不一致）、循环scan、lock、循环lock（后三个都是对scan的改良）</p>
+<h1 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h1><h1 id="网络系统"><a href="#网络系统" class="headerlink" title="网络系统"></a>网络系统</h1><h2 id="一、零拷贝"><a href="#一、零拷贝" class="headerlink" title="一、零拷贝"></a>一、零拷贝</h2><p>在一个下载文件的场景下，服务端需要将数据从磁盘中读出然后发送给客户端。在这个过程中有两个调用一个是read一个是write。read需要从用户态切换至内核态将数据从磁盘读入内核态然后在读入用户态，需要两次切换和两次copy。write同理也需要两次切换两次copy，这种方式效率极其低且将数据复制到用户态后并没有对数据进行修改。优化思路即减少用户态与内核态的切换次数，减少copy数量。</p>
+<p>sendfile系统调用：<br>将read与write合二为一，只需进行两次内核与用户的切换，且在底层运行DMA硬件技术进行数据copy。整个文件传输的流程变为用户态切换至系统态，cpu调用DMA将数据从磁盘读入内核缓冲区，然后将地址信息发送给输出端，输出端也调用DMA将数据从内核缓冲区发送给网卡发出，在切换回用户态。</p>
+<p>改进点：减少两次用户内核切换次数，数据传输不再经过cpu，只需要copy两次。</p>
+<h2 id="二、IO多路复用"><a href="#二、IO多路复用" class="headerlink" title="二、IO多路复用"></a>二、IO多路复用</h2><p>一个TCP连接可以用四元组来表示，即客户端ip加端口号，和服务端ip和端口号。所以理论的最大连接个数取决于客户端的ip加端口号的组合（2^32 * 2^16)，虽然实际没有这么多，但如果一个TCP连接对应一个进程或线程都是对服务器最大的考验。</p>
+<p>由于不能创建这么多的进程线程来进行一对一映射，所以引入IO多路复用，其分为三类具体为select、poll、epoll。</p>
+<p>select和poll类似，流程为用户态将监听的socket放入文件描述符集合中，将该集合copy到内核态，内核态收到事件后对该集合进行遍历标记，然后将该集合copy回用户态，用户态遍历该集合对有事件的socket进行对应的处理。select的这个集合是一个1024长度的数组，poll只是将该数组改为了以链表形式组织的动态树组，理论长度得到了增加，但效率还是很低。</p>
+<p>epoll与上面不同它通过调用create在内核态创建一个红黑树，该树保存并监听对应的socket。用户态调用ctl将对应的socket添加到红黑树上，监听到某一事件的到来，将对应的socket复制到一个就绪队列中，调用wait将该队列复制回内核态去进行对应的处理，效率大大提高。<br>边缘触发：当就绪队列中有数据只通知一次，需要读取完整，否则造成数据丢失<br>水平触发：当就绪队列中有数据在数据读取完毕之前会一直通知<br>一般都是用边缘啊触发，因为水平触发会进行大量的调用，但需要注意数据读取完整。</p>
+<h2 id="三、Reactor网络模型"><a href="#三、Reactor网络模型" class="headerlink" title="三、Reactor网络模型"></a>三、Reactor网络模型</h2><p>接续上文，IO多路复用提供了一种事件的接收方式但没有提供事件接收后的处理方式，Reactor就是对事件的接收、处理的综合体。</p>
+<p>Reactor分为：单进程单Reactor模型、多进程单Reactor模型、多进程多Reactor模型。其大概思路都是分为一个接收分发器dispatcher，如果是连接事件交给accept处理，如果是读写事件交给handler处理。只不过在多进程下accept会在连接建立后新建一个线程来单独进行handle处理。</p>
+<h1 id="Linux命令"><a href="#Linux命令" class="headerlink" title="Linux命令"></a>Linux命令</h1>
   </article>
   <!-- tag -->
   <div class="mt-12 pt-6 border-t border-gray-200">
