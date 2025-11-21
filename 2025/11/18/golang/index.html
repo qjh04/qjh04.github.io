@@ -19,7 +19,7 @@
   <meta name="keywords" content="齐嘉和个人博客">
 
 
-<title>归档 | 待到山花烂漫时</title>
+<title>Go语言基础 | 待到山花烂漫时</title>
 
 
 
@@ -196,7 +196,7 @@
         </h2>
       </a>
       <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
-        
+        Go语言基础
       </div>
       <div class="flex-1"></div>
       <div class="flex items-center gap-3">
@@ -254,224 +254,244 @@
 </div>
 
   <main class="pt-14">
-    <section class="px-6 max-w-prose mx-auto gap-12 grid grid-cols-1">
-  <div class="flex flex-col h-48 items-center justify-center">
-    
-      <h1 class="site-title text-4xl leading-relaxed">
-        待到山花烂漫时
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        Go语言基础
       </h1>
-      <p class="text-gray-500 mt-2">
-        她在丛中笑
-      </p>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2025-11-18</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>3 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>877 words</span>
+          </span>
+          
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <p>因为有一段go语言实习经历，当时实习的时候并没有对go语言进行基础学习，只是将自己对业务的理解，讲给AI让AI写，当提示词工程师。但现在回过头来想看看当时这个项目竟有一些看不下去，虽然后端的业务逻辑上都是相通的，但有一些语法不太相通比如类的方法、接口书写这些与JAVA都不太同，Go语言也是太简洁了。基于对现在的情况分析以及未来的择业准备，我打算在学一遍Go基础，但不会从头开始学有几种变量、控制结构等基础性知识，学这一次的目标是能看懂go程序，能自己上手写简单的crud。</p>
+<p>*本文主要用于自己复习，所以语言偏白话</p>
+<h2 id="一、基础"><a href="#一、基础" class="headerlink" title="一、基础"></a>一、基础</h2><p>1、变量的声明和定义</p>
+<p>var a int	声明</p>
+<p>a &#x3D; 10	定义</p>
+<p>如果没有定义会有一个默认值0</p>
+<p>2、常量的定义</p>
+<p>const a int &#x3D; 10</p>
+<p>3、方法的多返回值</p>
+<p>func process(a, b int) (int, error) {}</p>
+<p>num, err :&#x3D; process(1, 2)</p>
+<p>4、数组与动态树组slice</p>
+<p>固定数组：nums4 :&#x3D; [5]int{1, 2, 3, 4, 5}</p>
+<p>动态数组：nums :&#x3D; make([]int, 0, 5)     nums &#x3D; append(nums, 10)</p>
+<p>5、map</p>
+<p>cache :&#x3D; make(map[int]string)</p>
+<p>  cache[1] &#x3D; “one”</p>
+<p>  cache[2] &#x3D; “two”</p>
+<p>6、面向对象</p>
+<p>封装：</p>
+<p>类属性：</p>
+<p>type Person struct {</p>
+<p>​	Name string&#x2F;&#x2F; 前边字段名后边属性</p>
+<p>​	Age int 	&#x2F;&#x2F; age大写代表别的包可以访问</p>
+<p>}</p>
+<p>类方法：</p>
+<p>func (p *Person) PrintHello() {</p>
+<p>​	fmt.Println(“hello world!”)</p>
+<p>}</p>
+<p>方法名大写代表别的包可以调用，前边的括号代表该方法是哪个对象的方法，如果没有就是一个普通的接口</p>
+<p>继承：</p>
+<p>type Student struct {</p>
+<p>​	Person &#x2F;&#x2F; 代表继承父类person</p>
+<p>​	Class string</p>
+<p>}</p>
+<p>如果有需要也可以重写父类方法</p>
+<p>多态：</p>
+<p>需要先介绍一下接口：</p>
+<p>type Person interface {</p>
+<p>​	GetName() string &#x2F;&#x2F; 首字母大写代表其他包可以访问</p>
+<p>​	GetName(name strirng) </p>
+<p>}</p>
+<p>需要实现该接口的类，重写上面接口的所有方法即可完成实现，例如</p>
+<p>type Student struct {</p>
+<p>​	Name string</p>
+<p>}</p>
+<p>func (s * Student) GetName () string {</p>
+<p>​	return s.Name</p>
+<p>}</p>
+<p>func (s *Student) SetName(nastring) {</p>
+<p>​	s.Name &#x3D; na</p>
+<p>}</p>
+<p>如果有多个类，所有类都需要实现这几个接口，这里假设实现了Teacher类，实现多态如下：</p>
+<p>person :&#x3D; &amp;Student{“zhangsan”}</p>
+<p>person.GetName();</p>
+<p>person :&#x3D; &amp;Teacher{“lisi”}</p>
+<p>person.GetName();</p>
+<p>父引用指向不同的子类调用相同的方法根据各自子类的实现展现出不同的特点即为多态。</p>
+<p>7、反射</p>
+<p>根据reflect包中的api可以获取变量的类型和值，如果是复杂类型，根据类型可以获取该类型的字段、方法等元信息。</p>
+<p>如字段后面的tag标签， 可以用于gorm持久化、json序列化字段名、前端联调等信息。</p>
+<p>8 、goroutine</p>
+<p>协程，运行在用户态的轻量级线程，更高的切换效率更低的资源消耗，为高并发而生。多个线程对应若干个process，每个process又对应多个协程，这就是GMP模型。其他在详细的内容可以找个网站、博客、书籍看</p>
+<p>9 、channel</p>
+<p>协程间的通信方式，可以用</p>
+<p>m :&#x3D; make(chan int)</p>
+<p>m就是一个无缓存式channel，可以用m &lt;- num对其进行发送数据，num &lt;-m将channel中的数据给到nun，可以给一个capacity变为有缓存式类似生产者消费者模型。</p>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
     
   </div>
-  
-  
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+        <a href="/2025/11/21/%E8%AE%A4%E7%9F%A5%E8%A7%89%E9%86%92/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          《认知觉醒》读后感
+        </a>
+      
+    </div>
+    <div>
+      
+        <a href="/2025/11/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          操作系统
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
     
-    
-      <div class="relative pointer-events-none">
-        <span class="text-9xl opacity-10 absolute -left-11 -top-6 font-bold">2024</span>
-      </div>
-    
-    <a style="--stagger:0" href="/2024/09/02/JVM/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          JVM
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          9月 02
-          ·
-          23 min
-        </p>
-      </section>
-    </a>
-  
-    
-    
-    <a style="--stagger:1" href="/2024/08/29/MySQL/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          MySQL
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          8月 29
-          ·
-          41 min
-        </p>
-      </section>
-    </a>
-  
-    
-    
-    <a style="--stagger:2" href="/2024/08/19/Maven/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          Maven
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          8月 19
-          ·
-          3 min
-        </p>
-      </section>
-    </a>
-  
-    
-    
-    <a style="--stagger:3" href="/2024/08/02/MybatisPlus/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          MybatisPlus
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          8月 02
-          ·
-          6 min
-        </p>
-      </section>
-    </a>
-  
-    
-    
-    <a style="--stagger:4" href="/2024/08/01/ES/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          ElasticSeach
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          8月 01
-          ·
-          9 min
-        </p>
-      </section>
-    </a>
-  
-    
-    
-    <a style="--stagger:5" href="/2024/07/30/RabbitMQ/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          RabbitMQ
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          7月 30
-          ·
-          9 min
-        </p>
-      </section>
-    </a>
-  
-    
-    
-    <a style="--stagger:6" href="/2024/07/29/Git/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          Git分布式版本控制
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          7月 29
-          ·
-          3 min
-        </p>
-      </section>
-    </a>
-  
-    
-    
-    <a style="--stagger:7" href="/2024/07/28/Docker/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          Docker
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          7月 28
-          ·
-          4 min
-        </p>
-      </section>
-    </a>
-  
-    
-    
-    <a style="--stagger:8" href="/2024/07/28/Linux/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          Linux
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          7月 28
-          ·
-          12 min
-        </p>
-      </section>
-    </a>
-  
-    
-    
-    <a style="--stagger:9" href="/2024/07/27/Redis/" data-animate>
-      <header>
-        <h2 class="font-bold text-xl">
-          Redis
-        </h2>
-      </header>
-      <section class="text-gray-400 my-2 text-sm time">
-        <p class="line-clamp-4">
-          
-        </p>
-        <p class="line-clamp-4">
-          7月 27
-          ·
-          28 min
-        </p>
-      </section>
-    </a>
-  
+
+  </div>
 </section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "default",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
 
   </main>
   <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
