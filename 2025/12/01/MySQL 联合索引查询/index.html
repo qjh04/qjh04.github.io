@@ -19,7 +19,7 @@
   <meta name="keywords" content="齐嘉和个人博客">
 
 
-<title>《认知觉醒》读后感 | 待到山花烂漫时</title>
+<title>MySQL 联合索引查询 | 待到山花烂漫时</title>
 
 
 
@@ -196,7 +196,7 @@
         </h2>
       </a>
       <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
-        《认知觉醒》读后感
+        MySQL 联合索引查询
       </div>
       <div class="flex-1"></div>
       <div class="flex items-center gap-3">
@@ -272,23 +272,23 @@
   <header class="overflow-hidden pt-6 pb-6 md:pt-12">
     <div class="pt-4 md:pt-6">
       <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
-        《认知觉醒》读后感
+        MySQL 联合索引查询
       </h1>
       <div>
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2025-11-21</time>
+            <time>2025-12-01</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>3 min</span>
+            <span>2 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>914 words</span>
+            <span>825 words</span>
           </span>
           
         </section>
@@ -297,11 +297,18 @@
   </header>
   <!-- content -->
   <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
-    <p>很少有一本书让我觉得受益终身，这本书绝对算我看的第一本让我明白很多道理且想做一些笔记、随笔记录下来的书。当然我看的还不多，也刚培养出一些看书的习惯，也很庆幸在刚开始读书的时候遇到了一本好书，以下也都是我的一些观后感。在我看完这本书的半个月后，我决定要写点记录下来避免时间过长遗忘。</p>
-<h3 id="一、焦虑、耐心"><a href="#一、焦虑、耐心" class="headerlink" title="一、焦虑、耐心"></a>一、焦虑、耐心</h3><p>本书开篇点出了我们大脑的构成，可以从进化前后分为本能脑、情绪脑、理智脑，由于进化先后的顺序也导致本能脑更强大、理智脑更弱小。也便解释了为什么生活中我们碰到一些困难的事情问题想到的总是逃避，这是我们的本能，而这本书就是告诉我们如何对抗本能，来达到成长。现代社会发展速度过快，我们的理智脑还没有进化成适应当前社会的形态，所以当碰到现代社会的各种诱惑时，会抵抗不住。当我们刷抖音或B站时看到一段极其富有情绪色彩的片段，我们的大脑会沉迷其中且无法自拔。现代的很多娱乐形式如游戏、影视剧、综艺、电影等都是用的这种方式让我们沉迷其中。三种分类并非对立而是合作，刻意锻炼理智脑，让理智脑左决策，本能脑情绪脑配合执行，在我们的行动中获得正向反馈会进一步刺激我们的情绪脑达到一个正反馈的良性循环。</p>
-<p><strong>焦虑</strong>来自于我们的欲望过大，且急切希望马上得到结果，这在一些需要长时间沉淀的学习中是不可能做到的，而一段时间后看不到成果，我们会对此逐渐消极，啥也干不成。做一件事最好的时间是十年期，其次是现在。速胜论取不得，速败论也取不得。我们需要把欲望降低，早点认清自己是个普通人，一直努力并保持<strong>耐心</strong>，相信美好的事情总会发生。</p>
-<h3 id="二、潜意识、模糊"><a href="#二、潜意识、模糊" class="headerlink" title="二、潜意识、模糊"></a>二、潜意识、模糊</h3><p>做计划需要根据实际情况做详细的计划，如果哪一处比较模糊，当我们执行到此处的时候，大脑总是会找着容易的做，而不是去真正完成任务，只是做浅层的表面工作。这是我们的天性，就像上文说的，克服天性也是我们的成长过程。</p>
-<h3 id="三、元认知、自控"><a href="#三、元认知、自控" class="headerlink" title="三、元认知、自控"></a>三、元认知、自控</h3><p>我觉得元认知跟潜意识是一种说法，或者元认知是更高度的潜意识，他能够监控我们的潜意识，当我们在做一件事的时候，很难专注，手上在做，脑子上在想别的，这就是我们的潜意识在作怪。我看过一种说法，是我们可以把潜意识分为七个小球，当你很熟悉一件事的时候，你会自动分配几个小球去想其他的，并不能全部专注于当前。这就需要元认知当你意识到自己走神了，会拉回到当前需要专注的事情上来。该书作者说冥想是可以锻炼我们的专注力的，但需要持续20分钟甚至更多才有效果，我目前没有那么多时间，我也没实践。 </p>
+    <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>基于MySQL的联合索引查询问题，今天同同学交流发现了一个索引查询问题，问题详情是建立了一个联合索引a和b，但是查询条件用b查而不是用a查也走了索引。为什么发生的情况不同于我看的八股文网站，主要在于底层innodb在执行前优化器进行了优化处理，它会初次判断走索引快还是走全表查询快。基于这些情况不同于我从八股文网站看的内容且秉持实践出真知，写了这篇总结性文章。</p>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>分析sql语句用explain，且大多关注几个常用字段，即查询范围（all、index、range）、可能用到的索引 、实际用到的索引、索引长度、行数、过滤数、备注信息等，这里不多赘述。</p>
+<h2 id="情况"><a href="#情况" class="headerlink" title="情况"></a>情况</h2><p>现在先规定一种背景即联合索引字段是（a、b、c）然后根据八股文网站上的总结可得以下几种情况：</p>
+<ul>
+<li>条件是a &#x3D; ? &amp; b &#x3D; ? &amp; c &#x3D; ?，可以走联合索引且书写顺序可以不同</li>
+<li>条件是a &gt;&#x3D; ? &amp; c &#x3D; ，可以走索引且只能a的等值连接用到</li>
+<li>条件是a &gt; ?，只有a走索引</li>
+</ul>
+<p>以上是根据八股文网站的总结可得，但其实真实情况分以下几点，这些因素都是根据底层优化器去优化执行的，所以是否真的走哪个索引还是需要靠优化器去判断</p>
+<h3 id="要查询字段可以覆盖查询"><a href="#要查询字段可以覆盖查询" class="headerlink" title="要查询字段可以覆盖查询"></a>要查询字段可以覆盖查询</h3><p>现在假定联合索引是a和b，要查询的内容是a和b和id，所以标题意思是走索引查询可以做到覆盖查询而不用回表查询，那这个时候走a的等值条件和a的范围条件都会走索引是确认的，但如果跳过a直接用b等值或范围判断也是会走索引的，原因就是优化器会判断是不是走索引更快而不用全表查，这时的索引类型也是index而非更快的range也不是更慢的all。但如果在要查询的字段中加入了不能覆盖查的字段就不会走该索引了，就只能走all的全表查询了。</p>
+<h3 id="要查询字段不能覆盖索引"><a href="#要查询字段不能覆盖索引" class="headerlink" title="要查询字段不能覆盖索引"></a>要查询字段不能覆盖索引</h3><p>现在的假定条件和上述一样，联合索引只是a和b，但查询内容需要有c，所以上面的特殊优化情况就不会发生。但这时在我们的认知里，用a的等值和范围查询一定是会用索引的，其实也不会如果a的值范围是0-50000且都随机分布。如果a的条件是&gt;10就不会走索引，因为如果走索引的话满足这个条件的行数过多且不能覆盖就只能回表查，如果a的条件是&gt;49000就会走索引，因为过滤掉的行数过多且回表数会减少所以就走索引。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>是否走索引不能只看条件中是否满足最左匹配原则还需要根据要查询的内容和查询中的条件组合分析。</p>
 
   </article>
   <!-- tag -->
@@ -312,16 +319,11 @@
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
       
-        <a href="/2025/11/24/%E5%85%AB%E8%82%A1%E9%87%8D%E7%82%B9%E7%9F%A5%E8%AF%86/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
-          重点八股
-        </a>
-      
     </div>
     <div>
       
-        <a href="/2025/11/18/golang/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          Go语言基础
+        <a href="/2025/11/28/%E6%AF%8F%E6%97%A5%E5%8F%8D%E6%80%9D/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          每日反思
           <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
         </a>
       
