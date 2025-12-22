@@ -19,7 +19,7 @@
   <meta name="keywords" content="齐嘉和个人博客">
 
 
-<title>每日反思 | 待到山花烂漫时</title>
+<title>项目实习经历问题汇总 | 待到山花烂漫时</title>
 
 
 
@@ -196,7 +196,7 @@
         </h2>
       </a>
       <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
-        每日反思
+        项目实习经历问题汇总
       </div>
       <div class="flex-1"></div>
       <div class="flex items-center gap-3">
@@ -272,23 +272,23 @@
   <header class="overflow-hidden pt-6 pb-6 md:pt-12">
     <div class="pt-4 md:pt-6">
       <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
-        每日反思
+        项目实习经历问题汇总
       </h1>
       <div>
         <section class="flex items-center gap-3 text-sm">
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
-            <time>2025-12-01</time>
+            <time>2025-12-16</time>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
-            <span>1 min</span>
+            <span>4 min</span>
           </span>
           <span class="text-gray-400">·</span>
           <span class="flex items-center gap-1">
             <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
-            <span>365 words</span>
+            <span>1.4k words</span>
           </span>
           
         </section>
@@ -297,10 +297,98 @@
   </header>
   <!-- content -->
   <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
-    <p>该文档记录每日生活中的小巧思、小心思、小灵感等，可以是几个字、一段话，或者根据这个想法联想出的一段话等任何形式都可以。</p>
-<h4 id="11月30日"><a href="#11月30日" class="headerlink" title="11月30日"></a>11月30日</h4><p>今天是周日，原本想今天去学习的，但因为昨天的懈怠，今天也没有起来，导致早上起床就中午了，中午吃完饭什么也不想干，看手机刷热点，当了一下午愤青。今天的反思点是在享受之前需要给自己一点提示<strong>当完成XX任务后再看也不迟</strong>。</p>
-<h4 id="12月1日"><a href="#12月1日" class="headerlink" title="12月1日"></a>12月1日</h4><p>面试官所有的问题，都跳不出<strong>业务、方案、实现、运维</strong>这四个圈子。不需要知道所有答案，但需要展现出<strong>系统的思考框架</strong>和<strong>解决问题的逻辑</strong>。</p>
-<p>业务：解决了用户、业务什么问题，什么情况下用、高频还是低频，如何衡量这个成功<br>方案：除了当前使用方法还需要另想一种，对比不同，为什么用当前的不用了另一个，在性能、一致性、可用性上有什么取舍<br>实现：数据如何存储，数据结构，逻辑什么样，出现问题如数据不一致、服务崩溃、网络超时如何处理<br>运维：性能出现问题，接口突然变慢（日志、中间件、数据库），用户激增哪里会崩如何扩容</p>
+    <h2 id="go-wonderland项目"><a href="#go-wonderland项目" class="headerlink" title="go-wonderland项目"></a>go-wonderland项目</h2><h3 id="核心业务场景是什么？（如：产品定位、核心功能）"><a href="#核心业务场景是什么？（如：产品定位、核心功能）" class="headerlink" title="核心业务场景是什么？（如：产品定位、核心功能）"></a>核心业务场景是什么？（如：产品定位、核心功能）</h3><p>这是一个为智能语音&#x2F;儿童陪伴类 IoT 设备提供的后端服务，整合 ASR&#x2F;TTS&#x2F;LLM、音色克隆和多角色对话能力，负责设备接入、对话编排、用户与设备管理及运营相关功能。</p>
+<h3 id="用到的关键技术点有哪些？核心开发功能中哪些具有技术挑战性？"><a href="#用到的关键技术点有哪些？核心开发功能中哪些具有技术挑战性？" class="headerlink" title="用到的关键技术点有哪些？核心开发功能中哪些具有技术挑战性？"></a>用到的关键技术点有哪些？核心开发功能中哪些具有技术挑战性？</h3><ul>
+<li><p>实时语音流水线编排难</p>
+<ul>
+<li>将 WebSocket 音频流、ASR 识别、TTS 播报、LLM 对话串成一条低延迟的异步流水线，同时要处理分段音频、goroutine 并发与异常恢复，保证对话实时性和稳定性。</li>
+</ul>
+</li>
+<li><p>多用户 &#x2F; 多设备 &#x2F; 多角色的状态与权限难</p>
+<ul>
+<li>同一个用户下多设备、多角色参与群聊，请求可能针对多角色，既要保证对话上下文在缓存与数据库中一致，又要保证 HTTP 用户身份与 WebSocket 设备连接正确绑定、权限不越界。</li>
+</ul>
+</li>
+<li><p>音色克隆与自定义音色闭环难</p>
+<ul>
+<li>涉及音频上传、临时文件安全处理、调用外部 clone 服务、OSS 存储，以及围绕用户&#x2F;平台&#x2F;语言&#x2F;标签等维度的查询与权限控制，设计与实现都偏复杂。</li>
+</ul>
+</li>
+</ul>
+<h3 id="流式对话结果的处理流程是什么？如何实现文本拼接、分割与-TTS-音频生成的联动？"><a href="#流式对话结果的处理流程是什么？如何实现文本拼接、分割与-TTS-音频生成的联动？" class="headerlink" title="流式对话结果的处理流程是什么？如何实现文本拼接、分割与 TTS 音频生成的联动？"></a>流式对话结果的处理流程是什么？如何实现文本拼接、分割与 TTS 音频生成的联动？</h3><p>流式对话结果处理 &#x3D; LLM 的增量文本先通过 StreamingSegmenter 做“累积 + 按标点智能切句”，每切出一整句就立刻调用 DispatchTTSRequest 做流式合成，TTS 的音频分片再通过 WebSocket 持续下发到设备，从而实现“边生成边说、句子级触发”的联动效果。以一次 LLM 流式回复为例，简化时序如下：</p>
+<ol>
+<li><p>LLM 通过流式接口返回文字块：”今天” → “今天天气” → “今天天气很好。”…</p>
+</li>
+<li><p>每个块进入 StreamingSegmenter.SplitTextStream(chunk, false, sendToTTS)：</p>
+</li>
+</ol>
+<p>​	暂时没有句号时，只累计不发；</p>
+<p>​	收到 “很好。” 时，识别到 。，切出 “今天天气很好。”，回调 sendToTTS(…)。</p>
+<ol>
+<li>sendToTTS 内部调用 DispatchTTSRequest(“今天天气很好。”, voiceType, onAudioChunk)：</li>
+</ol>
+<p>​	后端 TTS 产生多段音频分片，通过 onAudioChunk 逐段推送到设备。</p>
+<ol>
+<li>LLM 最后一个块到达，is_last&#x3D;true：</li>
+</ol>
+<p>​	把剩下未凑成完整句子的部分（如果有）也一次性发给 TTS，做“收尾一句”的合成。</p>
+<ol>
+<li>设备播放完毕上报 EventPlayEnd，服务器根据当前对话&#x2F;群聊状态决定是否继续下一句&#x2F;下一角色。</li>
+</ol>
+<h3 id="衡量该产品用户体验的关键技术指标有哪些？"><a href="#衡量该产品用户体验的关键技术指标有哪些？" class="headerlink" title="衡量该产品用户体验的关键技术指标有哪些？"></a>衡量该产品用户体验的关键技术指标有哪些？</h3><ul>
+<li><p>端到端响应时延</p>
+<ul>
+<li><p>ASR 整段时延：从用户说完（AudioStatusEnd）到拿到完整识别文本的时间（ExecutionEventASR）。</p>
+</li>
+<li><p>首字&#x2F;首音时延：从用户说完到设备开始说话（第一段 TTS 音频播放）耗时。</p>
+</li>
+<li><p>整轮对话时延：从用户说完到设备说完一整句或一整轮群聊的总耗时。</p>
+</li>
+</ul>
+</li>
+<li><p>识别与理解质量</p>
+<ul>
+<li><p>ASR 识别准确率&#x2F;错误率：可用“有效 ASR 文本占比、纠错比例、重复说比例”等近似衡量（代码里有 AsrWordCount 累加，可以扩展为“无效&#x2F;重试次数”）。</p>
+</li>
+<li><p>LLM 回复满意度代理指标：如平均对话轮数、用户中断率（说到一半就打断）、常见拒答&#x2F;无效回复占比。</p>
+</li>
+</ul>
+</li>
+<li><p>TTS 播放体验</p>
+<ul>
+<li><p>TTS 合成成功率：TTS 请求错误率、超时率。	</p>
+</li>
+<li><p>TTS 连续播放平滑度：音频分片丢失率、播放中断次数、打断重播次数（AudioStatusAbnormal &#x2F; EventPlayEnd 相关）。</p>
+</li>
+<li><p>音色一致性：对于 clone 音色，失败率、降级到默认音色的比例。</p>
+</li>
+</ul>
+</li>
+<li><p>对话连续性与稳定性</p>
+<ul>
+<li><p>长连接稳定性：WebSocket 断线率、平均在线时长、重连次数（[CONNECT]&#x2F;[DISCONNECT] 日志可统计）。</p>
+</li>
+<li><p>上下文命中率：多轮对话中，LLM 有效用到历史的比例（可通过是否成功从 LocalRIS &#x2F; ChatHistory 取到上下文来统计）。</p>
+</li>
+</ul>
+</li>
+<li><p>使用与粘性指标（技术可支持）</p>
+<ul>
+<li><p>活跃设备与使用频次：每日&#x2F;每周活跃设备数、平均每日对话轮数（可由 c_stats + ChatHistory 推出）。	</p>
+</li>
+<li><p>语音时长与字数：累计 ASR 字数（AsrWordCount）、平均单次对话时长、单轮对话平均说话时长</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="项目为何采用-WebSocket-协议而非-HTTP2-0？"><a href="#项目为何采用-WebSocket-协议而非-HTTP2-0？" class="headerlink" title="项目为何采用 WebSocket 协议而非 HTTP2.0？"></a>项目为何采用 WebSocket 协议而非 HTTP2.0？</h3><ul>
+<li><p>HTTP&#x2F;2 更像是“高效的多路复用请求通道”，适合很多短请求；</p>
+</li>
+<li><p>WebSocket 更像是“一根永远不断的双向水管”，特别适合本项目这种“语音流 + 控制流 + 状态流混在一起、设备要长期在线”的 IoT 对话场景。</p>
+</li>
+</ul>
+<p>因此，从 实时性、双向性、实现复杂度、设备生态 几个角度综合考虑，选 WebSocket 是更合适、也更工程实用的方案。</p>
+<h3 id="并发连接数设定为-1000-2000-的依据是什么？"><a href="#并发连接数设定为-1000-2000-的依据是什么？" class="headerlink" title="并发连接数设定为 1000-2000 的依据是什么？"></a>并发连接数设定为 1000-2000 的依据是什么？</h3><p>单实例并发连接数 1000–2000 的设定，是基于对机器硬件资源（CPU、内存、FD 限制）、WebSocket 连接开销、语音&#x2F;LLM 业务并发模式的估算，并通过逐级压测（500&#x2F;1000&#x2F;1500&#x2F;2000）验证，在资源占用 &lt;70% 且错误率、断连率稳定的前提下选出的安全值；在线环境则通过网关限流 + 多实例分流保证单实例连接数维持在这一量级，并结合心跳与超时清理机制，确保 10</p>
 
   </article>
   <!-- tag -->
@@ -311,16 +399,11 @@
   <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
     <div>
       
-        <a href="/2025/12/01/MySQL%20%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E6%9F%A5%E8%AF%A2/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
-          MySQL 联合索引查询
-        </a>
-      
     </div>
     <div>
       
-        <a href="/2025/11/24/%E5%85%AB%E8%82%A1%E9%87%8D%E7%82%B9%E7%9F%A5%E8%AF%86/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
-          重点八股
+        <a href="/2025/12/01/MySQL%20%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E6%9F%A5%E8%AF%A2/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          MySQL 联合索引查询
           <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
         </a>
       
